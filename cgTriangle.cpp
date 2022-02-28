@@ -18,7 +18,7 @@ void cgTriangle::Init()
 {
 	// Comiplier Shader
 	prog.CompileShader("Shader/basic.vs");
-	prog.CompileShader("Shader/basic.fs");
+	prog.CompileShader("Shader/basic.frag");
 	prog.Link();
 
 	// ∂®“Â∂•µ„

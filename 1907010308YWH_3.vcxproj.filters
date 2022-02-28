@@ -137,7 +137,7 @@
     <None Include="res\My1907010308YWH3.rc2">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="Debug\Shader\basic.fs">
+    <None Include="Debug\Shader\basic.frag">
       <Filter>源文件\Shader</Filter>
     </None>
     <None Include="Debug\Shader\basic.vs">

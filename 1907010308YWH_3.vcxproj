@@ -235,7 +235,7 @@
     <Image Include="res\writesmall.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug\Shader\basic.fs" />
+    <None Include="Debug\Shader\basic.frag" />
     <None Include="Debug\Shader\basic.vs" />
     <None Include="res\My1907010308YWH3.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
