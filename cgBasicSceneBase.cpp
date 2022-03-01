@@ -13,7 +13,6 @@ cgBasicSceneBase::~cgBasicSceneBase()
 void cgBasicSceneBase::Init()
 {
 	auto pTriagnle = std::make_shared<cgTriangle>();
-	
 	pTriagnle->Init();
 	pTriagnle->CalculateModelMatrix();
 	AddElement(pTriagnle);

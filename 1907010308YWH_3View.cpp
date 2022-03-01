@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
+	ON_COMMAND(ID_GE_TRIANGLE, &CMy1907010308YWH3View::OnGeTriangle)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -135,10 +136,8 @@ void CMy1907010308YWH3View::OnDraw(CDC* pDC)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
-	scene.Init();
-	scene.SetProjection(projection);
-	scene.Render();
+
+	if(scene!=nullptr)scene->Render();
 
 	SwapBuffers(m_pDC->GetSafeHdc());
 	wglMakeCurrent(0, 0);
@@ -227,7 +226,9 @@ int CMy1907010308YWH3View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	InitializeOpenGL();
-
+	scene =nullptr;
+	
+	
 	return 0;
 }
 
@@ -245,4 +246,26 @@ void CMy1907010308YWH3View::OnDestroy()
 BOOL CMy1907010308YWH3View::OnEraseBkgnd(CDC* pDC)
 {
 	return true;//return CView::OnEraseBkgnd(pDC);
+}
+
+          
+void CMy1907010308YWH3View::OnGeTriangle()
+{
+	//cgBasicSceane* BasicSceane = new cgBasicSceane;
+	auto basic_scene = std::make_shared<cgBasicSceneBase>();
+	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
+
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	
+	
+	
+	basic_scene->Init();
+	basic_scene->SetProjection(projection);
+	scene = basic_scene;
+	//if (pScene) delete pScene;
+	//pScene = BasicSceane;
+	//todo make scene becoame ptr
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数。
 }
