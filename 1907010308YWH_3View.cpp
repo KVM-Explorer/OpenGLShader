@@ -45,6 +45,10 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_GE_TRIANGLE, &CMy1907010308YWH3View::OnGeTriangle)
+	//Todo ??
+	ON_COMMAND(ID_GE_PENTAGRAM, &CMy1907010308YWH3View::OnGePentagram)
+	ON_COMMAND(ID_COLLISION_PENTAGRAM, &CMy1907010308YWH3View::OnCollisionPentagram)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -262,10 +266,60 @@ void CMy1907010308YWH3View::OnGeTriangle()
 	basic_scene->Init();
 	basic_scene->SetProjection(projection);
 	scene = basic_scene;
-	//if (pScene) delete pScene;
-	//pScene = BasicSceane;
-	//todo make scene becoame ptr
 
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数。
+}
+
+
+void CMy1907010308YWH3View::OnGePentagram()
+{
+	//cgBasicSceane* BasicSceane = new cgBasicSceane;
+	auto basic_scene = std::make_shared<cgBasicSceneBase>();
+	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
+
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+
+
+	basic_scene->Init();
+	basic_scene->SetProjection(projection);
+	scene = basic_scene;
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数。
+}
+
+
+void CMy1907010308YWH3View::OnCollisionPentagram()
+{
+	// TODO: 在此添加命令处理程序代码
+	SetTimer(1, 100, NULL);
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	auto collosoon_bounce_ptr = std::make_shared<cgCollisionBounce>();
+	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
+	collosoon_bounce_ptr->Init();
+	collosoon_bounce_ptr->SetProjection(projection);
+	scene = collosoon_bounce_ptr;
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数。
+}
+
+
+void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == 1)
+	{
+		if (scene)
+		{
+			wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+			scene->Update();
+
+			wglMakeCurrent(0, 0);
+			Invalidate(FALSE);
+		}
+
+	}
+	CView::OnTimer(nIDEvent);
 }

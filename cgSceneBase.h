@@ -10,6 +10,7 @@ public:
 
 	void SetProjection(mat4 projection);
 	void AddElement(std::shared_ptr<cgElement> pElement);
+	virtual void Update()=0;
 
 	virtual void Render() = 0;
 	virtual void Init() = 0;

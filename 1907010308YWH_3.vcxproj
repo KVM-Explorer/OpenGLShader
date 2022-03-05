@@ -113,7 +113,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E</Command>
+      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -139,7 +139,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E</Command>
+      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -199,8 +199,11 @@
     <ClInclude Include="1907010308YWH_3Doc.h" />
     <ClInclude Include="1907010308YWH_3View.h" />
     <ClInclude Include="cgBasicSceneBase.h" />
+    <ClInclude Include="cgCollisionBounce.h" />
     <ClInclude Include="cgElement.h" />
+    <ClInclude Include="cgPentagram.h" />
     <ClInclude Include="cgProgram.h" />
+    <ClInclude Include="cgRectangle.h" />
     <ClInclude Include="cgSceneBase.h" />
     <ClInclude Include="cgTriangle.h" />
     <ClInclude Include="framework.h" />
@@ -214,7 +217,10 @@
     <ClCompile Include="1907010308YWH_3Doc.cpp" />
     <ClCompile Include="1907010308YWH_3View.cpp" />
     <ClCompile Include="cgBasicSceneBase.cpp" />
+    <ClCompile Include="cgCollisionBounce.cpp" />
+    <ClCompile Include="cgPentagram.cpp" />
     <ClCompile Include="cgProgram.cpp" />
+    <ClCompile Include="cgRectangle.cpp" />
     <ClCompile Include="cgSceneBase.cpp" />
     <ClCompile Include="cgTriangle.cpp" />
     <ClCompile Include="MainFrm.cpp" />

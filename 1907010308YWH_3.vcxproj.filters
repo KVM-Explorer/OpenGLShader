@@ -63,6 +63,15 @@
     <ClInclude Include="cgBasicSceneBase.h">
       <Filter>头文件\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="cgPentagram.h">
+      <Filter>头文件\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="cgCollisionBounce.h">
+      <Filter>头文件\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="cgRectangle.h">
+      <Filter>头文件\OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -90,6 +99,15 @@
       <Filter>源文件\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="cgBasicSceneBase.cpp">
+      <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cgRectangle.cpp">
+      <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cgPentagram.cpp">
+      <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cgCollisionBounce.cpp">
       <Filter>源文件\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>

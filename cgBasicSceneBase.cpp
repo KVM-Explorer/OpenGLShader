@@ -25,3 +25,7 @@ void cgBasicSceneBase::Render()
 		(*iterator)->Render(mat4Projection);
 	}
 }
+
+void cgBasicSceneBase::Update()
+{
+}

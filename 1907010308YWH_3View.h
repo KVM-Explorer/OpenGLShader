@@ -15,6 +15,7 @@
 #pragma once
 #include <GL/glew.h>
 #include "cgBasicSceneBase.h"
+#include "cgCollisionBounce.h"
 
 class CMy1907010308YWH3View : public CView
 {
@@ -29,7 +30,7 @@ public:
 	CDC* m_pDC; //Device Context
 	int m_screenWidth;
 	int m_screenHeight;
-	std::shared_ptr<cgBasicSceneBase> scene;
+	std::shared_ptr<cgSceneBase> scene;
 // 操作
 public:
 	BOOL InitializeOpenGL();
@@ -65,6 +66,9 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnGeTriangle();
+	afx_msg void OnGePentagram();
+	afx_msg void OnCollisionPentagram();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本
