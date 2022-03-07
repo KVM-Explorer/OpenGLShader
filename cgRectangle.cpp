@@ -33,12 +33,11 @@ void cgRectangle::Init()
 
     glBindBuffer(GL_ARRAY_BUFFER, vboHandle[0]);                                        //����󶨣���ǰ������
     glBufferData(GL_ARRAY_BUFFER, pointNum * 3 * sizeof(float), vertc, GL_STATIC_DRAW); //�ڴ����ݸ��Ƶ��Դ�
-
     glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0))); // Vertex Shader �Ķ��������������ԣ���� 0�����꣩��Ӧ
-    glEnableVertexAttribArray(0);                                                        // ���� Vertex ��ɫ����������� 0 ��ȡ�Դ����ݡ�
+    glEnableVertexAttribArray(0);   // ���� Vertex ��ɫ����������� 0 ��ȡ�Դ����ݡ�
+   
     glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);                                         //���������ݣ���ɫ���Ͷ����
     glBufferData(GL_ARRAY_BUFFER, pointNum * 3 * sizeof(float), color, GL_STATIC_DRAW);  //�ڴ����ݸ��Ƶ��Դ�
-
     glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0))); // Vertex Shader �Ķ�����ɫ���루��� 1����ɫ�����Զ�Ӧ
     glEnableVertexAttribArray(1);                                                        // // ���� Vertex ��ɫ����������� 1 ��ȡ�Դ����ݡ�
     glBindVertexArray(0);
@@ -52,9 +51,10 @@ void cgRectangle::Render(mat4 projection)
     prog.SetUniform("ProjectionMatrix", projection);
     prog.SetUniform("ModelMatrix", model);
     glBindVertexArray(vaoHandle);
+    
     glDrawArrays(GL_LINE_LOOP, 0, pointNum); // GL_LINES �߶�
     glBindVertexArray(0);
-    ////�ر����õ� shader
+    
     prog.Unuse();
 }
 
@@ -63,7 +63,6 @@ void cgRectangle::CalculateModelMatrix()
     //���������ִ�еľ�������
     model = glm::translate(translateVector);
     model *= glm::rotate(alpha, vec3(0.0f, 0.0f, 1.0f));
-    //model *= glm::scale(vec3(0.4f, 0.4f, 1.0f));
 }
 
 void cgRectangle::GenerateVertex(float *vectex)
@@ -74,10 +73,10 @@ void cgRectangle::GenerateVertex(float *vectex)
     int num = 0 ;
     for (int i = 0; i < 4; i++)
     {
-        float angle = i * 90;
+        float angle = -45 +i* 90;
         // x y z
-        vectex[num] = center_x + min_radius*cos(angle*3.14f/180.f);
-        vectex[num+1] = center_y + min_radius*sin(angle*3.14f/180.f);
+        vectex[num]     = center_x + min_radius*cos(angle*3.14f/180.f);
+        vectex[num+1]   = center_y + min_radius*sin(angle*3.14f/180.f);
         vectex[num+2] = 0;
         num+=3;
     }

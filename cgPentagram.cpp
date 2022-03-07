@@ -8,6 +8,7 @@ cgPentagram::cgPentagram(float angle = 0,vec3 trans = vec3(0,0,0))
 {
     alpha  = angle;
     translateVector = trans;
+	colorType = 0;
 }
 
 cgPentagram::~cgPentagram()
@@ -24,7 +25,7 @@ void cgPentagram::Init()
 
 	// ���嶥��
 	float vertc[30];	GenerateVertex(vertc);
-	float color[30];  GenerateColor(color,1);
+	float color[30];	GenerateColor(color);
 
 
 	glGenBuffers(2, vboHandle);
@@ -54,9 +55,26 @@ void cgPentagram::Render(mat4 projection)
 	prog.SetUniform("ProjectionMatrix", projection);
 	prog.SetUniform("ModelMatrix", model);
 	glBindVertexArray(vaoHandle);
-	glDrawArrays(GL_LINE_LOOP, 0, pointNum);//GL_LINES �߶�
+	switch (colorType)
+	{
+	case 0:
+		glDrawArrays(GL_LINE_LOOP, 0, pointNum);//GL_LINES �߶�
+		break;
+	case 1:
+	case 2:
+		glDrawArrays(GL_POLYGON, 0, pointNum);
+		break;
+	default:
+		break;
+	}
+	
 	glBindVertexArray(0);
 	prog.Unuse();
+}
+
+void cgPentagram::SetType(int type)
+{
+	colorType = type;
 }
 
 void cgPentagram::CalculateModelMatrix()
@@ -64,8 +82,6 @@ void cgPentagram::CalculateModelMatrix()
 	//���������ִ�еľ�������
 	model = glm::translate(translateVector);
 	model *= glm::rotate(alpha,vec3( 0.0f, 0.0f, 1.0f));
-	//model *= glm::scale(vec3(0.4f, 0.4f, 1.0f));
-
 }
 
 void cgPentagram::GenerateVertex(float* vertex)
@@ -90,22 +106,39 @@ void cgPentagram::GenerateVertex(float* vertex)
 	}
 }
 
-void cgPentagram::GenerateColor(float* color,int type)
+void cgPentagram::GenerateColor(float* color)
 {
 	int num = 0;
 	for (int i = 0; i < 360; i += 72)
 	{
-		switch (type)
+		switch (colorType)
 		{
 			case 0:
-				color[num] = 0.5, color[num + 1] = 0.5, color[num + 2] = 0.5;
-				color[num + 3] = 0.5, color[num + 4] = 0.5, color[num + 5] = 0.5;
+				color[num] = 1, color[num + 1] =1, color[num + 2] = 1;
+				color[num + 3] = 1, color[num + 4] = 1, color[num + 5] = 1;
 				break;
 			case 1:
-				color[num] = 1, color[num + 1] = 0.5, color[num + 2] = 0.5;
-				color[num + 3] = 0.5, color[num + 4] = 0.5, color[num + 5] = 1;
+				color[num] = 0, color[num + 1] = 1, color[num + 2] = 1;
+				color[num + 3] = 0, color[num + 4] = 1, color[num + 5] = 1;
+				break;
+			case 2:
+				color[num] = 0, color[num + 1] = 0.6, color[num + 2] = 0.5;
+				color[num + 3] = 1, color[num + 4] = 0.38, color[num + 5] =0;
 				break;
 		}
+		
 		num += 6;
 	}
+}
+
+int cgPentagram::GetPosition()
+{
+	return alpha;
+}
+
+void cgPentagram::SetPosition(int angle,vec3 position)
+{
+	alpha = angle;
+	//if (alpha > 360) alpha -= 360;
+	translateVector = position;
 }

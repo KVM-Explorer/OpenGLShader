@@ -27,6 +27,8 @@
 #define new DEBUG_NEW
 #endif
 #include <glm/ext/matrix_clip_space.hpp>
+#include "cgTriangle.h"
+#include "cgPentagram.h"
 
 
 // CMy1907010308YWH3View
@@ -138,8 +140,6 @@ void CMy1907010308YWH3View::OnDraw(CDC* pDC)
 
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 
 	if(scene!=nullptr)scene->Render();
 
@@ -260,11 +260,15 @@ void CMy1907010308YWH3View::OnGeTriangle()
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	
-	
-	
+	glClearColor(0.5, 0.5, 0.5, 1);
 	basic_scene->Init();
 	basic_scene->SetProjection(projection);
+
+	auto pTriagnle = std::make_shared<cgTriangle>();
+	pTriagnle->Init();
+	pTriagnle->CalculateModelMatrix();
+	
+	basic_scene->AddElement(pTriagnle);
 	scene = basic_scene;
 
 	wglMakeCurrent(0, 0);
@@ -279,11 +283,28 @@ void CMy1907010308YWH3View::OnGePentagram()
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-
-
+	glClearColor(0.5, 0.5, 0.5, 1);
 
 	basic_scene->Init();
 	basic_scene->SetProjection(projection);
+
+	auto pentagram_ptr = std::make_shared<cgPentagram>(0, vec3(300, 400, 0));
+	pentagram_ptr->SetType(0);
+	pentagram_ptr->Init();
+	pentagram_ptr->CalculateModelMatrix();
+	basic_scene->AddElement(pentagram_ptr);
+	
+	pentagram_ptr = std::make_shared<cgPentagram>(0, vec3(150, 200, 0));
+	pentagram_ptr->SetType(1);
+	pentagram_ptr->Init();
+	pentagram_ptr->CalculateModelMatrix();
+	basic_scene->AddElement(pentagram_ptr);
+	
+	pentagram_ptr = std::make_shared<cgPentagram>(0, vec3(450, 200, 0));
+	pentagram_ptr->SetType(2);
+	pentagram_ptr->Init();
+	pentagram_ptr->CalculateModelMatrix();
+	basic_scene->AddElement(pentagram_ptr);
 	scene = basic_scene;
 
 	wglMakeCurrent(0, 0);

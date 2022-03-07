@@ -9,5 +9,7 @@ public:
 	void Init();
 	void Render();
 	void Update();
+	void AddElement(std::shared_ptr<cgElement> element);
+
 };
 

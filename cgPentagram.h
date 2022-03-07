@@ -10,11 +10,16 @@ public:
 
     void Init();
     void Render(mat4 projection);
+    void SetType(int type);
     void CalculateModelMatrix();
     void GenerateVertex(float* vertex);
-    void GenerateColor(float* vertex, int type);
+    void GenerateColor(float* vertex);
+    
+    int GetPosition();
+    void SetPosition(int angle,vec3 position);
 private:
     float alpha;
     vec3 translateVector;
     const int pointNum = 10;
+    int colorType;
 };
