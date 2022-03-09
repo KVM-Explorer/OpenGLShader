@@ -31,6 +31,7 @@
 #include "cgPentagram.h"
 
 
+
 // CMy1907010308YWH3View
 
 IMPLEMENT_DYNCREATE(CMy1907010308YWH3View, CView)
@@ -47,10 +48,11 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_GE_TRIANGLE, &CMy1907010308YWH3View::OnGeTriangle)
-	//Todo ??
 	ON_COMMAND(ID_GE_PENTAGRAM, &CMy1907010308YWH3View::OnGePentagram)
 	ON_COMMAND(ID_COLLISION_PENTAGRAM, &CMy1907010308YWH3View::OnCollisionPentagram)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_CG_3DSCENE, &CMy1907010308YWH3View::OnCg3DScene)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -221,6 +223,7 @@ void CMy1907010308YWH3View::OnSize(UINT nType, int cx, int cy)
 	glViewport(0, 0, cx, cy);
 	m_screenWidth = cx;
 	m_screenHeight = cy;
+	wglMakeCurrent(0, 0);
 }
 
 
@@ -255,11 +258,11 @@ BOOL CMy1907010308YWH3View::OnEraseBkgnd(CDC* pDC)
           
 void CMy1907010308YWH3View::OnGeTriangle()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
 	//cgBasicSceane* BasicSceane = new cgBasicSceane;
 	auto basic_scene = std::make_shared<cgBasicSceneBase>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
-
-	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	glClearColor(0.5, 0.5, 0.5, 1);
 	basic_scene->Init();
 	basic_scene->SetProjection(projection);
@@ -278,11 +281,12 @@ void CMy1907010308YWH3View::OnGeTriangle()
 
 void CMy1907010308YWH3View::OnGePentagram()
 {
+
+
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	//cgBasicSceane* BasicSceane = new cgBasicSceane;
 	auto basic_scene = std::make_shared<cgBasicSceneBase>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
-
-	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	glClearColor(0.5, 0.5, 0.5, 1);
 
 	basic_scene->Init();
@@ -343,4 +347,32 @@ void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
 
 	}
 	CView::OnTimer(nIDEvent);
+}
+
+
+void CMy1907010308YWH3View::OnCg3DScene()
+{
+	
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	
+	auto scene3d_ptr = std::make_shared<cg3DScene>();
+	scene3d_ptr->Init();
+	scene = scene3d_ptr;
+
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	if (scene != nullptr)
+	{
+		scene->Input(nChar);
+		Invalidate(FALSE);
+	}
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+
 }

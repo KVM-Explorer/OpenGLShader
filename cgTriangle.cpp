@@ -8,6 +8,8 @@
 cgTriangle::cgTriangle()
 {
 	alpha = 30;
+	centerPosition = vec3(0.f, 0.f, -10.f);
+	elementNum = 0;
 }
 
 cgTriangle::~cgTriangle()
@@ -16,10 +18,11 @@ cgTriangle::~cgTriangle()
 
 void cgTriangle::Init()
 {
-	// Comiplier Shader
-	prog.CompileShader("Shader/basic.vs");
-	prog.CompileShader("Shader/basic.frag");
-	prog.Link();
+	elementNum = 1;
+	//// Comiplier Shader
+	//prog.CompileShader("Shader/basic.vs");
+	//prog.CompileShader("Shader/basic.frag");
+	//prog.Link();
 
 	// ∂®“Â∂•µ„
 	
@@ -81,4 +84,21 @@ void cgTriangle::CalculateModelMatrix()
 	model *= glm::scale(vec3(0.4f, 0.4f, 1.0f));
 	model *= glm::translate(vec3(-300.0f, -400.0f, -0.0f));
 
+}
+
+void cgTriangle::Render()
+{
+	glBindVertexArray(vaoHandle);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum);
+	glBindVertexArray(vaoHandle);
+}
+
+void cgTriangle::SetPosition(vec3 position)
+{
+	centerPosition = position;
+}
+
+vec3 cgTriangle::GetPosition()
+{
+	return centerPosition;
 }

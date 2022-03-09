@@ -19,8 +19,11 @@
     <Filter Include="源文件\OpenGL">
       <UniqueIdentifier>{91f37f62-0514-4398-bf47-f5496a994201}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Shader">
-      <UniqueIdentifier>{d4c06ec3-be90-4ed7-aa3a-ff245af8efd1}</UniqueIdentifier>
+    <Filter Include="头文件\3DScene">
+      <UniqueIdentifier>{515ba8a7-34fc-4dad-9b93-37fdc201d224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\3DScene">
+      <UniqueIdentifier>{2672b133-5296-44f0-9d50-c5b6f6e436cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +75,18 @@
     <ClInclude Include="cgRectangle.h">
       <Filter>头文件\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="cg3DScene.h">
+      <Filter>头文件\3DScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cgSphere.h">
+      <Filter>头文件\3DScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cgCylinder.h">
+      <Filter>头文件\3DScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cgCube.h">
+      <Filter>头文件\3DScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -109,6 +124,21 @@
     </ClCompile>
     <ClCompile Include="cgCollisionBounce.cpp">
       <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cg3DScene.cpp">
+      <Filter>源文件\3DScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgSphere.cpp">
+      <Filter>源文件\3DScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgCylinder.cpp">
+      <Filter>源文件\3DScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgCube.cpp">
+      <Filter>源文件\3DScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgElement.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,12 +184,6 @@
     </None>
     <None Include="res\My1907010308YWH3.rc2">
       <Filter>资源文件</Filter>
-    </None>
-    <None Include="Debug\Shader\basic.frag">
-      <Filter>源文件\Shader</Filter>
-    </None>
-    <None Include="Debug\Shader\basic.vs">
-      <Filter>源文件\Shader</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
 #include <GL/glew.h>
 #include "cgBasicSceneBase.h"
 #include "cgCollisionBounce.h"
+#include "cg3DScene.h"
 
 class CMy1907010308YWH3View : public CView
 {
@@ -69,6 +70,8 @@ public:
 	afx_msg void OnGePentagram();
 	afx_msg void OnCollisionPentagram();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnCg3DScene();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

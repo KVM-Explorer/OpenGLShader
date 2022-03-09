@@ -14,9 +14,11 @@ public:
 
 	virtual void Render() = 0;
 	virtual void Init() = 0;
+	virtual void Input(const unsigned int& key) ;
 protected:
 	std::vector <std::shared_ptr<cgElement>> elementsArray;
-	mat4 mat4Projection;
+	mat4 projectionMat;
+	mat4 viewMat;
 
 };
 

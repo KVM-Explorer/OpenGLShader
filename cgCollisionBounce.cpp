@@ -34,7 +34,7 @@ void cgCollisionBounce::Render()
 {
 	for (auto iterator = elementsArray.begin(); iterator != elementsArray.end(); iterator++)
 	{
-		(*iterator)->Render(mat4Projection);
+		(*iterator)->Render(projectionMat);
 	}
 }
 

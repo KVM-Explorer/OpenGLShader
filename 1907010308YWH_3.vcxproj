@@ -198,13 +198,17 @@
     <ClInclude Include="1907010308YWH_3.h" />
     <ClInclude Include="1907010308YWH_3Doc.h" />
     <ClInclude Include="1907010308YWH_3View.h" />
+    <ClInclude Include="cg3DScene.h" />
     <ClInclude Include="cgBasicSceneBase.h" />
     <ClInclude Include="cgCollisionBounce.h" />
+    <ClInclude Include="cgCube.h" />
+    <ClInclude Include="cgCylinder.h" />
     <ClInclude Include="cgElement.h" />
     <ClInclude Include="cgPentagram.h" />
     <ClInclude Include="cgProgram.h" />
     <ClInclude Include="cgRectangle.h" />
     <ClInclude Include="cgSceneBase.h" />
+    <ClInclude Include="cgSphere.h" />
     <ClInclude Include="cgTriangle.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -216,12 +220,17 @@
     <ClCompile Include="1907010308YWH_3.cpp" />
     <ClCompile Include="1907010308YWH_3Doc.cpp" />
     <ClCompile Include="1907010308YWH_3View.cpp" />
+    <ClCompile Include="cg3DScene.cpp" />
     <ClCompile Include="cgBasicSceneBase.cpp" />
     <ClCompile Include="cgCollisionBounce.cpp" />
+    <ClCompile Include="cgCube.cpp" />
+    <ClCompile Include="cgCylinder.cpp" />
+    <ClCompile Include="cgElement.cpp" />
     <ClCompile Include="cgPentagram.cpp" />
     <ClCompile Include="cgProgram.cpp" />
     <ClCompile Include="cgRectangle.cpp" />
     <ClCompile Include="cgSceneBase.cpp" />
+    <ClCompile Include="cgSphere.cpp" />
     <ClCompile Include="cgTriangle.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">
@@ -247,8 +256,6 @@
     <Image Include="res\writesmall.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug\Shader\basic.frag" />
-    <None Include="Debug\Shader\basic.vs" />
     <None Include="res\My1907010308YWH3.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
   </ItemGroup>
