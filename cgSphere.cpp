@@ -28,8 +28,8 @@ cgSphere::~cgSphere()
 
 void cgSphere::Init()
 {
-	int m = 20;
-	int n = 20;
+	int m = 20;	// 垂直分片
+	int n = 20;	// 水平分片
 	elementNum = m * n * 2;
 	
 	float* vertex = new float[3 * 3 * elementNum];

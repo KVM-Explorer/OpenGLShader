@@ -3,6 +3,8 @@
 #include "cgCube.h"
 #include "cgTriangle.h"
 #include "cgSphere.h"
+#include "cgCylinder.h"
+
 
 cg3DScene::cg3DScene()
 {
@@ -51,6 +53,11 @@ void cg3DScene::Init()
 	sphere_ptr->CalculateModelMatrix();
 	elementsArray.push_back(sphere_ptr);
 
+	auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(-30, 0, -30));
+	cylinder_ptr->CalcuteModelMatrix();
+	elementsArray.push_back(cylinder_ptr);
 
 }
 
@@ -115,20 +122,21 @@ void cg3DScene::Input(const unsigned int& key)
 	case VK_DOWN:
 		viewPos -= step * viewHead;
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, vec3(0.f, 1.f, 0.f));
+		break;
 	case 'a':
 	case 'A':
 	case VK_LEFT:
 		alphaf += 1.0f;
-		viewHead.x = cos(alphaf / 180.0f * PI);	// Y不变，逆时针为正
-		viewHead.z = sin(alphaf / 180.0f * PI);	// 
+		viewHead.x = sin(alphaf / 180.0f * PI);	// Y不变，逆时针为正
+		viewHead.z = cos(alphaf / 180.0f * PI);	// 
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'd':
 	case 'D':
 	case VK_RIGHT:
 		alphaf -= 1.0f;
-		viewHead.x = cos(alphaf / 180.0f * PI);	//  X Z 是否反了？？？？ I'am right WWW    X 获得水平 Z 获得垂直分量
-		viewHead.z = sin(alphaf / 180.0f * PI);
+		viewHead.x = sin(alphaf / 180.0f * PI);	//  X Z 是否反了？？？？ I'am right WWW    X 获得水平 Z 获得垂直分量
+		viewHead.z = cos(alphaf / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'z':

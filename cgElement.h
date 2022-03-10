@@ -16,7 +16,7 @@ public:
 protected:
 	cgProgram prog;
 	mat4 model;
-	unsigned int vboHandle[2];
+	unsigned int vboHandle[3];
 	unsigned int vaoHandle;
 };
 
