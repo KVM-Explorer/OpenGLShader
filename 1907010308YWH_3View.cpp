@@ -53,6 +53,10 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_CG_3DSCENE, &CMy1907010308YWH3View::OnCg3DScene)
 	ON_WM_KEYDOWN()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONDOWN()
+//	ON_WM_NCLBUTTONUP()
+ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -234,7 +238,7 @@ int CMy1907010308YWH3View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	InitializeOpenGL();
 	scene =nullptr;
-	
+	cursor_position = CPoint(-1, -1);
 	
 	return 0;
 }
@@ -375,4 +379,41 @@ void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 
+}
+
+
+void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
+	{
+		int dx = point.x - cursor_position.x;
+		int dy = point.y - cursor_position.y;
+		if (dx > 0)scene->Input('D');
+		if (dx < 0)scene->Input('A');
+		if (dy < 0)scene->Input('U');
+		if (dy > 0)scene->Input('V');
+		
+		cursor_position = point;
+		Invalidate(FALSE);
+	}
+	CView::OnMouseMove(nFlags, point);
+}
+
+
+/*获取点下去一瞬间的坐标值*/
+void CMy1907010308YWH3View::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	cursor_position = point;
+	//TRACE("Cursor Position: %d %d\n", cursor_position.x, cursor_position.y);
+	CView::OnLButtonDown(nFlags, point);
+}
+
+
+
+void CMy1907010308YWH3View::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	cursor_position = CPoint(-1, -1);
+
+	CView::OnLButtonUp(nFlags, point);
 }

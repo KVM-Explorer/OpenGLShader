@@ -22,7 +22,8 @@ protected:
     vec3 viewHead;
 
 
-    float alphaf;
+    float alpha;
+    float beta;
     int mode;
 
     cgProgram prog;

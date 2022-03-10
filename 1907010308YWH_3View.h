@@ -31,6 +31,7 @@ public:
 	CDC* m_pDC; //Device Context
 	int m_screenWidth;
 	int m_screenHeight;
+	CPoint cursor_position;
 	std::shared_ptr<cgSceneBase> scene;
 // 操作
 public:
@@ -72,6 +73,10 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnCg3DScene();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+//	afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

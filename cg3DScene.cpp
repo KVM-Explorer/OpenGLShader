@@ -10,11 +10,12 @@ cg3DScene::cg3DScene()
 {
 	viewPos = vec3(0.f, 1.f, 6.f);
 
-	alphaf = 180.f;
+	alpha = 180.f;
+	beta = 0.f;
 	viewHead.y = 0.f;
-	viewHead.x = sin(alphaf / 180.f * PI);
-	viewHead.z = cos(alphaf / 180.f * PI);
-
+	viewHead.x = sin(alpha / 180.f * PI);
+	viewHead.z = cos(alpha / 180.f * PI);
+	
 	mode = 0;
 }
 
@@ -41,23 +42,23 @@ void cg3DScene::Init()
 	elementsArray.push_back(cube_ptr);
 
 
-	auto triangle_ptr = std::make_shared<cgTriangle>();
-	triangle_ptr->Init();
-	triangle_ptr->SetPosition(vec3(300, 300, 0));
-	triangle_ptr->CalculateModelMatrix();
-	elementsArray.push_back(triangle_ptr);
+	//auto triangle_ptr = std::make_shared<cgTriangle>();
+	//triangle_ptr->Init();
+	//triangle_ptr->SetPosition(vec3(300, 300, 0));
+	//triangle_ptr->CalculateModelMatrix();
+	//elementsArray.push_back(triangle_ptr);
 
 	auto sphere_ptr = std::make_shared<cgSphere>(30);
 	sphere_ptr->Init();
-	sphere_ptr->SetPosition(vec3(20, 0, -20));
+	sphere_ptr->SetPosition(vec3(0, 0, 0));
 	sphere_ptr->CalculateModelMatrix();
 	elementsArray.push_back(sphere_ptr);
 
-	auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
-	cylinder_ptr->Init();
-	cylinder_ptr->SetPosition(vec3(-30, 0, -30));
-	cylinder_ptr->CalcuteModelMatrix();
-	elementsArray.push_back(cylinder_ptr);
+	//auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
+	//cylinder_ptr->Init();
+	//cylinder_ptr->SetPosition(vec3(-30, 0, -30));
+	//cylinder_ptr->CalcuteModelMatrix();
+	//elementsArray.push_back(cylinder_ptr);
 
 }
 
@@ -93,6 +94,7 @@ void cg3DScene::Render()
 		program_ptr->SetUniform("ModelMatrix", model);
 		program_ptr->SetUniform("ObjectColor", color);
 
+		
 		(*iter)->Render();
 		program_ptr->Unuse();
 	}
@@ -109,6 +111,7 @@ void cg3DScene::SetProjection(int width, int height)
 void cg3DScene::Input(const unsigned int& key)
 {
 	float step = 0.2f;
+	float r = 0;
 	switch (key)
 	{
 	case 'w':
@@ -126,17 +129,21 @@ void cg3DScene::Input(const unsigned int& key)
 	case 'a':
 	case 'A':
 	case VK_LEFT:
-		alphaf += 1.0f;
-		viewHead.x = sin(alphaf / 180.0f * PI);	// Y不变，逆时针为正
-		viewHead.z = cos(alphaf / 180.0f * PI);	// 
+		alpha += 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r*sin(alpha / 180.0f * PI);	// 
+		viewHead.z = r*cos(alpha / 180.0f * PI);	// 
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'd':
 	case 'D':
 	case VK_RIGHT:
-		alphaf -= 1.0f;
-		viewHead.x = sin(alphaf / 180.0f * PI);	//  X Z 是否反了？？？？ I'am right WWW    X 获得水平 Z 获得垂直分量
-		viewHead.z = cos(alphaf / 180.0f * PI);
+		alpha -= 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r*sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r*cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'z':
@@ -154,12 +161,33 @@ void cg3DScene::Input(const unsigned int& key)
 		mode++;
 		mode = mode % 2;
 		break;
-		
+	case 'U':
+	case 'u':
+		if(beta<90)beta += 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+		break;
+	case 'V':
+	case 'v':
+		if(beta>-90)beta -= 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+		break;
 	default:
 		break;
 
 	}
-	TRACE("Position :(%.2lf,%.2lf,%.2lf) Angle: %.2lf\n", viewPos.x, viewPos.y, viewPos.z, alphaf);
+	TRACE("Angle: %.2lf Beta: %.2f\n", alpha,beta);
+	TRACE("%.2f %.2f %.2f, sum=%.2f\n", viewHead.x, viewHead.y, viewHead.z, (viewHead.x * viewHead.x + viewHead.y * viewHead.y + viewHead.z * viewHead.z));
+	TRACE("Position: (%.2lf %.2lf %.2lf)\n", viewPos.x, viewPos.y, viewPos.z);
+	auto tmp = viewHead + viewPos;
+	TRACE("eye: (%.2lf %.2lf %.2lf)\n", tmp.x, tmp.y, tmp.z);
 }
 
 void cg3DScene::Update()
