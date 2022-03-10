@@ -24,7 +24,6 @@ void cg3DScene::Init()
 {
 	viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 	projectionMat = glm::perspective(60.f, 1.f, 1.f, 200.f);
-	//projectionMat = glm::ortho(0.0f, (float)600, 0.0f, (float)600);
 
 	prog.CompileShader("Shader/cg3DScene/3d.vert");
 	prog.CompileShader("Shader/cg3DScene/3d.frag");

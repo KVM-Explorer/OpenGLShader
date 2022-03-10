@@ -10,7 +10,7 @@ class cgElement
 {
 public:
 	virtual void Render(mat4 projection) = 0;
-	void Render();
+	virtual void Render();
 	mat4 GetModelMatrix();
 	
 protected:
