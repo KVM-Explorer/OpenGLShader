@@ -80,8 +80,8 @@ void cgPentagram::SetType(int type)
 void cgPentagram::CalculateModelMatrix()
 {
 	//���������ִ�еľ�������
-	model = glm::translate(translateVector);
-	model *= glm::rotate(alpha,vec3( 0.0f, 0.0f, 1.0f));
+	//model = glm::translate(translateVector);
+	model = glm::rotate(alpha,vec3( 0.0f, 0.0f, 1.0f));
 }
 
 void cgPentagram::GenerateVertex(float* vertex)
@@ -139,6 +139,6 @@ int cgPentagram::GetPosition()
 void cgPentagram::SetPosition(int angle,vec3 position)
 {
 	alpha = angle;
-	//if (alpha > 360) alpha -= 360;
+	if (alpha > 360) alpha -= 360;
 	translateVector = position;
 }

@@ -105,7 +105,7 @@ void cgCube::Render()
 
 void cgCube::Render(mat4 projection)
 {
-	//Todo Achieve this
+	//Empty
 }
 
 void cgCube::SetPosition(vec3 position)

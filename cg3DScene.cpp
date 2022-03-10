@@ -2,6 +2,7 @@
 #include "cg3DScene.h"
 #include "cgCube.h"
 #include "cgTriangle.h"
+#include "cgSphere.h"
 
 cg3DScene::cg3DScene()
 {
@@ -15,6 +16,7 @@ cg3DScene::cg3DScene()
 	mode = 0;
 }
 
+
 cg3DScene::~cg3DScene()
 {
 
@@ -23,7 +25,7 @@ cg3DScene::~cg3DScene()
 void cg3DScene::Init()
 {
 	viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
-	projectionMat = glm::perspective(60.f, 1.f, 1.f, 200.f);
+	projectionMat = glm::perspective(60.f, 1.f, 1.f, 600.f);
 
 	prog.CompileShader("Shader/cg3DScene/3d.vert");
 	prog.CompileShader("Shader/cg3DScene/3d.frag");
@@ -42,6 +44,13 @@ void cg3DScene::Init()
 	triangle_ptr->SetPosition(vec3(300, 300, 0));
 	triangle_ptr->CalculateModelMatrix();
 	elementsArray.push_back(triangle_ptr);
+
+	auto sphere_ptr = std::make_shared<cgSphere>(30);
+	sphere_ptr->Init();
+	sphere_ptr->SetPosition(vec3(20, 0, -20));
+	sphere_ptr->CalculateModelMatrix();
+	elementsArray.push_back(sphere_ptr);
+
 
 }
 
@@ -110,16 +119,16 @@ void cg3DScene::Input(const unsigned int& key)
 	case 'A':
 	case VK_LEFT:
 		alphaf += 1.0f;
-		viewHead.x = sin(alphaf / 180.0f * PI);	// Y不变，逆时针为正
-		viewHead.z = cos(alphaf / 180.0f * PI);	// 
+		viewHead.x = cos(alphaf / 180.0f * PI);	// Y不变，逆时针为正
+		viewHead.z = sin(alphaf / 180.0f * PI);	// 
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'd':
 	case 'D':
 	case VK_RIGHT:
 		alphaf -= 1.0f;
-		viewHead.x = sin(alphaf / 180.0f * PI);	// Todo X Z 是否反了？？？？
-		viewHead.z = cos(alphaf / 180.0f * PI);
+		viewHead.x = cos(alphaf / 180.0f * PI);	//  X Z 是否反了？？？？ I'am right WWW    X 获得水平 Z 获得垂直分量
+		viewHead.z = sin(alphaf / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 	case 'z':
@@ -137,6 +146,7 @@ void cg3DScene::Input(const unsigned int& key)
 		mode++;
 		mode = mode % 2;
 		break;
+		
 	default:
 		break;
 
