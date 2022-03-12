@@ -16,7 +16,8 @@ cg3DScene::cg3DScene()
 	viewHead.x = sin(alpha / 180.f * PI);
 	viewHead.z = cos(alpha / 180.f * PI);
 	
-	mode = 0;
+	drawMode = 0;
+	sceneType = 0;
 }
 
 
@@ -73,7 +74,7 @@ void cg3DScene::Init()
 
 void cg3DScene::Render()
 {
-	if (!mode)
+	if (!drawMode)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
@@ -87,35 +88,38 @@ void cg3DScene::Render()
 	for (auto iter = elementsArray.begin(); iter != elementsArray.end(); iter++)
 	{
 		// Todo Select shader program  Render Element texture
-		if ((*iter)->GetName() == "cube")
+		if (sceneType != 0)
 		{
-			program_ptr = &textureProg;
-			textureProg.Use();
-			glEnable(GL_TEXTURE);
-			glActiveTexture(GL_TEXTURE0);
-			unsigned int texture_id = std::dynamic_pointer_cast<cgCube>(*iter)->GetTextureID();
-			glBindTexture(GL_TEXTURE_2D, texture_id);
-		}
-		else
-		{
-			if ((*iter)->GetName() == "cylinder")
+			if ((*iter)->GetName() == "cube")
 			{
 				program_ptr = &textureProg;
 				textureProg.Use();
-				glEnable(GL_TEXTURE);
-				glActiveTexture(GL_TEXTURE0);
-				unsigned int texture_id = std::dynamic_pointer_cast<cgCylinder>(*iter)->GetTextureID();
-				glBindTexture(GL_TEXTURE_2D, texture_id);
 			}
 			else
 			{
-				prog.Use();
-				program_ptr = &prog;
-				prog.SetUniform("ObjectColor", color);
+				if ((*iter)->GetName() == "cylinder")
+				{
+					program_ptr = &textureProg;
+					textureProg.Use();
+					//glEnable(GL_TEXTURE);
+					//glActiveTexture(GL_TEXTURE0);
+					//unsigned int texture_id = std::dynamic_pointer_cast<cgCylinder>(*iter)->GetTextureID();
+					//glBindTexture(GL_TEXTURE_2D, texture_id);
+				}
+				else
+				{
+					prog.Use();
+					program_ptr = &prog;
+					prog.SetUniform("ObjectColor", color);
+				}
 			}
 		}
-		
-		
+		else
+		{
+			prog.Use();
+			program_ptr = &prog;
+			prog.SetUniform("ObjectColor", color);
+		}
 		
 
 		mat4 model = (*iter)->GetModelMatrix();
@@ -190,8 +194,8 @@ void cg3DScene::Input(const unsigned int& key)
 		break;
 	case 'f':
 	case 'F':
-		mode++;
-		mode = mode % 2;
+		drawMode++;
+		drawMode = drawMode % 2;
 		break;
 	case 'U':
 	case 'u':
@@ -224,5 +228,10 @@ void cg3DScene::Input(const unsigned int& key)
 
 void cg3DScene::Update()
 {
+}
+
+void cg3DScene::SetScene(int type)
+{
+	sceneType = type;
 }
 

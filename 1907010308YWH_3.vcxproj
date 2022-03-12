@@ -204,6 +204,8 @@
     <ClInclude Include="cgCube.h" />
     <ClInclude Include="cgCylinder.h" />
     <ClInclude Include="cgElement.h" />
+    <ClInclude Include="cgLightCube.h" />
+    <ClInclude Include="cgLightScene.h" />
     <ClInclude Include="cgPentagram.h" />
     <ClInclude Include="cgProgram.h" />
     <ClInclude Include="cgRectangle.h" />
@@ -227,6 +229,8 @@
     <ClCompile Include="cgCube.cpp" />
     <ClCompile Include="cgCylinder.cpp" />
     <ClCompile Include="cgElement.cpp" />
+    <ClCompile Include="cgLightCube.cpp" />
+    <ClCompile Include="cgLightScene.cpp" />
     <ClCompile Include="cgPentagram.cpp" />
     <ClCompile Include="cgProgram.cpp" />
     <ClCompile Include="cgRectangle.cpp" />

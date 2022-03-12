@@ -75,7 +75,7 @@ void cgCube::Init()
 		normal[nindex++] = 1; normal[nindex++] = 0; normal[nindex++] = 0;
 	}
 
-	glGenBuffers(2, vboHandle);//生成缓冲区，数据
+	glGenBuffers(3, vboHandle);//生成缓冲区，数据
 
 	glGenVertexArrays(1, &vaoHandle);//生成顶点数组，与vertex shader绑定
 	glBindVertexArray(vaoHandle);//可以多个顶点数组，使用时需要激活哪一个
@@ -89,6 +89,11 @@ void cgCube::Init()
 	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * elementNum * sizeof(float), textcol, GL_STATIC_DRAW);//内存数据复制到显存
 	glVertexAttribPointer((GLuint)1, 2, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点颜色输入（序号1，颜色）属性对应
 	glEnableVertexAttribArray(1);  //  // 允许Vertex着色器中输入变量1读取显存数据。
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[2]);//激活（绑定）当前缓冲区
+	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), normal, GL_STATIC_DRAW);//内存数据复制到显存
+	glVertexAttribPointer((GLuint)2, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点坐标输入属性（序号2，坐标）对应
+	glEnableVertexAttribArray(2);  // 允许Vertex着色器中输入变量读取显存数据
 
 	glBindVertexArray(0);
 

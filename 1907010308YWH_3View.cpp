@@ -29,7 +29,8 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include "cgTriangle.h"
 #include "cgPentagram.h"
-
+#include "cgSphere.h"
+#include "cgLightCube.h"
 
 
 // CMy1907010308YWH3View
@@ -55,8 +56,10 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
-//	ON_WM_NCLBUTTONUP()
-ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONUP()
+	ON_COMMAND(ID_CG_TEXTURE, &CMy1907010308YWH3View::OnCgTexture)
+	ON_COMMAND(ID_CG_POINTLIGHT, &CMy1907010308YWH3View::OnCgPointlight)
+	ON_COMMAND(ID_CG_LIGHT2TEXTURE, &CMy1907010308YWH3View::OnCgLight2Texture)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -416,4 +419,91 @@ void CMy1907010308YWH3View::OnLButtonUp(UINT nFlags, CPoint point)
 	cursor_position = CPoint(-1, -1);
 
 	CView::OnLButtonUp(nFlags, point);
+}
+
+
+void CMy1907010308YWH3View::OnCgTexture()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	auto scene3d_ptr = std::make_shared<cg3DScene>();
+	scene3d_ptr->Init();
+	scene3d_ptr->SetScene(1);
+	scene = scene3d_ptr;
+
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::OnCgPointlight()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	auto lightscene_ptr = std::make_shared<cgLightScene>();
+	lightscene_ptr->Init();
+
+	// 添加图元
+	auto sphere_ptr = std::make_shared<cgSphere>(5);
+	sphere_ptr->Init();
+	sphere_ptr->SetName("sun");
+	sphere_ptr->SetPosition(vec3(0, 1, 2));
+	sphere_ptr->CalculateModelMatrix();
+	auto sphere_ptr2 = std::make_shared<cgSphere>(5);
+	sphere_ptr2->Init();
+	sphere_ptr2->SetName("object1");
+	sphere_ptr2->SetPosition(vec3(10, 10, -5));
+	sphere_ptr2->CalculateModelMatrix();
+
+
+
+	lightscene_ptr->AddElement(sphere_ptr2);
+	lightscene_ptr->AddElement(sphere_ptr);
+	scene = lightscene_ptr;
+
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::OnCgLight2Texture()
+{
+	
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	auto lightscene_ptr = std::make_shared<cgLightScene>();
+	lightscene_ptr->Init();
+
+
+	auto light_cube_ptr = std::make_shared<cgLightCube>();
+	light_cube_ptr->Init();
+	light_cube_ptr->SetName("texture");
+	light_cube_ptr->SetPosition(vec3(-10, -10, -20));
+	light_cube_ptr->CalculateModelMatrix();
+	light_cube_ptr->SetTextureID(lightscene_ptr->texture.GetID());
+
+	// 添加图元
+	auto sphere_ptr = std::make_shared<cgSphere>(5);
+	sphere_ptr->Init();
+	sphere_ptr->SetName("sun");
+	sphere_ptr->SetPosition(vec3(0, 1, 2));
+	sphere_ptr->CalculateModelMatrix();
+	auto sphere_ptr2 = std::make_shared<cgSphere>(5);
+	sphere_ptr2->Init();
+	sphere_ptr2->SetName("object1");
+	sphere_ptr2->SetPosition(vec3(10, 10, -5));
+	sphere_ptr2->CalculateModelMatrix();
+	
+	lightscene_ptr->AddElement(sphere_ptr2);
+	lightscene_ptr->AddElement(sphere_ptr);
+	lightscene_ptr->AddElement(light_cube_ptr);
+
+	scene = lightscene_ptr;
+
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+
 }

@@ -15,10 +15,10 @@ public:
     void GenerateVertex(float* vertex);
     void GenerateColor(float* vertex);
     
-    int GetPosition();
+    int GetAngle();
     void SetPosition(int angle,vec3 position);
 private:
-    float alpha;
+    int alpha;
     vec3 translateVector;
     int pointNum;
     int colorType;

@@ -40,13 +40,9 @@ void cgCollisionBounce::Render()
 
 void cgCollisionBounce::Update()
 {
-
-    beta = (beta + 15);
     positionX += deltaX;
     positionY += deltaY;
-    //Todo ？？ 角度存在跳变
-
-    //if (beta > 360) beta -= 360;
+    
     if(positionX>500||positionX<100)deltaX = -deltaX;
     if(positionY>500||positionY<100)deltaY = -deltaY;
     int length = elementsArray.size();
@@ -60,7 +56,8 @@ void cgCollisionBounce::Update()
 
     auto element_ptr = elementsArray[1];
     auto pentagram_ptr = std::dynamic_pointer_cast<cgPentagram>(element_ptr);
-    pentagram_ptr->SetPosition((pentagram_ptr->GetPosition()) + 15,vec3(positionX,positionY,0));
+    //Todo ？？ 角度存在跳变
+    pentagram_ptr->SetPosition((pentagram_ptr->GetAngle()) + 15,vec3(positionX,positionY,0));
     pentagram_ptr->CalculateModelMatrix();
     
 }

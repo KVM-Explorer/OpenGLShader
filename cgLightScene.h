@@ -4,35 +4,30 @@
 #include <glm/gtc/constants.hpp>
 #include "cgSceneBase.h"
 #include "cgTexture.h"
-
-class cg3DScene :
+class cgLightScene :
     public cgSceneBase
 {
 public:
-    cg3DScene();
-    ~cg3DScene();
+    cgLightScene();
+    ~cgLightScene();
 
     void Init();
     void Render();
-    void SetProjection(int width,int height);
-    void Input(const unsigned int& key);
+    void SetProjection(int width, int height);
+    void Input(const unsigned int & key);
     void Update();
-    void SetScene(int type);
 
-protected:
 
     vec3 viewPos;
     vec3 viewHead;
+    vec3 lightPos;
 
-    
     float alpha;
     float beta;
     int drawMode;
-    int sceneType;
 
     cgProgram prog;
-  
-    cgTexture texture;
     cgProgram textureProg;
+    cgTexture texture;
 };
 

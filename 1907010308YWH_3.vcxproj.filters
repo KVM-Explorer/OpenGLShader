@@ -25,6 +25,12 @@
     <Filter Include="源文件\3DScene">
       <UniqueIdentifier>{2672b133-5296-44f0-9d50-c5b6f6e436cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\LightScene">
+      <UniqueIdentifier>{8619659e-ea86-4129-b6fd-f01f7aaaae7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\LightScene">
+      <UniqueIdentifier>{5fa78c00-675c-4cd8-9c8f-acb7881c2fda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1907010308YWH_3.h">
@@ -90,6 +96,12 @@
     <ClInclude Include="cgTexture.h">
       <Filter>头文件\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="cgLightScene.h">
+      <Filter>头文件\LightScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cgLightCube.h">
+      <Filter>头文件\LightScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -145,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="cgTexture.cpp">
       <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="cgLightScene.cpp">
+      <Filter>源文件\LightScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgLightCube.cpp">
+      <Filter>源文件\LightScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,10 +23,10 @@ void cgPentagram::Init()
 	prog.CompileShader("Shader/cgPentagram/basic.frag");
 	prog.Link();
 
-	pointNum = 30*3;
+	pointNum = 30;
 	// ���嶥��
-	float* vertc = new float[pointNum];	GenerateVertex(vertc);
-	float* color = new float[pointNum];	GenerateColor(color);
+	float* vertc = new float[pointNum*3];	GenerateVertex(vertc);
+	float* color = new float[pointNum*3];	GenerateColor(color);
 
 
 	glGenBuffers(2, vboHandle);
@@ -62,11 +62,11 @@ void cgPentagram::Render(mat4 projection)
 	switch (colorType)
 	{
 	case 0:
-		glDrawArrays(GL_LINE_STRIP, 0, pointNum/3);//GL_LINES �߶�
+		glDrawArrays(GL_LINE_STRIP, 0, pointNum);//GL_LINES �߶�
 		break;
 	case 1:
 	case 2:
-		glDrawArrays(GL_TRIANGLES, 0, pointNum/3);
+		glDrawArrays(GL_TRIANGLES, 0, pointNum);
 		break;
 	default:
 		break;
@@ -84,8 +84,10 @@ void cgPentagram::SetType(int type)
 void cgPentagram::CalculateModelMatrix()
 {
 	//���������ִ�еľ�������
+	glLoadIdentity();
 	model = glm::translate(translateVector);
-	model *= glm::rotate(alpha,vec3( 0.0f, 0.0f, 1.0f));
+	TRACE("Angle: %d\n", alpha);
+	model *= glm::rotate((float)alpha,vec3( 0.0f, 0.0f, 1.0f));
 }
 
 void cgPentagram::GenerateVertex(float* vertex)
@@ -152,7 +154,7 @@ void cgPentagram::GenerateColor(float* color)
 	}
 }
 
-int cgPentagram::GetPosition()
+int cgPentagram::GetAngle()
 {
 	return alpha;
 }
@@ -161,5 +163,6 @@ void cgPentagram::SetPosition(int angle,vec3 position)
 {
 	alpha = angle;
 	if (alpha > 360) alpha -= 360;
+	
 	translateVector = position;
 }

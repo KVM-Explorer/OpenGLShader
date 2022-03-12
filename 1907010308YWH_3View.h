@@ -17,6 +17,7 @@
 #include "cgBasicSceneBase.h"
 #include "cgCollisionBounce.h"
 #include "cg3DScene.h"
+#include "cgLightScene.h"
 
 class CMy1907010308YWH3View : public CView
 {
@@ -77,6 +78,9 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 //	afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnCgTexture();
+	afx_msg void OnCgPointlight();
+	afx_msg void OnCgLight2Texture();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本
