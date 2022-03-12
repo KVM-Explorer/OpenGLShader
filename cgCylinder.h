@@ -16,10 +16,15 @@ public:
     void CalcuteModelMatrix();
     void Update();
 
+    void SetTextureID(unsigned int texture_id);
+    unsigned int GetTextureID();
+
 private:
     vec3 centerPosition;
     int elementNum;
     float radius;
     float height;
+
+    unsigned int textureID;
 };
 

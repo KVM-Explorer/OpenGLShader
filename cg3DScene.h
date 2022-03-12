@@ -3,6 +3,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/constants.hpp>
 #include "cgSceneBase.h"
+#include "cgTexture.h"
 
 class cg3DScene :
     public cgSceneBase
@@ -28,7 +29,7 @@ protected:
 
     cgProgram prog;
   
-    /*cgTexture texture;
-    cgProgram textureProg;*/
+    cgTexture texture;
+    cgProgram textureProg;
 };
 

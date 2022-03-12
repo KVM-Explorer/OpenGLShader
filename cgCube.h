@@ -15,12 +15,15 @@ public:
     void CalculateModelMatrix();
     void Update();
 
+    void SetTextureID(unsigned int texture_id);
+    unsigned int GetTextureID();
+
     
 private:
     vec3 centerPosition;
     int elementNum;
-    void polygon(float *vertex, int &index, int a,int b,int c,int d, float data[8][3]);
+    void polygon(float *vertex, float* textcol, int &index, int& tindex,int a,int b, int c, int d, float data[8][3]);
 
-
+    unsigned int textureID;
 };
 

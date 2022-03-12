@@ -87,6 +87,9 @@
     <ClInclude Include="cgCube.h">
       <Filter>头文件\3DScene</Filter>
     </ClInclude>
+    <ClInclude Include="cgTexture.h">
+      <Filter>头文件\OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -139,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="cgElement.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cgTexture.cpp">
+      <Filter>源文件\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

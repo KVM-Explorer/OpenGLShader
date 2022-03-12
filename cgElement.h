@@ -12,11 +12,14 @@ public:
 	virtual void Render(mat4 projection) = 0;
 	virtual void Render();
 	mat4 GetModelMatrix();
+	void SetName(std::string name);
+	std::string GetName();
 	
 protected:
 	cgProgram prog;
 	mat4 model;
 	unsigned int vboHandle[3];
 	unsigned int vaoHandle;
+	std::string name;
 };
 

@@ -34,12 +34,19 @@ void cg3DScene::Init()
 	prog.CompileShader("Shader/cg3DScene/3d.frag");
 	prog.Link();
 
-	// Todo  Ìí¼ÓÔªËØ
-	auto cube_ptr = std::make_shared<cgCube>();
-	cube_ptr->Init();
-	cube_ptr->SetPosition(vec3(0, -5, -10));
-	cube_ptr->CalculateModelMatrix();
-	elementsArray.push_back(cube_ptr);
+	textureProg.CompileShader("Shader/cgTexture/basic.vs");
+	textureProg.CompileShader("Shader/cgTexture/basic.frag");
+	textureProg.Link();
+
+	texture.LoadTexture("texture/40km.bmp");
+
+	//auto cube_ptr = std::make_shared<cgCube>();
+	//cube_ptr->Init();
+	//cube_ptr->SetPosition(vec3(0, 0, 0));
+	//cube_ptr->CalculateModelMatrix();
+	//cube_ptr->SetName("cube");
+	//cube_ptr->SetTextureID(texture.GetID());
+	//elementsArray.push_back(cube_ptr);
 
 
 	//auto triangle_ptr = std::make_shared<cgTriangle>();
@@ -48,17 +55,19 @@ void cg3DScene::Init()
 	//triangle_ptr->CalculateModelMatrix();
 	//elementsArray.push_back(triangle_ptr);
 
-	auto sphere_ptr = std::make_shared<cgSphere>(30);
-	sphere_ptr->Init();
-	sphere_ptr->SetPosition(vec3(0, 0, 0));
-	sphere_ptr->CalculateModelMatrix();
-	elementsArray.push_back(sphere_ptr);
+	//auto sphere_ptr = std::make_shared<cgSphere>(30);
+	//sphere_ptr->Init();
+	//sphere_ptr->SetPosition(vec3(0, 0, 0));
+	//sphere_ptr->CalculateModelMatrix();
+	//elementsArray.push_back(sphere_ptr);
 
-	//auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
-	//cylinder_ptr->Init();
-	//cylinder_ptr->SetPosition(vec3(-30, 0, -30));
-	//cylinder_ptr->CalcuteModelMatrix();
-	//elementsArray.push_back(cylinder_ptr);
+	auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0, 0, 0));
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("cylinder");
+	cylinder_ptr->SetTextureID(texture.GetID());
+	elementsArray.push_back(cylinder_ptr);
 
 }
 
@@ -74,25 +83,48 @@ void cg3DScene::Render()
 	}
 
 	cgProgram* program_ptr = nullptr;
+	vec3 color = vec3(1, 0, 0);
 	for (auto iter = elementsArray.begin(); iter != elementsArray.end(); iter++)
 	{
 		// Todo Select shader program  Render Element texture
-
-		prog.Use();
-		program_ptr = &prog;
-		/*auto cube_ptr = std::dynamic_pointer_cast<cgCube>(*iter);
-		auto cube_pos = cube_ptr->GetPosition();
-		TRACE("cube Position: (%.2f,%.2f,%.2f)\n", cube_pos.x, cube_pos.y, cube_pos.z);*/
+		if ((*iter)->GetName() == "cube")
+		{
+			program_ptr = &textureProg;
+			textureProg.Use();
+			glEnable(GL_TEXTURE);
+			glActiveTexture(GL_TEXTURE0);
+			unsigned int texture_id = std::dynamic_pointer_cast<cgCube>(*iter)->GetTextureID();
+			glBindTexture(GL_TEXTURE_2D, texture_id);
+		}
+		else
+		{
+			if ((*iter)->GetName() == "cylinder")
+			{
+				program_ptr = &textureProg;
+				textureProg.Use();
+				glEnable(GL_TEXTURE);
+				glActiveTexture(GL_TEXTURE0);
+				unsigned int texture_id = std::dynamic_pointer_cast<cgCylinder>(*iter)->GetTextureID();
+				glBindTexture(GL_TEXTURE_2D, texture_id);
+			}
+			else
+			{
+				prog.Use();
+				program_ptr = &prog;
+				prog.SetUniform("ObjectColor", color);
+			}
+		}
+		
+		
+		
 
 		mat4 model = (*iter)->GetModelMatrix();
-		vec3 color = vec3(1, 0, 0);
-
-
+	
 		
 		program_ptr->SetUniform("ProjectionMatrix", projectionMat);
 		program_ptr->SetUniform("ViewMatrix", viewMat);
 		program_ptr->SetUniform("ModelMatrix", model);
-		program_ptr->SetUniform("ObjectColor", color);
+		
 
 		
 		(*iter)->Render();
@@ -104,7 +136,7 @@ void cg3DScene::Render()
 
 void cg3DScene::SetProjection(int width, int height)
 {
-	projectionMat = glm::perspective(60.f, float(width) / float(height), 1.0f, 3000.f);
+	projectionMat = glm::perspective(60.f, float(width) / float(height), 1.0f, 300.f);
 	
 }
 
