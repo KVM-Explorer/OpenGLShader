@@ -20,6 +20,6 @@ public:
 private:
     float alpha;
     vec3 translateVector;
-    const int pointNum = 10;
+    int pointNum;
     int colorType;
 };
