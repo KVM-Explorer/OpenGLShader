@@ -95,24 +95,19 @@ void cg3DScene::Render()
 				program_ptr = &textureProg;
 				textureProg.Use();
 			}
-			else
+			
+			if ((*iter)->GetName() == "cylinder")
 			{
-				if ((*iter)->GetName() == "cylinder")
-				{
-					program_ptr = &textureProg;
-					textureProg.Use();
-					//glEnable(GL_TEXTURE);
-					//glActiveTexture(GL_TEXTURE0);
-					//unsigned int texture_id = std::dynamic_pointer_cast<cgCylinder>(*iter)->GetTextureID();
-					//glBindTexture(GL_TEXTURE_2D, texture_id);
-				}
-				else
-				{
-					prog.Use();
-					program_ptr = &prog;
-					prog.SetUniform("ObjectColor", color);
-				}
+				program_ptr = &textureProg;
+				textureProg.Use();
 			}
+			if((*iter)->GetName()!="cube" && (*iter)->GetName()!="cylinder")
+			{
+				prog.Use();
+				program_ptr = &prog;
+				prog.SetUniform("ObjectColor", color);
+			}
+			
 		}
 		else
 		{

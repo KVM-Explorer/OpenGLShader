@@ -9,6 +9,7 @@ cgRectangle::cgRectangle(float angle, vec3 trans)
 {
     alpha = angle;
     translateVector = trans;
+    colorType = 0;
 }
 
 cgRectangle::~cgRectangle()
@@ -24,7 +25,7 @@ void cgRectangle::Init()
 
     // ���嶥��
     float vertc[12];  GenerateVertex(vertc);
-    float color[12];  GenerateColor(color,1);
+    float color[12];  GenerateColor(color,colorType);
 
     glGenBuffers(2, vboHandle);
 
@@ -42,6 +43,10 @@ void cgRectangle::Init()
     glEnableVertexAttribArray(1);                                                        // // ���� Vertex ��ɫ����������� 1 ��ȡ�Դ����ݡ�
     glBindVertexArray(0);
 
+}
+
+void cgRectangle::Render()
+{
 }
 
 void cgRectangle::Render(mat4 projection)
@@ -92,4 +97,8 @@ void cgRectangle::GenerateColor(float *color, int type)
         color[num+2] = 1.0f;
         num+=3;
     }
+}
+
+void cgRectangle::SetPosition(int angle, vec3 position)
+{
 }

@@ -19,10 +19,10 @@ cgTriangle::~cgTriangle()
 void cgTriangle::Init()
 {
 	elementNum = 1;
-	//// Comiplier Shader
-	//prog.CompileShader("Shader/basic.vs");
-	//prog.CompileShader("Shader/basic.frag");
-	//prog.Link();
+	// Comiplier Shader
+	prog.CompileShader("Shader/basic.vs");
+	prog.CompileShader("Shader/basic.frag");
+	prog.Link();
 
 	// ∂®“Â∂•µ„
 	

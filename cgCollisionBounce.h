@@ -9,6 +9,8 @@ public:
 	void Init();
 	void Render();
     void Update();
+    void SetProjection(int width, int height);
+    void SetProjection(mat4 projection);
 private:
     int beta;
     int positionX;

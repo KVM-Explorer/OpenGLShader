@@ -230,6 +230,12 @@ void CMy1907010308YWH3View::OnSize(UINT nType, int cx, int cy)
 	glViewport(0, 0, cx, cy);
 	m_screenWidth = cx;
 	m_screenHeight = cy;
+
+	if (scene != nullptr)
+	{
+		scene->SetProjection(cx, cy);
+	}
+
 	wglMakeCurrent(0, 0);
 }
 
@@ -262,7 +268,7 @@ BOOL CMy1907010308YWH3View::OnEraseBkgnd(CDC* pDC)
 	return true;//return CView::OnEraseBkgnd(pDC);
 }
 
-          
+/* 正投影 */
 void CMy1907010308YWH3View::OnGeTriangle()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
@@ -291,7 +297,7 @@ void CMy1907010308YWH3View::OnGePentagram()
 
 
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	//cgBasicSceane* BasicSceane = new cgBasicSceane;
+
 	auto basic_scene = std::make_shared<cgBasicSceneBase>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 	glClearColor(0.5, 0.5, 0.5, 1);
@@ -358,12 +364,14 @@ void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
 
 
 void CMy1907010308YWH3View::OnCg3DScene()
-{
-	
+{	
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	
 	auto scene3d_ptr = std::make_shared<cg3DScene>();
 	scene3d_ptr->Init();
+	RECT win_info;
+	GetWindowRect(&win_info);
+	scene3d_ptr->SetProjection(win_info.right-win_info.left, win_info.bottom-win_info.top);
 	scene = scene3d_ptr;
 
 
@@ -428,6 +436,9 @@ void CMy1907010308YWH3View::OnCgTexture()
 
 	auto scene3d_ptr = std::make_shared<cg3DScene>();
 	scene3d_ptr->Init();
+	RECT win_info;
+	GetWindowRect(&win_info);
+	scene3d_ptr->SetProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 	scene3d_ptr->SetScene(1);
 	scene = scene3d_ptr;
 
@@ -443,6 +454,9 @@ void CMy1907010308YWH3View::OnCgPointlight()
 
 	auto lightscene_ptr = std::make_shared<cgLightScene>();
 	lightscene_ptr->Init();
+	RECT win_info;
+	GetWindowRect(&win_info);
+	lightscene_ptr->SetProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 
 	// 添加图元
 	auto sphere_ptr = std::make_shared<cgSphere>(5);
@@ -475,6 +489,9 @@ void CMy1907010308YWH3View::OnCgLight2Texture()
 
 	auto lightscene_ptr = std::make_shared<cgLightScene>();
 	lightscene_ptr->Init();
+	RECT win_info;
+	GetWindowRect(&win_info);
+	lightscene_ptr->SetProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 
 
 	auto light_cube_ptr = std::make_shared<cgLightCube>();

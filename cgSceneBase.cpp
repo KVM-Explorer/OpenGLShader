@@ -1,6 +1,8 @@
 #include "pch.h"
 #include"cgSceneBase.h"
-
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
 
 
 cgSceneBase::cgSceneBase()
@@ -12,10 +14,6 @@ cgSceneBase::~cgSceneBase()
 }
 
 
-void cgSceneBase::SetProjection(mat4 projection)
-{
-	projectionMat = projection;
-}
 
 void cgSceneBase::AddElement(std::shared_ptr<cgElement> pElement)
 {
@@ -23,5 +21,9 @@ void cgSceneBase::AddElement(std::shared_ptr<cgElement> pElement)
 }
 
 void cgSceneBase::Input(const unsigned int& key)
+{
+}
+
+void cgSceneBase::SetProjection(int width, int height)
 {
 }

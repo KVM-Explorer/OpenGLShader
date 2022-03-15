@@ -27,7 +27,17 @@ void cgBasicSceneBase::Update()
 {
 }
 
+void cgBasicSceneBase::SetProjection(mat4 projection)
+{
+	projectionMat = projection;
+}
+
+void cgBasicSceneBase::SetProjection(int width, int height)
+{
+}
+
 void cgBasicSceneBase::AddElement(std::shared_ptr<cgElement> element)
 {
 	elementsArray.push_back(element);
 }
+

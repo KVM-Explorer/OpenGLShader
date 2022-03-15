@@ -2,6 +2,9 @@
 #include "cgCollisionBounce.h"
 #include "cgPentagram.h"
 #include "cgRectangle.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
 
 cgCollisionBounce::cgCollisionBounce()
 {
@@ -60,4 +63,15 @@ void cgCollisionBounce::Update()
     pentagram_ptr->SetPosition((pentagram_ptr->GetAngle()) + 15,vec3(positionX,positionY,0));
     pentagram_ptr->CalculateModelMatrix();
     
+}
+
+void cgCollisionBounce::SetProjection(int width, int height)
+{
+    //auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
+
+}
+
+void cgCollisionBounce::SetProjection(mat4 projection)
+{
+    projectionMat = projection;
 }
