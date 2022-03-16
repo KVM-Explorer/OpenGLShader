@@ -76,13 +76,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\lib;C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\include;C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\lib;C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\include;C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,7 +100,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib</AdditionalDependencies>
+      <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -113,7 +113,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E /Y &amp; xcopy "$(ProjectDir)Resource" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
+      <Command>xcopy "$(ProjectDir)Resource" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,7 +126,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib</AdditionalDependencies>
+      <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -139,7 +139,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)OpenGL" "$(ProjectDir)$(Configuration)" /S /E /Y &amp; xcopy "$(ProjectDir)Resource" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
+      <Command>xcopy "$(ProjectDir)Resource" "$(ProjectDir)$(Configuration)" /S /E /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -206,6 +206,7 @@
     <ClInclude Include="cgElement.h" />
     <ClInclude Include="cgLightCube.h" />
     <ClInclude Include="cgLightScene.h" />
+    <ClInclude Include="cgModelScene.h" />
     <ClInclude Include="cgPentagram.h" />
     <ClInclude Include="cgProgram.h" />
     <ClInclude Include="cgRectangle.h" />
@@ -214,7 +215,10 @@
     <ClInclude Include="cgTexture.h" />
     <ClInclude Include="cgTriangle.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="glslprogram.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -231,6 +235,7 @@
     <ClCompile Include="cgElement.cpp" />
     <ClCompile Include="cgLightCube.cpp" />
     <ClCompile Include="cgLightScene.cpp" />
+    <ClCompile Include="cgModelScene.cpp" />
     <ClCompile Include="cgPentagram.cpp" />
     <ClCompile Include="cgProgram.cpp" />
     <ClCompile Include="cgRectangle.cpp" />
@@ -238,6 +243,7 @@
     <ClCompile Include="cgSphere.cpp" />
     <ClCompile Include="cgTexture.cpp" />
     <ClCompile Include="cgTriangle.cpp" />
+    <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

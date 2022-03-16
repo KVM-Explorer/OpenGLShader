@@ -60,6 +60,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_CG_TEXTURE, &CMy1907010308YWH3View::OnCgTexture)
 	ON_COMMAND(ID_CG_POINTLIGHT, &CMy1907010308YWH3View::OnCgPointlight)
 	ON_COMMAND(ID_CG_LIGHT2TEXTURE, &CMy1907010308YWH3View::OnCgLight2Texture)
+	ON_COMMAND(IID_MODEL_RABBIT, &CMy1907010308YWH3View::OnModelRabbit)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -523,4 +524,21 @@ void CMy1907010308YWH3View::OnCgLight2Texture()
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 
+}
+
+
+void CMy1907010308YWH3View::OnModelRabbit()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	auto model_scene = std::make_shared<cgModelScene>();
+	model_scene->Init();
+	RECT win_info;
+	GetWindowRect(&win_info);
+	model_scene->SetProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
+
+	scene = model_scene;
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }

@@ -31,6 +31,12 @@
     <Filter Include="源文件\LightScene">
       <UniqueIdentifier>{5fa78c00-675c-4cd8-9c8f-acb7881c2fda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\ModelScene">
+      <UniqueIdentifier>{4d4b69a0-26d6-48eb-b928-a242c15fa418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ModelScene">
+      <UniqueIdentifier>{7e6ab044-14be-454f-bca6-2c71c855992b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1907010308YWH_3.h">
@@ -102,6 +108,18 @@
     <ClInclude Include="cgLightCube.h">
       <Filter>头文件\LightScene</Filter>
     </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>头文件\ModelScene</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>头文件\ModelScene</Filter>
+    </ClInclude>
+    <ClInclude Include="cgModelScene.h">
+      <Filter>头文件\ModelScene</Filter>
+    </ClInclude>
+    <ClInclude Include="glslprogram.h">
+      <Filter>头文件\ModelScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -163,6 +181,12 @@
     </ClCompile>
     <ClCompile Include="cgLightCube.cpp">
       <Filter>源文件\LightScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgModelScene.cpp">
+      <Filter>源文件\ModelScene</Filter>
+    </ClCompile>
+    <ClCompile Include="glslprogram.cpp">
+      <Filter>源文件\ModelScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
