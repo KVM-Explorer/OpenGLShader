@@ -24,6 +24,8 @@ protected:
     vec3 viewPos;
     vec3 viewHead;
 
+    float yaw;
+    float pitch;
     
     float alpha;
     float beta;

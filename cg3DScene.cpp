@@ -9,13 +9,16 @@
 cg3DScene::cg3DScene()
 {
 	viewPos = vec3(0.f, 1.f, 6.f);
-
+	
 	alpha = 180.f;
 	beta = 0.f;
 	viewHead.y = 0.f;
-	viewHead.x = sin(alpha / 180.f * PI);
-	viewHead.z = cos(alpha / 180.f * PI);
+	viewHead.x = sin(alpha / 180.f * PI);	//0
+	viewHead.z = cos(alpha / 180.f * PI);	//-1
 	
+	yaw = -90.f;
+	pitch = 0;
+
 	drawMode = 0;
 	sceneType = 0;
 }
@@ -29,7 +32,7 @@ cg3DScene::~cg3DScene()
 void cg3DScene::Init()
 {
 	viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
-	projectionMat = glm::perspective(60.f, 1.f, 1.f, 600.f);
+	projectionMat = glm::perspective(glm::radians(60.f), 1.f, 1.f, 60.f);
 
 	prog.CompileShader("Shader/cg3DScene/3d.vert");
 	prog.CompileShader("Shader/cg3DScene/3d.frag");
@@ -41,13 +44,13 @@ void cg3DScene::Init()
 
 	texture.LoadTexture("texture/40km.bmp");
 
-	//auto cube_ptr = std::make_shared<cgCube>();
-	//cube_ptr->Init();
-	//cube_ptr->SetPosition(vec3(0, 0, 0));
-	//cube_ptr->CalculateModelMatrix();
-	//cube_ptr->SetName("cube");
-	//cube_ptr->SetTextureID(texture.GetID());
-	//elementsArray.push_back(cube_ptr);
+	auto cube_ptr = std::make_shared<cgCube>();
+	cube_ptr->Init();
+	cube_ptr->SetPosition(vec3(0.f, 0.f, 0.f));
+	cube_ptr->CalculateModelMatrix();
+	cube_ptr->SetName("cube");
+	cube_ptr->SetTextureID(texture.GetID());
+	elementsArray.push_back(cube_ptr);
 
 
 	//auto triangle_ptr = std::make_shared<cgTriangle>();
@@ -62,13 +65,13 @@ void cg3DScene::Init()
 	//sphere_ptr->CalculateModelMatrix();
 	//elementsArray.push_back(sphere_ptr);
 
-	auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
-	cylinder_ptr->Init();
-	cylinder_ptr->SetPosition(vec3(0, 0, 0));
-	cylinder_ptr->CalcuteModelMatrix();
-	cylinder_ptr->SetName("cylinder");
-	cylinder_ptr->SetTextureID(texture.GetID());
-	elementsArray.push_back(cylinder_ptr);
+	//auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
+	//cylinder_ptr->Init();
+	//cylinder_ptr->SetPosition(vec3(0, 0, 0));
+	//cylinder_ptr->CalcuteModelMatrix();
+	//cylinder_ptr->SetName("cylinder");
+	//cylinder_ptr->SetTextureID(texture.GetID());
+	//elementsArray.push_back(cylinder_ptr);
 
 }
 
@@ -84,7 +87,7 @@ void cg3DScene::Render()
 	}
 
 	cgProgram* program_ptr = nullptr;
-	vec3 color = vec3(1, 0, 0);
+	vec3 color = vec3(1.f, 0.f, 0.f);
 	for (auto iter = elementsArray.begin(); iter != elementsArray.end(); iter++)
 	{
 		// Todo Select shader program  Render Element texture
@@ -135,7 +138,7 @@ void cg3DScene::Render()
 
 void cg3DScene::SetProjection(int width, int height)
 {
-	projectionMat = glm::perspective(60.f, float(width) / float(height), 1.0f, 300.f);
+	projectionMat = glm::perspective(glm::radians(60.f), float(width) / float(height), 1.0f, 300.f);
 	
 }
 
@@ -160,22 +163,16 @@ void cg3DScene::Input(const unsigned int& key)
 	case 'a':
 	case 'A':
 	case VK_LEFT:
-		alpha += 1.0f;
-		viewHead.y = sin(beta / 180.f * PI);
-		r = cos(beta / 180.f * PI);
-		viewHead.x = r*sin(alpha / 180.0f * PI);	// 
-		viewHead.z = r*cos(alpha / 180.0f * PI);	// 
-		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		viewPos -= step * glm::normalize(glm::cross(viewHead,vec3(0.f,1.f,0.f)));
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 		break;
 	case 'd':
 	case 'D':
 	case VK_RIGHT:
-		alpha -= 1.0f;
-		viewHead.y = sin(beta / 180.f * PI);
-		r = cos(beta / 180.f * PI);
-		viewHead.x = r*sin(alpha / 180.0f * PI);	// origin is right
-		viewHead.z = r*cos(alpha / 180.0f * PI);
-		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		viewPos += step * glm::normalize(glm::cross(viewHead, vec3(0.f, 1.f, 0.f)));
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 		break;
 	case 'z':
 	case 'Z'://Ì§¸ßÏà»ú
@@ -200,6 +197,7 @@ void cg3DScene::Input(const unsigned int& key)
 		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		break;
 	case 'V':
 	case 'v':
@@ -210,13 +208,29 @@ void cg3DScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
+
+	case '[':
+		alpha -= 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+		break;
+	case ']':
+		alpha += 1.f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		break;
 	default:
 		break;
 
 	}
-	TRACE("Angle: %.2lf Beta: %.2f\n", alpha,beta);
-	TRACE("%.2f %.2f %.2f, sum=%.2f\n", viewHead.x, viewHead.y, viewHead.z, (viewHead.x * viewHead.x + viewHead.y * viewHead.y + viewHead.z * viewHead.z));
-	TRACE("Position: (%.2lf %.2lf %.2lf)\n", viewPos.x, viewPos.y, viewPos.z);
+	//TRACE("look: (%d %d %d)\n", viewPos.x + viewHead.x, viewPos.y + viewHead.y, viewPos.z + viewHead.z);
 	auto tmp = viewHead + viewPos;
 	TRACE("eye: (%.2lf %.2lf %.2lf)\n", tmp.x, tmp.y, tmp.z);
 }

@@ -25,7 +25,7 @@ cgLightScene::~cgLightScene()
 void cgLightScene::Init()
 {
 	viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
-	projectionMat = glm::perspective(60.0f, 1.0f, 1.0f, 200.0f);
+	projectionMat = glm::perspective(glm::radians(60.0f), 1.0f, 1.0f, 200.0f);
 
 	prog.CompileShader("Shader/cgLight/light.vert");
 	prog.CompileShader("Shader/cgLight/light.frag");
@@ -113,7 +113,7 @@ void cgLightScene::Render()
 
 void cgLightScene::SetProjection(int width, int height)
 {
-	projectionMat = glm::perspective(60.0f, float(width) / height, 1.0f, 3000.0f);
+	projectionMat = glm::perspective(glm::radians(60.0f), float(width) / height, 1.0f, 300.0f);
 }
 
 void cgLightScene::Input(const unsigned int& key)
@@ -137,22 +137,16 @@ void cgLightScene::Input(const unsigned int& key)
 	case 'a':
 	case 'A':
 	case VK_LEFT:
-		alpha += 1.0f;
-		viewHead.y = sin(beta / 180.f * PI);
-		r = cos(beta / 180.f * PI);
-		viewHead.x = r * sin(alpha / 180.0f * PI);	// 
-		viewHead.z = r * cos(alpha / 180.0f * PI);	// 
-		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		viewPos -= step * glm::normalize(glm::cross(viewHead, vec3(0.f, 1.f, 0.f)));
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 		break;
 	case 'd':
 	case 'D':
 	case VK_RIGHT:
-		alpha -= 1.0f;
-		viewHead.y = sin(beta / 180.f * PI);
-		r = cos(beta / 180.f * PI);
-		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
-		viewHead.z = r * cos(alpha / 180.0f * PI);
-		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		viewPos += step * glm::normalize(glm::cross(viewHead, vec3(0.f, 1.f, 0.f)));
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 		break;
 	case 'z':
 	case 'Z'://Ì§¸ßÏà»ú
@@ -177,6 +171,7 @@ void cgLightScene::Input(const unsigned int& key)
 		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		break;
 	case 'V':
 	case 'v':
@@ -187,17 +182,36 @@ void cgLightScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
-	case '4':
-		lightPos.y += step;
+
+	case '[':
+		alpha -= 1.0f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
-	case '3':
-		lightPos.y -= step;
+	case ']':
+		alpha += 1.f;
+		viewHead.y = sin(beta / 180.f * PI);
+		r = cos(beta / 180.f * PI);
+		viewHead.x = r * sin(alpha / 180.0f * PI);	// origin is right
+		viewHead.z = r * cos(alpha / 180.0f * PI);
+		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		break;
+
 	case '1':
 		lightPos.x -= step;
 		break;
 	case '2':
 		lightPos.x += step;
+		break;
+	case '3':
+		lightPos.y -= step;
+		break;
+	case '4':
+		lightPos.y += step;
 		break;
 	case '5':
 		lightPos.z -= step;

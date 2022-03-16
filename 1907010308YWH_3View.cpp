@@ -400,8 +400,8 @@ void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		int dx = point.x - cursor_position.x;
 		int dy = point.y - cursor_position.y;
-		if (dx > 0)scene->Input('D');
-		if (dx < 0)scene->Input('A');
+		if (dx > 0)scene->Input(']');
+		if (dx < 0)scene->Input('[');
 		if (dy < 0)scene->Input('U');
 		if (dy > 0)scene->Input('V');
 		
