@@ -25,6 +25,7 @@ public:
 
     vec3 viewPos;
     vec3 viewHead;
+    vec3 lightPos;
 
     float alpha;
     float beta;

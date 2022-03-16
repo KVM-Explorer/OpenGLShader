@@ -11,7 +11,7 @@ cgSphere::cgSphere()
 	radius = 1.f;
 	centerPosition = vec3(0.f, 0.f, -10.f);
 	elementNum = 0;
-	
+	textureID = -1;
 }
 
 cgSphere::cgSphere(float r)
@@ -34,6 +34,7 @@ void cgSphere::Init()
 	
 	float* vertex = new float[3 * 3 * elementNum];
 	float* normal = new float[3 * 3 * elementNum];
+	
 
 	float dalpha = 2 * PI / m;
 	float dbeta = PI / n;
@@ -131,9 +132,23 @@ void cgSphere::Init()
 
 void cgSphere::Render()
 {
-	glBindVertexArray(vaoHandle);
-	glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum);
-	glBindVertexArray(0);
+	if (textureID == -1)
+	{
+		glBindVertexArray(vaoHandle);
+		glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum);
+		glBindVertexArray(0);
+	}
+	else
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		glBindVertexArray(vaoHandle);
+		glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum);
+		glBindVertexArray(0);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 }
 
 void cgSphere::Render(mat4 projection)
@@ -159,4 +174,9 @@ void cgSphere::CalculateModelMatrix()
 void cgSphere::Update()
 {
 	// Empty
+}
+
+void cgSphere::SetTextureID(unsigned int texture_id)
+{
+	textureID = texture_id;
 }

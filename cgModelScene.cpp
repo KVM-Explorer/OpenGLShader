@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "cgModelScene.h"
 #include "cgCube.h"
+#include "cgSphere.h"
+#include "cgLightCube.h"
 
 cgModelScene::cgModelScene():ourModel("models/Rabbit/Rabbit.obj")
 {
@@ -11,6 +13,8 @@ cgModelScene::cgModelScene():ourModel("models/Rabbit/Rabbit.obj")
 	viewHead.y = 0.f;
 	viewHead.x = sin(alpha / 180.f * PI);	//0
 	viewHead.z = cos(alpha / 180.f * PI);	//-1
+
+	lightPos = vec3(0, 1, 2);
 
 	drawMode = 0;
 	
@@ -30,13 +34,14 @@ void cgModelScene::Init()
 	prog.CompileShader("Shader/cg3DScene/3d.frag");
 	prog.Link();
 
-	textureProg.CompileShader("Shader/cgTexture/basic.vs");
-	textureProg.CompileShader("Shader/cgTexture/basic.frag");
+	textureProg.CompileShader("Shader/cgLight/texture.vert");
+	textureProg.CompileShader("Shader/cgLight/texture.frag");
 	textureProg.Link();
 
 	texture.LoadTexture("texture/40km.bmp");
+	earthTexture.LoadTexture("texture/earth.jpg");
 
-	auto cube_ptr = std::make_shared<cgCube>();
+	auto cube_ptr = std::make_shared<cgLightCube>();
 	cube_ptr->Init();
 	cube_ptr->SetPosition(vec3(0.f, 0.f, 0.f));
 	cube_ptr->CalculateModelMatrix();
@@ -44,9 +49,17 @@ void cgModelScene::Init()
 	cube_ptr->SetTextureID(texture.GetID());
 	elementsArray.push_back(cube_ptr);
 
+	auto sphere_ptr = std::make_shared<cgSphere>(1);
+	sphere_ptr->Init();
+	sphere_ptr->SetName("sun");
+	sphere_ptr->SetPosition(vec3(0, 10, 2));
+	sphere_ptr->CalculateModelMatrix();
+	//sphere_ptr->SetTextureID(earthTexture.GetID());
+	elementsArray.push_back(sphere_ptr);
 
-	ourShader.compileShader("Shader/cgModel/model_loading.vert");
-	ourShader.compileShader("Shader/cgModel/model_loading.frag");
+
+	ourShader.compileShader("Shader/cgModel/model_loading_light.vert");
+	ourShader.compileShader("Shader/cgModel/model_loading_light.frag");
 	ourShader.link();
 
 }
@@ -68,11 +81,25 @@ void cgModelScene::Render()
 			iTexture = texture.GetID();*/
 		//else  if ((*iter)->GetName() == "Sphere")
 		//	iTexture = earthTexture.GetID();
+
+		if ((*iter)->GetName() == "sun")
+		{
+			auto sun_ptr = std::dynamic_pointer_cast<cgSphere>((*iter));
+			sun_ptr->SetPosition(lightPos);
+			sun_ptr->CalculateModelMatrix();
+		}
+
 		mat4 model = (*iter)->GetModelMatrix();
 
 		textureProg.SetUniform("ProjectionMatrix", projectionMat);
 		textureProg.SetUniform("ViewMatrix", viewMat);
 		textureProg.SetUniform("ModelMatrix", model);
+
+		textureProg.SetUniform("lightColor", vec3(1, 1, 1));
+		textureProg.SetUniform("lightPos", lightPos);
+		textureProg.SetUniform("viewPos", viewPos);
+		textureProg.SetUniform("ambientColor", vec3(0.5, 0.5, 0.5));
+		textureProg.SetUniform("shiness", 10);
 
 		(*iter)->Render();
 	}
@@ -83,11 +110,16 @@ void cgModelScene::Render()
 	ourShader.setUniform("projection", projectionMat);
 	ourShader.setUniform("view", viewMat);
 
-	// render the loaded model
+	//ƒ£–Õ‰÷»æ
 	glm::mat4 model;
 	model = glm::translate(glm::vec3(0.0f, 0.f, 0.0f)); // translate it down so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(2.f, 2.f, 2.f));	// it's a bit too big for our scene, so scale it down
 	ourShader.setUniform("model", model);
+	ourShader.setUniform("lightColor", vec3(1.f, 1.f, 1.f));
+	ourShader.setUniform("lightPos", lightPos);
+	ourShader.setUniform("viewPos", viewPos);
+	ourShader.setUniform("ambientColor", vec3(0.5, 0.5, 0.5));
+	ourShader.setUniform("shiness", 10);
 	ourModel.Draw(ourShader);
 	
 }
@@ -180,6 +212,25 @@ void cgModelScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 
+		break;
+
+	case '1':
+		lightPos.x -= step;
+		break;
+	case '2':
+		lightPos.x += step;
+		break;
+	case '3':
+		lightPos.y -= step;
+		break;
+	case '4':
+		lightPos.y += step;
+		break;
+	case '5':
+		lightPos.z -= step;
+		break;
+	case '6':
+		lightPos.z += step;
 		break;
 	default:
 		break;
