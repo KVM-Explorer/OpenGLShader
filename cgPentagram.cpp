@@ -87,7 +87,7 @@ void cgPentagram::CalculateModelMatrix()
 	glLoadIdentity();
 	model = glm::translate(translateVector);
 	TRACE("Angle: %d\n", alpha);
-	model *= glm::rotate((float)alpha,vec3( 0.0f, 0.0f, 1.0f));
+	model *= glm::rotate(glm::radians((float)alpha),vec3( 0.0f, 0.0f, 1.0f));
 }
 
 void cgPentagram::GenerateVertex(float* vertex)

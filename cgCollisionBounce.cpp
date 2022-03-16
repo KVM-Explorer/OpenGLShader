@@ -59,7 +59,7 @@ void cgCollisionBounce::Update()
 
     auto element_ptr = elementsArray[1];
     auto pentagram_ptr = std::dynamic_pointer_cast<cgPentagram>(element_ptr);
-    //Todo £¿£¿ ½Ç¶È´æÔÚÌø±ä
+    
     pentagram_ptr->SetPosition((pentagram_ptr->GetAngle()) + 15,vec3(positionX,positionY,0));
     pentagram_ptr->CalculateModelMatrix();
     

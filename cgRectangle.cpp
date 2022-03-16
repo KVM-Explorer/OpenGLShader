@@ -67,7 +67,7 @@ void cgRectangle::CalculateModelMatrix()
 {
     //���������ִ�еľ�������
     model = glm::translate(translateVector);
-    model *= glm::rotate(alpha, vec3(0.0f, 0.0f, 1.0f));
+    model *= glm::rotate(glm::radians(alpha), vec3(0.0f, 0.0f, 1.0f));
 }
 
 void cgRectangle::GenerateVertex(float *vectex)
