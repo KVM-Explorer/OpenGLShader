@@ -37,6 +37,12 @@
     <Filter Include="头文件\ModelScene">
       <UniqueIdentifier>{7e6ab044-14be-454f-bca6-2c71c855992b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Project">
+      <UniqueIdentifier>{03516500-d9c9-4211-b677-cb87541b006c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Project">
+      <UniqueIdentifier>{558f5ca0-3edb-4915-bc4b-bce3dd892596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1907010308YWH_3.h">
@@ -120,6 +126,30 @@
     <ClInclude Include="glslprogram.h">
       <Filter>头文件\ModelScene</Filter>
     </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolBase.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Indicator3D.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLoader.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorPatch.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件\Project</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -170,9 +200,6 @@
     <ClCompile Include="cgCube.cpp">
       <Filter>源文件\3DScene</Filter>
     </ClCompile>
-    <ClCompile Include="cgElement.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="cgTexture.cpp">
       <Filter>源文件\OpenGL</Filter>
     </ClCompile>
@@ -187,6 +214,33 @@
     </ClCompile>
     <ClCompile Include="glslprogram.cpp">
       <Filter>源文件\ModelScene</Filter>
+    </ClCompile>
+    <ClCompile Include="cgElement.cpp">
+      <Filter>源文件\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBase.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Indicator3D.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLoader.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorPatch.cpp">
+      <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\Project</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

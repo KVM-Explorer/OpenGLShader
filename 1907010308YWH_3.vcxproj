@@ -198,6 +198,7 @@
     <ClInclude Include="1907010308YWH_3.h" />
     <ClInclude Include="1907010308YWH_3Doc.h" />
     <ClInclude Include="1907010308YWH_3View.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="cg3DScene.h" />
     <ClInclude Include="cgBasicSceneBase.h" />
     <ClInclude Include="cgCollisionBounce.h" />
@@ -214,19 +215,27 @@
     <ClInclude Include="cgSphere.h" />
     <ClInclude Include="cgTexture.h" />
     <ClInclude Include="cgTriangle.h" />
+    <ClInclude Include="ColorPatch.h" />
+    <ClInclude Include="DataLoader.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="glslprogram.h" />
+    <ClInclude Include="Indicator3D.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="MeshManager.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ToolBase.h" />
+    <ClInclude Include="Unit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp" />
     <ClCompile Include="1907010308YWH_3Doc.cpp" />
     <ClCompile Include="1907010308YWH_3View.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cg3DScene.cpp" />
     <ClCompile Include="cgBasicSceneBase.cpp" />
     <ClCompile Include="cgCollisionBounce.cpp" />
@@ -243,14 +252,21 @@
     <ClCompile Include="cgSphere.cpp" />
     <ClCompile Include="cgTexture.cpp" />
     <ClCompile Include="cgTriangle.cpp" />
+    <ClCompile Include="ColorPatch.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="glslprogram.cpp" />
+    <ClCompile Include="Indicator3D.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ToolBase.cpp" />
+    <ClCompile Include="Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My1907010308YWH3.rc" />
