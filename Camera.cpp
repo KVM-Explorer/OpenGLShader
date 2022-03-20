@@ -20,7 +20,7 @@ Camera::~Camera()
 
 }
 
-void Camera::Init()
+void Camera::init()
 {
 	viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.f, 1.f, 0.f));
 }
@@ -30,7 +30,7 @@ void Camera::Init()
 		注意value的范围应该是平步左右界对应360
 
 */
-void Camera::InputMouse(unsigned char& key, float value)
+void Camera::inputMouse(unsigned char& key, float value)
 {
 	float r = 0;
 	switch (key)
@@ -40,7 +40,7 @@ void Camera::InputMouse(unsigned char& key, float value)
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
-			viewHead.z = r * cos(glm::radians(alpha);
+			viewHead.z = r * cos(glm::radians(alpha));
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			break;
@@ -74,7 +74,7 @@ void Camera::InputMouse(unsigned char& key, float value)
 	
 }
 
-void Camera::InputKeyboard(unsigned char& key)
+void Camera::inputKeyboard(unsigned char& key)
 {
 	float step = 0.2f;
 	switch (key)
@@ -120,17 +120,17 @@ void Camera::InputKeyboard(unsigned char& key)
 
 
 
-mat4 Camera::GetViewMatrix() const
+mat4 Camera::getViewMatrix() const
 {
     return viewMatrix;
 }
 
-vec3 Camera::GetDirection() const
+vec3 Camera::getDirection() const
 {
     return viewHead;
 }
 
-vec3 Camera::GetPosition() const
+vec3 Camera::getPosition() const
 {
     return viewPos;
 }

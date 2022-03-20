@@ -61,6 +61,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_CG_POINTLIGHT, &CMy1907010308YWH3View::OnCgPointlight)
 	ON_COMMAND(ID_CG_LIGHT2TEXTURE, &CMy1907010308YWH3View::OnCgLight2Texture)
 	ON_COMMAND(IID_MODEL_RABBIT, &CMy1907010308YWH3View::OnModelRabbit)
+	ON_COMMAND(ID_PROJECT_OPENDIR, &CMy1907010308YWH3View::OnProjectOpenDir)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -541,4 +542,45 @@ void CMy1907010308YWH3View::OnModelRabbit()
 
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::OnProjectOpenDir()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString file_path;
+	//打开文件，获取文件路径名
+	TCHAR szPath[_MAX_PATH];
+	BROWSEINFO bi;
+	bi.hwndOwner = GetSafeHwnd();
+	bi.pidlRoot = NULL;
+	bi.lpszTitle = _T("Please select the input path");
+	bi.pszDisplayName = szPath;
+	bi.ulFlags = BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = NULL;
+
+	LPITEMIDLIST pItemIDList = SHBrowseForFolder(&bi);
+
+	if (pItemIDList)
+	{
+		if (SHGetPathFromIDList(pItemIDList, szPath))
+		{
+			file_path = szPath;
+			std::string dir =  CT2A(file_path.GetString());
+			sceneManager.SetFileDirectory(dir);
+		}
+
+		//use IMalloc interface for avoiding memory leak  
+		IMalloc* pMalloc;
+		if (SHGetMalloc(&pMalloc) != NOERROR)
+		{
+			TRACE(_T("Can't get the IMalloc interface\n"));
+		}
+
+		pMalloc->Free(pItemIDList);
+		if (pMalloc)
+			pMalloc->Release();
+		UpdateData(FALSE);	//是否刷新控件的可变内容
+	}
 }

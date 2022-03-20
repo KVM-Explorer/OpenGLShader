@@ -19,6 +19,7 @@
 #include "cg3DScene.h"
 #include "cgLightScene.h"
 #include "cgModelScene.h"
+#include "SceneManager.h"
 
 class CMy1907010308YWH3View : public CView
 {
@@ -35,6 +36,8 @@ public:
 	int m_screenHeight;
 	CPoint cursor_position;
 	std::shared_ptr<cgSceneBase> scene;
+	SceneManager sceneManager;
+
 // 操作
 public:
 	BOOL InitializeOpenGL();
@@ -83,6 +86,7 @@ public:
 	afx_msg void OnCgPointlight();
 	afx_msg void OnCgLight2Texture();
 	afx_msg void OnModelRabbit();
+	afx_msg void OnProjectOpenDir();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本
