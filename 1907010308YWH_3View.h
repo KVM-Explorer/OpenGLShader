@@ -36,7 +36,7 @@ public:
 	int m_screenHeight;
 	CPoint cursor_position;
 	std::shared_ptr<cgSceneBase> scene;
-	SceneManager sceneManager;
+	std::shared_ptr<SceneManager> sceneManager;
 
 // 操作
 public:

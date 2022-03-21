@@ -12,12 +12,13 @@ protected:
 	DataLoader	dataLoader;
 	//ColorPatch	colorPatch;
 	//Indicator3D indicator3D;
-	//MeshManager meshanager;
-	//Camera		camera;
+	MeshManager meshManager;
+	Camera		camera;
 public:
 	SceneManager();
 	~SceneManager();
-	void SetFileDirectory(string dir);
+	void setFileDirectory(string dir);
+	void render();
 
 };
 

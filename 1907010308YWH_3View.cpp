@@ -152,7 +152,8 @@ void CMy1907010308YWH3View::OnDraw(CDC* pDC)
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if(scene!=nullptr)scene->Render();
+	//if(scene!=nullptr)scene->Render();
+	if (sceneManager != nullptr) sceneManager->render();
 
 	SwapBuffers(m_pDC->GetSafeHdc());
 	wglMakeCurrent(0, 0);
@@ -249,6 +250,7 @@ int CMy1907010308YWH3View::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	InitializeOpenGL();
 	scene =nullptr;
+	sceneManager = nullptr;
 	cursor_position = CPoint(-1, -1);
 	
 	return 0;
@@ -547,6 +549,8 @@ void CMy1907010308YWH3View::OnModelRabbit()
 
 void CMy1907010308YWH3View::OnProjectOpenDir()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
 	// TODO: 在此添加控件通知处理程序代码
 	CString file_path;
 	//打开文件，获取文件路径名
@@ -568,7 +572,9 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 		{
 			file_path = szPath;
 			std::string dir =  CT2A(file_path.GetString());
-			sceneManager.SetFileDirectory(dir);
+			sceneManager = std::make_shared<SceneManager>();
+			sceneManager->setFileDirectory(dir);
+			Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 		}
 
 		//use IMalloc interface for avoiding memory leak  
@@ -583,4 +589,5 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 			pMalloc->Release();
 		UpdateData(FALSE);	//是否刷新控件的可变内容
 	}
+	wglMakeCurrent(0, 0);
 }

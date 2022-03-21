@@ -57,7 +57,7 @@ void DataLoader::initFiles()
     input >> organization.x >> organization.y >> organization.z;
     organization.num = organization.x * organization.y * organization.z;
 
-    organization.buffer = std::make_shared<float[]>(new float[organization.num * 8 * 3]);
+    organization.buffer = std::shared_ptr<float[]>(new float[organization.num * 8 * 3]);
 
     int index = 0;
     for (int i = 0; i < organization.num; i++)
@@ -73,7 +73,7 @@ void DataLoader::initFiles()
 
 }
 
-DataLoader::DataOrganization DataLoader::getDataOrganization() const
+DataLoader::DataStructure DataLoader::getDataStructure() const
 {
     return organization;
 }
@@ -148,7 +148,7 @@ void DataLoader::getPropertyDataText(string filename,std::shared_ptr<float[]> &b
     file.open(path, ios::in);
     file >> currentProperty;
     file >> tmp >> id >> tmp >> time;
-    buffer = make_shared<float[]>(new float[organization.num]);
+    buffer = shared_ptr<float[]>(new float[organization.num]);
     for (int i = 0; i < organization.num; i++)
     {
         file >> buffer[index++];

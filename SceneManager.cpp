@@ -9,8 +9,17 @@ SceneManager::~SceneManager()
 {
 }
 
-void SceneManager::SetFileDirectory(string dir)
+void SceneManager::setFileDirectory(string dir)
 {
+	// Files
 	dataLoader.getFiles(dir);
 	dataLoader.initFiles();
+
+	// MeshManager
+	meshManager.init(dataLoader.getDataStructure());
+}
+
+void SceneManager::render()
+{
+	meshManager.render();
 }
