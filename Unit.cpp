@@ -32,6 +32,8 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 	genColor(c, data, st, cindex, 4, 5, 6, 7);
 	genColor(c, data, st, cindex, 2, 3, 7, 6);
 
+	//TRACE("Zero point %.f %.f %.f\n", v[0], v[1], v[2]);
+
 	 //buffer
 	glGenBuffers(2, vboHandle);
 	glGenVertexArrays(1, &vaoHandle);

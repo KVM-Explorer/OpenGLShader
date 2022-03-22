@@ -2,7 +2,9 @@
 #include "Unit.h"
 #include "cgProgram.h"
 #include "DataLoader.h"
+#include "cgCube.h"
 #include <vector>
+
 using DS = DataLoader::DataStructure;
 class MeshManager
 {
@@ -12,9 +14,13 @@ private:
 	mat4 modelMatrix;	// Todo update position
 	DS dataStructure;
 	int stX, stY, stZ;
+
 protected:
 	cgProgram shader;
+	cgProgram cubeShader;
+	std::shared_ptr<cgCube> cube;
 	std::vector<std::shared_ptr<Unit>> units;
+
 public:
 	MeshManager();
 	~MeshManager();

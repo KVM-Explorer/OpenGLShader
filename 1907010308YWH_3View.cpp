@@ -409,19 +409,31 @@ void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
+	//if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
+	//{
+	//	int dx = point.x - cursor_position.x;
+	//	int dy = point.y - cursor_position.y;
+	//	if (dx > 0)scene->Input(']');
+	//	if (dx < 0)scene->Input('[');
+	//	if (dy < 0)scene->Input('U');
+	//	if (dy > 0)scene->Input('V');
+	//	
+	//	cursor_position = point;
+	//	Invalidate(FALSE);
+	//}
+	if (cursor_position != CPoint(-1, -1) && sceneManager != nullptr)
 	{
 		int dx = point.x - cursor_position.x;
 		int dy = point.y - cursor_position.y;
-		if (dx > 0)scene->Input(']');
-		if (dx < 0)scene->Input('[');
-		if (dy < 0)scene->Input('U');
-		if (dy > 0)scene->Input('V');
-		
+
+		// Todo 更新动态的value
+		if (dx > 0)sceneManager->setInputSignal('D', InputType::Mouse, 1);
+		if (dx < 0)sceneManager->setInputSignal('A', InputType::Mouse, 1);
+		if (dy < 0)sceneManager->setInputSignal('W', InputType::Mouse, 1);
+		if (dy > 0)sceneManager->setInputSignal('S', InputType::Mouse, 1);
 		cursor_position = point;
 		Invalidate(FALSE);
 	}
-
 	CView::OnMouseMove(nFlags, point);
 }
 

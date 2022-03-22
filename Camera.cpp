@@ -35,7 +35,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 	float r = 0;
 	switch (key)
 	{
-		case 'U':
+		case 'W':
 			if (beta < 90)beta += value;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
@@ -44,7 +44,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			break;
-		case 'V':
+		case 'S':
 			if (beta > -90)beta -= value;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
@@ -53,16 +53,18 @@ void Camera::inputMouse(const unsigned char& key, float value)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 
-		case '[':
+		case 'A':
 			alpha -= value;
+			if (alpha < 0) alpha = 0.f;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
 			viewHead.z = r * cos(glm::radians(alpha));
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
-		case ']':
+		case 'D':
 			alpha += value;
+			if (alpha > 360) alpha = 360.f;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
@@ -71,7 +73,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 		default:
 			break;
 	}
-	
+	TRACE("Angle Pitch %.2f Yaw %.2f\n", beta, alpha);
 }
 
 void Camera::inputKeyboard(const unsigned char& key)
@@ -116,7 +118,8 @@ void Camera::inputKeyboard(const unsigned char& key)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 	}
-	TRACE("Input %c \n", key);
+	TRACE("Pos %.2f %.2f %.2f \n", viewPos.x,viewPos.y,viewPos.z);
+	TRACE("Direct %.2f %.2f %.2f\n", viewHead.x, viewHead.y, viewHead.z);
 }
 
 

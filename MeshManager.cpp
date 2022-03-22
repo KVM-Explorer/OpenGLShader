@@ -29,10 +29,24 @@ void MeshManager::init(DS data_struct)
 			}
 	
 	auto p = dataStructure.buffer.use_count();	// ptr 引用数为3 loader 1 Meshmanager 2 data_struct 3
+
+	cubeShader.CompileShader("Shader/cg3DScene/3d.vert");
+	cubeShader.CompileShader("Shader/cg3DScene/3d.frag");
+	cubeShader.Link();
+
+	cube = std::make_shared<cgCube>();
+	cube->Init();
+	cube->SetPosition(vec3(0, 0, 0));
+	cube->CalculateModelMatrix();
+	cube->SetTextureID(0);
+
 }
 
 void MeshManager::render()
 {
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	shader.Use();
 
 	shader.SetUniform("ProjectionMatrix",projection);
@@ -43,6 +57,19 @@ void MeshManager::render()
 		x->render();
 	}
 	shader.Unuse();
+
+
+	cubeShader.Use();
+	auto model = cube->GetModelMatrix();
+	cube->CalculateModelMatrix();
+	cubeShader.SetUniform("PorjectionMatrix",projection);
+	cubeShader.SetUniform("ModelMatrix",model);
+	cubeShader.SetUniform("ViewMatrix", viewMatrix);
+	cubeShader.SetUniform("ObjectColor", vec3(1, 0, 0));
+
+	cube->Render();
+	cubeShader.Unuse();
+
 }
 
 void MeshManager::setProjection(mat4 proj)
