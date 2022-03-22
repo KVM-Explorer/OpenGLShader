@@ -18,10 +18,11 @@ public:
 	Camera();
 	~Camera();
 
-	void inputMouse(unsigned char& key, float value);
-	void inputKeyboard(unsigned char& key);
+	void inputMouse(const unsigned char& key, float value);
+	void inputKeyboard(const unsigned char& key);
 	void init();
 	mat4 getViewMatrix() const;
+	mat4 getProjectionMatrix() const;
 	vec3 getDirection() const;
 	vec3 getPosition() const;
 };

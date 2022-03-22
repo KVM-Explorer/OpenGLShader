@@ -9,6 +9,7 @@ class MeshManager
 private:
 	mat4 viewMatrix;
 	mat4 projection;
+	mat4 modelMatrix;	// Todo update position
 	DS dataStructure;
 	int stX, stY, stZ;
 protected:

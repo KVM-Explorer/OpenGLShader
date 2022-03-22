@@ -30,10 +30,10 @@ public:
 	/// 输入单个unit的首部指针
 	/// </summary>
 	/// <param name="data">x y z 形式依次记录6个顶点</param>
-	void init(std::shared_ptr<float[]> data);
-	void genElement(std::shared_ptr<float[]> dst,std::shared_ptr<float[]> src,
-					int &vindex,int a,int b,int c,int d);
-	void genColor(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src,
-		int& cindex, int a, int b, int c, int d);
+	void init(std::shared_ptr<float[]> data, int st);
+	void genElement(std::shared_ptr<float[]> dst,std::shared_ptr<float[]> src, 
+					int st,int &vindex,int a,int b,int c, int d);
+	void genColor(std::shared_ptr<float[]> dst,std::shared_ptr<float[]> src, 
+					int st, int& cindex, int a, int b, int c, int d);
 };
 

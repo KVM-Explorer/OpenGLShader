@@ -7,9 +7,9 @@ out vec3 Color; //顶点颜色
 //uniform
 uniform mat4 ProjectionMatrix;
 uniform mat4 ModelMatrix;
-uniform mat4 ViewMatrix;
+// uniform mat4 ViewMatrix;
 void main()
 {
     Color = VertexColor;
-    gl_Position = ProjectionMatrix * ModelMatrix* ModelMatrix*vec4(VertexPosition,1.0);
+    gl_Position = ProjectionMatrix * ModelMatrix*vec4(VertexPosition,1.0);
 }

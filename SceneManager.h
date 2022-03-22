@@ -6,8 +6,16 @@
 #include "DataLoader.h"
 using std::string;
 
+enum class InputType
+{
+	Keyboard,
+	Mouse
+};
+
 class SceneManager
 {
+private:
+	mat4 projectMatrix;
 protected:
 	DataLoader	dataLoader;
 	//ColorPatch	colorPatch;
@@ -19,6 +27,8 @@ public:
 	~SceneManager();
 	void setFileDirectory(string dir);
 	void render();
+	void setProjection(int width,int height);
+	void setInputSignal(const unsigned char& key, InputType type,int value = 0);
 
 };
 

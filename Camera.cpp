@@ -30,7 +30,7 @@ void Camera::init()
 		注意value的范围应该是平步左右界对应360
 
 */
-void Camera::inputMouse(unsigned char& key, float value)
+void Camera::inputMouse(const unsigned char& key, float value)
 {
 	float r = 0;
 	switch (key)
@@ -74,7 +74,7 @@ void Camera::inputMouse(unsigned char& key, float value)
 	
 }
 
-void Camera::inputKeyboard(unsigned char& key)
+void Camera::inputKeyboard(const unsigned char& key)
 {
 	float step = 0.2f;
 	switch (key)
@@ -116,6 +116,7 @@ void Camera::inputKeyboard(unsigned char& key)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 	}
+	TRACE("Input %c \n", key);
 }
 
 
@@ -123,6 +124,11 @@ void Camera::inputKeyboard(unsigned char& key)
 mat4 Camera::getViewMatrix() const
 {
     return viewMatrix;
+}
+
+mat4 Camera::getProjectionMatrix() const
+{
+	return mat4();
 }
 
 vec3 Camera::getDirection() const

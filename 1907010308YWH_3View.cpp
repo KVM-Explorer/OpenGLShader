@@ -238,6 +238,10 @@ void CMy1907010308YWH3View::OnSize(UINT nType, int cx, int cy)
 	{
 		scene->SetProjection(cx, cy);
 	}
+	if (sceneManager!= nullptr)
+	{
+		sceneManager->setProjection(cx, cy);
+	}
 
 	wglMakeCurrent(0, 0);
 }
@@ -392,6 +396,11 @@ void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		scene->Input(nChar);
 		Invalidate(FALSE);
 	}
+	if (sceneManager != nullptr)
+	{
+		sceneManager->setInputSignal(nChar, InputType::Keyboard);
+		Invalidate(FALSE);
+	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 
 }
@@ -412,6 +421,7 @@ void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 		cursor_position = point;
 		Invalidate(FALSE);
 	}
+
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -572,8 +582,16 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 		{
 			file_path = szPath;
 			std::string dir =  CT2A(file_path.GetString());
+
 			sceneManager = std::make_shared<SceneManager>();
+
+			RECT win_info;
+			GetWindowRect(&win_info);
+			sceneManager->setProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
+
+			
 			sceneManager->setFileDirectory(dir);
+
 			Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 		}
 

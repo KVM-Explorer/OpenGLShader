@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <iostream>
 
+
 DataLoader::DataLoader()
 {
     dataPtr = -1;
@@ -30,11 +31,13 @@ void DataLoader::getFiles(string directory)
         TRACE("%s\n", file.c_str());
         files.emplace_back(file);
     }
+    dirname = directory;
 }
 
 void DataLoader::initFiles()
 {
     using namespace std;
+    using DS = DataLoader::DataStructure;
     // read .xyz
     string file="";
     for (auto x : files)
@@ -50,15 +53,17 @@ void DataLoader::initFiles()
         // Todo
         return;
     }
+
     string path = dirname + "/" + file;
     ifstream input;
+    string x, y, z;
     input.open(path);
 
-    input >> organization.x >> organization.y >> organization.z;
-    organization.num = organization.x * organization.y * organization.z;
+    input >> x >> y >> z;
+    organization = DS(stoi(x),stoi( y), stoi(z));
 
-    organization.buffer = std::shared_ptr<float[]>(new float[organization.num * 8 * 3]);
-
+    auto buffer = std::shared_ptr<float[]>(new float[organization.num * 8 * 3]);
+    
     int index = 0;
     for (int i = 0; i < organization.num; i++)
     {
@@ -66,11 +71,15 @@ void DataLoader::initFiles()
         {
             for (int k = 0; k < 3; k++)
             {
-                input >> organization.buffer[index++];
+                string data;
+                input >> data;
+                buffer[index++] = stof(data);
             }
         }
     }
-
+    
+    organization.buffer = buffer;
+    auto count = buffer.use_count();
 }
 
 DataLoader::DataStructure DataLoader::getDataStructure() const
