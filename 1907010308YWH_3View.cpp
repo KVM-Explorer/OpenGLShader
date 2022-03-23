@@ -408,7 +408,7 @@ void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	// Todo 显示小作业鼠标响应
 	//if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
 	//{
 	//	int dx = point.x - cursor_position.x;
@@ -427,8 +427,8 @@ void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 		int dy = point.y - cursor_position.y;
 
 		// Todo 更新动态的value
-		if (dx > 0)sceneManager->setInputSignal('D', InputType::Mouse, 1);
-		if (dx < 0)sceneManager->setInputSignal('A', InputType::Mouse, 1);
+		if (dx > 0)sceneManager->setInputSignal('A', InputType::Mouse, 1);
+		if (dx < 0)sceneManager->setInputSignal('D', InputType::Mouse, 1);
 		if (dy < 0)sceneManager->setInputSignal('W', InputType::Mouse, 1);
 		if (dy > 0)sceneManager->setInputSignal('S', InputType::Mouse, 1);
 		cursor_position = point;
@@ -442,7 +442,6 @@ void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 void CMy1907010308YWH3View::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	cursor_position = point;
-	//TRACE("Cursor Position: %d %d\n", cursor_position.x, cursor_position.y);
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -599,12 +598,10 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 
 			RECT win_info;
 			GetWindowRect(&win_info);
-			sceneManager->setProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 
-			
+			sceneManager->setProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 			sceneManager->setFileDirectory(dir);
 
-			Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 		}
 
 		//use IMalloc interface for avoiding memory leak  
@@ -620,4 +617,6 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 		UpdateData(FALSE);	//是否刷新控件的可变内容
 	}
 	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+
 }
