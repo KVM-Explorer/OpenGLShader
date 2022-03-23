@@ -6,6 +6,9 @@
 
 SceneManager::SceneManager()
 {
+	camera.init();
+
+	projectMatrix = glm::perspective(glm::radians(60.f), 1.f, 1.f, 300.f);
 }
 
 SceneManager::~SceneManager()
