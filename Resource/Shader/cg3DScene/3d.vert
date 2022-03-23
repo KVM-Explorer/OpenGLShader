@@ -12,7 +12,7 @@ uniform vec3 ObjectColor;
 
 void main()
 {
- Color = ObjectColor;
- mat4 mvp=ProjectionMatrix * ViewMatrix * ModelMatrix;
- gl_Position = mvp * vec4(VertexPosition,1.0);
+    Color = ObjectColor;
+    mat4 mvp=ProjectionMatrix * ViewMatrix * ModelMatrix;
+    gl_Position = mvp * vec4(VertexPosition,1.0);
 }
