@@ -13,6 +13,7 @@ Camera::Camera()
 	viewHead.y = 0.f;
 	viewHead.x = sin(glm::radians(alpha));	//0
 	viewHead.z = cos(glm::radians(alpha));	//-1
+
 }
 
 Camera::~Camera()
@@ -36,7 +37,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 	switch (key)
 	{
 		case 'W':
-			if (beta < 90)beta += value;
+			if (beta+value < 90)beta += value; 
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
@@ -45,7 +46,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 
 			break;
 		case 'S':
-			if (beta > -90)beta -= value;
+			if (beta-value > -90)beta -= value;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
@@ -54,8 +55,8 @@ void Camera::inputMouse(const unsigned char& key, float value)
 			break;
 
 		case 'A':
-			alpha -= value;
-			if (alpha < 0) alpha = 0.f;
+			
+			if (alpha - value > 0) alpha -= value;;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
@@ -63,8 +64,8 @@ void Camera::inputMouse(const unsigned char& key, float value)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 		case 'D':
-			alpha += value;
-			if (alpha > 360) alpha = 360.f;
+			
+			if (alpha+value < 360)alpha += value;;
 			viewHead.y = sin(glm::radians(beta));
 			r = cos(glm::radians(beta));
 			viewHead.x = r * sin(glm::radians(alpha));	// origin is right
@@ -78,7 +79,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 
 void Camera::inputKeyboard(const unsigned char& key)
 {
-	float step = 0.2f;
+	float step = 10.f;
 	switch (key)
 	{
 		case 'w':
@@ -109,12 +110,12 @@ void Camera::inputKeyboard(const unsigned char& key)
 			break;
 		case 'z':
 		case 'Z'://抬高相机
-			viewPos.y += 1.1f;
+			viewPos.y += step;
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 		case 'x':
 		case 'X'://降低相机
-			viewPos.y -= 1.1f;
+			viewPos.y -= step;
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 	}
@@ -129,10 +130,6 @@ mat4 Camera::getViewMatrix() const
     return viewMatrix;
 }
 
-mat4 Camera::getProjectionMatrix() const
-{
-	return mat4();
-}
 
 vec3 Camera::getDirection() const
 {
