@@ -15,7 +15,8 @@ public:
 	{
 		single,		// 单色	
 		smooth,		// 光滑
-		isopleth	// 等值线
+		isopleth,	// 等值线
+		mesh
 	};
 protected:
 	Mode drawMode;

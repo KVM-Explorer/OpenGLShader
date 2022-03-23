@@ -6,8 +6,8 @@ layout (location = 1) in vec3 VertexColor; //顶点颜色
 out vec3 Color; //顶点颜色
 //uniform
 uniform mat4 ProjectionMatrix;
-uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
+uniform mat4 ModelMatrix;
 void main()
 {
     Color = VertexColor;

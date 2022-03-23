@@ -5,6 +5,7 @@
 #include "cgCube.h"
 #include <vector>
 
+using ModeType = Unit::Mode;
 using DS = DataLoader::DataStructure;
 class MeshManager
 {
@@ -20,6 +21,7 @@ protected:
 	cgProgram cubeShader;
 	std::shared_ptr<cgCube> cube;
 	std::vector<std::shared_ptr<Unit>> units;
+	ModeType viewMode;
 
 public:
 	MeshManager();

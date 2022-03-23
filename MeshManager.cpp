@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "MeshManager.h"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/constants.hpp>
 
 MeshManager::MeshManager()
 {
 	stX = stY = stZ = 0;
+	viewMode = ModeType::mesh;
 }
 
 MeshManager::~MeshManager()
@@ -22,13 +26,13 @@ void MeshManager::init(DS data_struct)
 		for(int y=0;y<dataStructure.y;y++)
 			for (int z = 0; z < dataStructure.z; z++)
 			{
-				auto st = x * y * z;
+				auto st = x * y * z*24;
 				auto unit = std::make_shared<Unit>();
 				unit->init(dataStructure.buffer,st);
 				units.push_back(unit);
 			}
 	
-	auto p = dataStructure.buffer.use_count();	// ptr 引用数为3 loader 1 Meshmanager 2 data_struct 3
+	//auto p = dataStructure.buffer.use_count();	// ptr 引用数为3 loader 1 Meshmanager 2 data_struct 3
 
 	cubeShader.CompileShader("Shader/cg3DScene/3d.vert");
 	cubeShader.CompileShader("Shader/cg3DScene/3d.frag");
@@ -36,23 +40,25 @@ void MeshManager::init(DS data_struct)
 
 	cube = std::make_shared<cgCube>();
 	cube->Init();
-	cube->SetPosition(vec3(0, 0, 0));
+	cube->SetPosition(vec3(0.f, 0.f, 0.f));
 	cube->CalculateModelMatrix();
-	cube->SetTextureID(0);
+	//cube->SetTextureID(0);
 
 }
 
 void MeshManager::render()
 {
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if(viewMode==ModeType::mesh)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	shader.Use();
-
+	modelMatrix = glm::translate(vec3(0.f,0.f,0.f));
 	shader.SetUniform("ProjectionMatrix",projection);
 	shader.SetUniform("ViewMatrix",viewMatrix);
-	//shader.SetUniform("ModelMatrix", modelMatrix);
-	for (auto& x : units)
+	shader.SetUniform("ModelMatrix", modelMatrix);
+	for (auto& x : units) 
 	{
 		x->render();
 	}
@@ -61,11 +67,10 @@ void MeshManager::render()
 
 	cubeShader.Use();
 	auto model = cube->GetModelMatrix();
-	cube->CalculateModelMatrix();
-	cubeShader.SetUniform("PorjectionMatrix",projection);
+	cubeShader.SetUniform("ProjectionMatrix",projection);
 	cubeShader.SetUniform("ModelMatrix",model);
 	cubeShader.SetUniform("ViewMatrix", viewMatrix);
-	cubeShader.SetUniform("ObjectColor", vec3(1, 0, 0));
+	cubeShader.SetUniform("ObjectColor", vec3(1.f, 1.f, 0.f));
 
 	cube->Render();
 	cubeShader.Unuse();
