@@ -634,44 +634,41 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 
 void CMy1907010308YWH3View::UISelectProperty()
 {
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
-
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
+	// TODO: 在此添加命令处理程序代码
 
 }
 
 
 void CMy1907010308YWH3View::UISelectViewMode()
 {
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
-
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
+	// TODO: 在此添加命令处理程序代码
 	
 }
 
 
 void CMy1907010308YWH3View::UISelectRange()
 {
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
-
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
+	// TODO: 在此添加命令处理程序代码
 
 }
 
 
 void CMy1907010308YWH3View::UISelectRenderMode()
 {
+
+	//CMFCRibbonComboBox* pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+	//	m_wndRibbonBar.FindByID(ID_COMBO2));
+
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
 	
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
+	
+	if (content == "Single")
+	{
+		MessageBox(L"Single");
+	}
 
 	
 }

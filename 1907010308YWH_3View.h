@@ -20,7 +20,7 @@
 #include "cgLightScene.h"
 #include "cgModelScene.h"
 #include "SceneManager.h"
-
+#include "MainFrm.h"
 class CMy1907010308YWH3View : public CView
 {
 protected: // 仅从序列化创建
@@ -87,6 +87,10 @@ public:
 	afx_msg void OnCgLight2Texture();
 	afx_msg void OnModelRabbit();
 	afx_msg void OnProjectOpenDir();
+	afx_msg void UISelectProperty();
+	afx_msg void UISelectViewMode();
+	afx_msg void UISelectRange();
+	afx_msg void UISelectRenderMode();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

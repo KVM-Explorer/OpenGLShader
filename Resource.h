@@ -45,15 +45,26 @@
 #define ID_CG_LIGHT2TEXTURE             32783
 #define IID_MODEL_RABBIT                32785
 #define ID_BUTTON2                      32786
-#define ID_PRPOJECT_OPENDIR             32788
 #define ID_PROJECT_OPENDIR              32788
+#define ID_BUTTON3                      32789
+#define ID_COMBO3                       32796
+#define ID_COMBO4                       32797
+#define ID_COMBO5                       32798
+#define ID_COMBO6                       32799
+#define ID_BUTTON7                      32801
+#define ID_BUTTON8                      32802
+#define ID_BUTTON9                      32803
+#define ID_BUTTON10                     32804
+#define ID_BUTTON11                     32805
+#define ID_UI_PROPERTY                  32806
+#define ID_COMBO2                       32807
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32789
+#define _APS_NEXT_COMMAND_VALUE         32808
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
