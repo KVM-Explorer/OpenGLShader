@@ -50,7 +50,7 @@ void DataLoader::initFiles()
     }
     if (file == "")
     {
-        // Todo
+        throw "file is empty";
         return;
     }
 
@@ -151,7 +151,7 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataText(string filename)
 {
     //Todo
     using namespace std;
-    propertyStructure.buffer = std::make_shared<float[]>(dataStructure.num);
+    propertyStructure.buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
     
     string tmp, id, time;
     int index = 0;
@@ -168,6 +168,8 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataText(string filename)
             file >> value;
             propertyStructure.buffer[index++] = stof(value);
         }
+        // Todo ÏÞ¶¨·¶Î§
+        break;
     }
     return propertyStructure;
     
