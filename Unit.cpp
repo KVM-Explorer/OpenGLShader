@@ -15,9 +15,8 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 	 //根据顶点坐标生成矩阵
 
 	auto v = std::shared_ptr<float[]>(new float[elementNum * 3*3]);
-	auto c = std::shared_ptr<float[]>(new float[elementNum * 3*3]);
 	int vindex = 0;
-	int cindex = 0;
+
 	genElement(v, data,st , vindex, 0, 1, 2, 3);
 	genElement(v, data,st , vindex, 1, 2, 6, 5);
 	genElement(v, data, st, vindex, 0, 3, 7, 4);
@@ -25,31 +24,52 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 	genElement(v, data, st, vindex, 4, 5, 6, 7);
 	genElement(v, data, st, vindex, 2, 3, 7, 6);
 
-	genColor(c, data, st, cindex, 0, 1, 2, 3);
-	genColor(c, data, st, cindex, 1, 2, 6, 5);
-	genColor(c, data, st, cindex, 0, 3, 7, 4);
-	genColor(c, data, st, cindex, 0, 1, 5, 4);
-	genColor(c, data, st, cindex, 4, 5, 6, 7);
-	genColor(c, data, st, cindex, 2, 3, 7, 6);
-
 	//TRACE("Zero point %.f %.f %.f\n", v[0], v[1], v[2]);
 
 	 //buffer
 	glGenBuffers(2, vboHandle);
 	glGenVertexArrays(1, &vaoHandle);
+
 	glBindVertexArray(vaoHandle);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[0]);
 	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), v.get(), GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(0);	// shader layout = 0
 
+
+
+	glBindVertexArray(0);
+}
+
+void Unit::setValue(float data)
+{
+	auto c = std::shared_ptr<float[]>(new float[elementNum * 3 * 3]);
+	int cindex = 0;
+	switch (drawMode)
+	{
+		case Unit::Mode::single:
+			break;
+		case Unit::Mode::smooth:
+			break;
+		case Unit::Mode::isopleth:
+			break;
+		case Unit::Mode::mesh:
+			break;
+		default:
+			break;
+	}
+
+	
+	glBindVertexArray(vaoHandle);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
 	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);	// shader layout = 0
 
 	glBindVertexArray(0);
+
 }
 
 void Unit::genElement(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& vindex, int a, int b, int c, int d)
@@ -76,6 +96,16 @@ void Unit::genColor(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, 
 	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
 	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
 	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
+}
+
+void Unit::genSmooth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)
+{
+	//Todo
+}
+
+void Unit::genIsopleth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)
+{
+	// Todo
 }
 
 void Unit::render()

@@ -60,12 +60,13 @@ void DataLoader::initFiles()
     input.open(path);
 
     input >> x >> y >> z;
-    organization = DS(stoi(x),stoi( y), stoi(z));
+    dataStructure = DS(stoi(x),stoi( y), stoi(z));
 
-    auto buffer = std::shared_ptr<float[]>(new float[organization.num * 8 * 3]);
+    auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num * 8 * 3]);
+
     
     int index = 0;
-    for (int i = 0; i < organization.num; i++)
+    for (int i = 0; i < dataStructure.num; i++)
     {
         for (int j = 0; j < 8; j++)
         {
@@ -78,13 +79,13 @@ void DataLoader::initFiles()
         }
     }
     
-    organization.buffer = buffer;
+    dataStructure.buffer = buffer;
     auto count = buffer.use_count();
 }
 
 DataLoader::DataStructure DataLoader::getDataStructure() const
 {
-    return organization;
+    return dataStructure;
 }
 
 bool DataLoader::isExistBinary(string property)
@@ -146,22 +147,30 @@ void DataLoader::getPropertyDataPre()
     file.close();
 }
 
-void DataLoader::getPropertyDataText(string filename,std::shared_ptr<float[]> &buffer)
+DataLoader::PropertyStructure DataLoader::getPropertyDataText(string filename)
 {
     //Todo
     using namespace std;
+    propertyStructure.buffer = std::make_shared<float[]>(dataStructure.num);
+    
     string tmp, id, time;
     int index = 0;
     string path = dirname + "/" + filename;
     ifstream file;
     file.open(path, ios::in);
     file >> currentProperty;
-    file >> tmp >> id >> tmp >> time;
-    buffer = shared_ptr<float[]>(new float[organization.num]);
-    for (int i = 0; i < organization.num; i++)
+    while (file >> tmp >> id >> tmp >> time)
     {
-        file >> buffer[index++];
+        propertyStructure.index = stoi(id);
+        for (int i = 0; i < dataStructure.num; i++)
+        {
+            string value;
+            file >> value;
+            propertyStructure.buffer[index++] = stof(value);
+        }
     }
+    return propertyStructure;
+    
 
 }
 

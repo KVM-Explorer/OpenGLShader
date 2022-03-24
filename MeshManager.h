@@ -7,6 +7,7 @@
 
 using ModeType = Unit::Mode;
 using DS = DataLoader::DataStructure;
+using PS = DataLoader::PropertyStructure;
 class MeshManager
 {
 private:
@@ -28,9 +29,11 @@ public:
 	~MeshManager();
 
 	void init(DS data_struct);
+	void loadValue();
 
 	void render();
 	//void setScaleRatio(float ratio);	// 模型变换缩放
+	void setProperty(PS property_struct);
 	void setProjection(mat4 proj);
 	void setViewMatrix(mat4 view_matrix);
 	void selectViewRange(int x, int y, int z); // 展示x-xmax y-ymax z-zmax 区间内的网格

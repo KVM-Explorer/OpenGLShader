@@ -77,6 +77,16 @@ void MeshManager::render()
 
 }
 
+void MeshManager::setProperty(PS property_struct)
+{
+	int index = 0;
+	for (auto& x : units)
+	{
+		//  Todo  ¼ÆËãÑÕÉ«
+		x->setValue(property_struct.buffer[index]);
+	}
+}
+
 void MeshManager::setProjection(mat4 proj)
 {
 	projection = proj;

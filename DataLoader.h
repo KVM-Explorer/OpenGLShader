@@ -24,10 +24,17 @@ public:
 		};
 		DataStructure() :x(0),y(0),z(0),num(0){};
 	};
+	struct PropertyStructure
+	{
+		int index;
+		int tot;
+		std::shared_ptr<float[]> buffer;
+	};
 protected:
 	std::vector<string> files;
 	string dirname;
-	DataStructure organization;
+	DataStructure dataStructure;
+	PropertyStructure propertyStructure;
 	string currentProperty;
 	std::pair<int, int> fileRange;
 	int dataPtr;
@@ -39,10 +46,11 @@ public:
 	void getFiles(string directory);
 	void initFiles();
 	DataStructure getDataStructure()const;	// 获得数据的组织形式
+	
 	bool isExistBinary(string property);
 	void getPropertyDataNext();	//仅用于binary
 	void getPropertyDataPre();	//仅用于binary
-	void getPropertyDataText(string filename,std::shared_ptr<float[]> &buffer);	// 用于开发测试和转换生成二进制文件
+	PropertyStructure getPropertyDataText(string filename);	// 用于开发测试和转换生成二进制文件
 	void getPropertyDataBinary(string property);	// 更新成员首次打开binary文件
 	void Text2Binary(string name);	// 将文本转化为二进制文件
 

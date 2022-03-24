@@ -635,7 +635,7 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 void CMy1907010308YWH3View::UISelectProperty()
 {
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO2));
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
@@ -646,7 +646,7 @@ void CMy1907010308YWH3View::UISelectProperty()
 void CMy1907010308YWH3View::UISelectViewMode()
 {
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
@@ -657,7 +657,7 @@ void CMy1907010308YWH3View::UISelectViewMode()
 void CMy1907010308YWH3View::UISelectRange()
 {
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));

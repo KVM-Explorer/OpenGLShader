@@ -23,6 +23,8 @@ void SceneManager::setFileDirectory(string dir)
 
 	// MeshManager
 	meshManager.init(dataLoader.getDataStructure());
+	meshManager.setProperty(dataLoader.getPropertyDataText("pressure.pro"));
+	
 }
 
 void SceneManager::render()

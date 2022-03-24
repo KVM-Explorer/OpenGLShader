@@ -21,7 +21,7 @@ public:
 protected:
 	Mode drawMode;
 	const int elementNum = 6*2 ;
-	unsigned int vboHandle[3];
+	unsigned int vboHandle[4];		// vert single smooth isopleth
 	unsigned int vaoHandle;
 
 public:
@@ -32,9 +32,16 @@ public:
 	/// </summary>
 	/// <param name="data">x y z 形式依次记录6个顶点</param>
 	void init(std::shared_ptr<float[]> data, int st);
+	void setValue(float data);
 	void genElement(std::shared_ptr<float[]> dst,std::shared_ptr<float[]> src, 
 					int st,int &vindex,int a,int b,int c, int d);
 	void genColor(std::shared_ptr<float[]> dst,std::shared_ptr<float[]> src, 
+					int st, int& cindex, int a, int b, int c, int d);
+
+	void genSmooth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src,
+					int st, int& cindex, int a, int b, int c, int d);
+
+	void genIsopleth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src,
 					int st, int& cindex, int a, int b, int c, int d);
 };
 
