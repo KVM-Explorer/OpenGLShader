@@ -66,6 +66,8 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_COMBO5, &CMy1907010308YWH3View::UISelectViewMode)
 	ON_COMMAND(ID_COMBO4, &CMy1907010308YWH3View::UISelectRange)
 	ON_COMMAND(ID_COMBO3, &CMy1907010308YWH3View::UISelectRenderMode)
+	ON_COMMAND(ID_BUTTON4, &CMy1907010308YWH3View::UISelectColorMin)
+	ON_COMMAND(ID_BUTTON5, &CMy1907010308YWH3View::UISelectColorMax)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -673,5 +675,33 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
 
+	
+}
+
+
+void CMy1907010308YWH3View::UISelectColorMin()
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON4));
+
+	if (sceneManager != nullptr)
+	{
+		auto color = color_button_ptr->GetColor();
+		sceneManager->setColorMin(GetRValue(color), GetGValue(color), GetBValue(color));
+	}
+	
+}
+
+
+void CMy1907010308YWH3View::UISelectColorMax()
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON5));
+
+	if (sceneManager != nullptr)
+	{
+		auto color = color_button_ptr->GetColor();
+		sceneManager->setColorMax(GetGValue(color), GetBValue(color), GetBValue(color));
+	}
 	
 }

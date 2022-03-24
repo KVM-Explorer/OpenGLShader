@@ -91,6 +91,8 @@ public:
 	afx_msg void UISelectViewMode();
 	afx_msg void UISelectRange();
 	afx_msg void UISelectRenderMode();
+	afx_msg void UISelectColorMin();
+	afx_msg void UISelectColorMax();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

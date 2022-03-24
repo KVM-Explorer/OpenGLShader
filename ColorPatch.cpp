@@ -11,6 +11,13 @@ using Range =  ColorPatch::Range;
  * @param num 色标数目
  * @detail  需要提前设置Range
 */
+ColorPatch::ColorPatch()
+{
+
+}
+ColorPatch::~ColorPatch()
+{
+}
 void ColorPatch::init(int num)
 {
 	blockNum = num;
@@ -51,6 +58,16 @@ void ColorPatch::render()
 void ColorPatch::setRange(int min_value, int max_value, vec3 min_color, vec3 max_color)
 {
 	range = Range(min_value, max_value, min_color, max_color);
+}
+
+void ColorPatch::setColorMin(vec3 color)
+{
+	range.maxColor = color;
+}
+
+void ColorPatch::setColorMax(vec3 color)
+{
+	range.maxColor = color;
 }
 
 Range ColorPatch::getRange() const

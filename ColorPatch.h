@@ -19,6 +19,11 @@ public:
             :minValue(min_value), maxValue(max_value),
             minColor(min_color), maxColor(max_color)
         {};
+        Range() 
+        {
+            minValue = maxValue = 0;
+            minColor = maxColor = vec3(0, 0, 0);
+        };
     };
 protected:
     int blockNum;   // 色标块个数
@@ -28,6 +33,9 @@ protected:
     mat4 modelMat;
 
 public:
+    ColorPatch();
+    ~ColorPatch();
+
     void init(int num);   // 初始化色标 block
     
     //void calculateModelMatrix();
@@ -37,6 +45,16 @@ public:
     void render();
     
     void setRange(int min_value, int max_value, vec3 min_color, vec3 max_color);
+    /**
+     * @brief 
+     * @param color hsv 0-1
+    */
+    void setColorMin(vec3 color);
+    /**
+     * @brief 
+     * @param color hsv 0-1
+    */
+    void setColorMax(vec3 color);
     Range getRange() const;
 
 
