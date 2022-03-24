@@ -152,7 +152,7 @@ void CMy1907010308YWH3View::OnDraw(CDC* pDC)
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//if(scene!=nullptr)scene->Render();
+	if(scene!=nullptr)scene->Render();
 	if (sceneManager != nullptr) sceneManager->render();
 
 	SwapBuffers(m_pDC->GetSafeHdc());
@@ -281,7 +281,7 @@ void CMy1907010308YWH3View::OnGeTriangle()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
-	//cgBasicSceane* BasicSceane = new cgBasicSceane;
+	sceneManager = nullptr;
 	auto basic_scene = std::make_shared<cgBasicSceneBase>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 	glClearColor(0.5, 0.5, 0.5, 1);
@@ -306,6 +306,7 @@ void CMy1907010308YWH3View::OnGePentagram()
 
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
+	sceneManager = nullptr;
 	auto basic_scene = std::make_shared<cgBasicSceneBase>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 	glClearColor(0.5, 0.5, 0.5, 1);
@@ -342,6 +343,7 @@ void CMy1907010308YWH3View::OnCollisionPentagram()
 	// TODO: 在此添加命令处理程序代码
 	SetTimer(1, 100, NULL);
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	sceneManager = nullptr;
 	auto collosoon_bounce_ptr = std::make_shared<cgCollisionBounce>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 	collosoon_bounce_ptr->Init();
@@ -374,7 +376,7 @@ void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
 void CMy1907010308YWH3View::OnCg3DScene()
 {	
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	
+	sceneManager = nullptr;
 	auto scene3d_ptr = std::make_shared<cg3DScene>();
 	scene3d_ptr->Init();
 	RECT win_info;
@@ -408,19 +410,19 @@ void CMy1907010308YWH3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// Todo 显示小作业鼠标响应
-	//if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
-	//{
-	//	int dx = point.x - cursor_position.x;
-	//	int dy = point.y - cursor_position.y;
-	//	if (dx > 0)scene->Input(']');
-	//	if (dx < 0)scene->Input('[');
-	//	if (dy < 0)scene->Input('U');
-	//	if (dy > 0)scene->Input('V');
-	//	
-	//	cursor_position = point;
-	//	Invalidate(FALSE);
-	//}
+	 //Todo 显示小作业鼠标响应
+	if (cursor_position != CPoint(-1, -1)&&scene!=nullptr)
+	{
+		int dx = point.x - cursor_position.x;
+		int dy = point.y - cursor_position.y;
+		if (dx > 0)scene->Input(']');
+		if (dx < 0)scene->Input('[');
+		if (dy < 0)scene->Input('U');
+		if (dy > 0)scene->Input('V');
+		
+		cursor_position = point;
+		Invalidate(FALSE);
+	}
 	if (cursor_position != CPoint(-1, -1) && sceneManager != nullptr)
 	{
 		int dx = point.x - cursor_position.x;
@@ -459,6 +461,7 @@ void CMy1907010308YWH3View::OnCgTexture()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
+	sceneManager = nullptr;
 	auto scene3d_ptr = std::make_shared<cg3DScene>();
 	scene3d_ptr->Init();
 	RECT win_info;
@@ -477,6 +480,7 @@ void CMy1907010308YWH3View::OnCgPointlight()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
+	sceneManager = nullptr;
 	auto lightscene_ptr = std::make_shared<cgLightScene>();
 	lightscene_ptr->Init();
 	RECT win_info;
@@ -512,6 +516,7 @@ void CMy1907010308YWH3View::OnCgLight2Texture()
 	
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
+	sceneManager = nullptr;
 	auto lightscene_ptr = std::make_shared<cgLightScene>();
 	lightscene_ptr->Init();
 	RECT win_info;
@@ -594,6 +599,7 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 			file_path = szPath;
 			std::string dir =  CT2A(file_path.GetString());
 
+			scene = nullptr;
 			sceneManager = std::make_shared<SceneManager>();
 
 			RECT win_info;

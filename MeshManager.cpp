@@ -26,7 +26,7 @@ void MeshManager::init(DS data_struct)
 		for(int y=0;y<dataStructure.y;y++)
 			for (int z = 0; z < dataStructure.z; z++)
 			{
-				auto st = x * y * z*24;
+				auto st = x * y * z*24 ;
 				auto unit = std::make_shared<Unit>();
 				unit->init(dataStructure.buffer,st);
 				units.push_back(unit);
