@@ -66,21 +66,23 @@ void DataLoader::initFiles()
 
     
     int index = 0;
-    for (int i = 0; i < dataStructure.num; i++)
+    for (int i = 0; i < dataStructure.z; i++)
     {
-        for (int j = 0; j < 8; j++)
+        for (int j = 0; j < dataStructure.y; j++)
         {
-            for (int k = 0; k < 3; k++)
+            for (int k = 0; k < dataStructure.x; k++)
             {
-                string data;
-                input >> data;
-                buffer[index++] = stof(data);
+                for (int p = 0; p < 8 * 3; p++)
+                {
+                    string data;
+                    input >> data;
+                    buffer[index++] = stof(data);
+                }
+                
             }
         }
     }
-    
     dataStructure.buffer = buffer;
-    auto count = buffer.use_count();
 }
 
 DataLoader::DataStructure DataLoader::getDataStructure() const
@@ -98,7 +100,7 @@ bool DataLoader::isExistBinary(string property)
             return true;
         }
     }
-    return false;
+    return false; 
 }
 
 
