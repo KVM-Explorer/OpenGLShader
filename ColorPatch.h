@@ -47,16 +47,17 @@ public:
     void setRange(int min_value, int max_value, vec3 min_color, vec3 max_color);
     /**
      * @brief 
-     * @param color hsv 0-1
+     * @param color hsv 
     */
     void setColorMin(vec3 color);
     /**
      * @brief 
-     * @param color hsv 0-1
+     * @param color hsv 
     */
     void setColorMax(vec3 color);
     Range getRange() const;
-
+    vec3 getMinColor() const;
+    vec3 getMaxColor() const;
 
 };
 

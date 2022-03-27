@@ -641,7 +641,9 @@ void CMy1907010308YWH3View::UISelectProperty()
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
-
+	if (sceneManager != nullptr)
+	{
+	}
 }
 
 
@@ -652,7 +654,8 @@ void CMy1907010308YWH3View::UISelectViewMode()
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
-	
+	if(sceneManager!=nullptr)
+	{ }
 }
 
 
@@ -663,7 +666,9 @@ void CMy1907010308YWH3View::UISelectRange()
 
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
-
+	if (sceneManager != nullptr)
+	{
+	}
 }
 
 
@@ -674,7 +679,7 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 	
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
-
+	if (sceneManager!=nullptr)	sceneManager->setRenderMode(content);
 	
 }
 
@@ -701,7 +706,7 @@ void CMy1907010308YWH3View::UISelectColorMax()
 	if (sceneManager != nullptr)
 	{
 		auto color = color_button_ptr->GetColor();
-		sceneManager->setColorMax(GetGValue(color), GetBValue(color), GetBValue(color));
+		sceneManager->setColorMax(GetRValue(color), GetGValue(color), GetBValue(color));
 	}
 	
 }

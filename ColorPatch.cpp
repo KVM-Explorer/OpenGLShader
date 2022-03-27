@@ -62,8 +62,10 @@ void ColorPatch::setRange(int min_value, int max_value, vec3 min_color, vec3 max
 
 void ColorPatch::setColorMin(vec3 color)
 {
-	range.maxColor = color;
+	range.minColor = color;
+
 }
+
 
 void ColorPatch::setColorMax(vec3 color)
 {
@@ -73,4 +75,14 @@ void ColorPatch::setColorMax(vec3 color)
 Range ColorPatch::getRange() const
 {
 	return range;
+}
+
+vec3 ColorPatch::getMinColor() const
+{
+	return range.minColor;
+}
+
+vec3 ColorPatch::getMaxColor() const
+{
+	return range.maxColor;
 }

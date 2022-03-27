@@ -6,6 +6,7 @@
 #include "DataLoader.h"
 using std::string;
 
+
 enum class InputType
 {
 	Keyboard,
@@ -15,13 +16,16 @@ enum class InputType
 class SceneManager
 {
 private:
-	mat4 projectMatrix;
+	std::map<std::string, ModeType> keyFromString;
+	
 protected:
+	mat4 projectMatrix;
 	DataLoader	dataLoader;
 	ColorPatch	colorPatch;
 	//Indicator3D indicator3D;
 	MeshManager meshManager;
 	Camera		camera;
+	std::vector<std::unique_ptr<cgProgram>> shaders;
 public:
 	SceneManager();
 	~SceneManager();
@@ -44,6 +48,7 @@ public:
 	 * @param b 0-255
 	*/
 	void setColorMax(unsigned char r, unsigned char g, unsigned char b);
+	void setRenderMode(std::string mode);
 	void setScaleRatio(float ratio);
 	void setTimeStamp(int time);
 	void setProperty(string data_property);
