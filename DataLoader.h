@@ -37,7 +37,7 @@ protected:
 	PropertyStructure propertyStructure;
 	string currentProperty;
 	std::pair<int, int> fileRange;
-	int dataPtr;
+	std::streamoff	 dataPtr;
 	
 public:
 	DataLoader();

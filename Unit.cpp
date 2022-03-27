@@ -24,7 +24,6 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 	genElement(v, data, st, vindex, 4, 5, 6, 7);
 	genElement(v, data, st, vindex, 2, 3, 7, 6);
 
-	//TRACE("Zero point %.f %.f %.f\n", v[0], v[1], v[2]);
 
 	 //buffer
 	glGenBuffers(2, vboHandle);
@@ -44,28 +43,15 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 
 void Unit::setValue(float data)
 {
-	auto c = std::shared_ptr<float[]>(new float[elementNum * 3 * 3]);
-	int cindex = 0;
-	switch (drawMode)
-	{
-		case Unit::Mode::single:
-			break;
-		case Unit::Mode::smooth:
-			break;
-		case Unit::Mode::isopleth:
-			break;
-		case Unit::Mode::mesh:
-			break;
-		default:
-			break;
-	}
-
+	auto c = std::shared_ptr<float[]>(new float[elementNum * 3 ]);
 	
+	int cindex = 0;
+	genSingleColor(c, data, cindex);
 	glBindVertexArray(vaoHandle);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
-	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
-	glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
+	glBufferData(GL_ARRAY_BUFFER, 3  * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
+	glVertexAttribPointer((GLuint)1, 1, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
 	glEnableVertexAttribArray(1);	// shader layout = 0
 
 	glBindVertexArray(0);
@@ -83,6 +69,14 @@ void Unit::genElement(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src
 	dst[vindex++] = src[st + 3 * c], dst[vindex++] = src[st + 3 * c + 1], dst[vindex++] = src[st + 3 * c + 2];
 	dst[vindex++] = src[st + 3 * d], dst[vindex++] = src[st + 3 * d + 1], dst[vindex++] = src[st + 3 * d + 2];
 	dst[vindex++] = src[st + 3 * a], dst[vindex++] = src[st + 3 * a + 1], dst[vindex++] = src[st + 3 * a + 2];
+}
+
+void Unit::genSingleColor(std::shared_ptr<float[]> dst, float src, int& cindex)
+{
+	for (int i = 0; i < elementNum*3; i++)
+	{
+		dst[cindex++] = src;
+	}
 }
 
 void Unit::genColor(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)

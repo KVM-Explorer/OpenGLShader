@@ -7,7 +7,7 @@
 MeshManager::MeshManager()
 {
 	stX = stY = stZ = 0;
-	viewMode = ModeType::mesh;
+	renderMode = ModeType::mesh;
 }
 
 MeshManager::~MeshManager()
@@ -16,65 +16,33 @@ MeshManager::~MeshManager()
 
 void MeshManager::init(DS data_struct)
 {
-	shader.CompileShader("Shader/project/basic.vert");
-	shader.CompileShader("Shader/project/basic.frag");
-	shader.Link();
-
 	dataStructure = data_struct;
-
-	for(int x=0;x<dataStructure.x;x++)
+	int st = 0;
+	for(int z=0;z<dataStructure.z;z++)
 		for(int y=0;y<dataStructure.y;y++)
-			for (int z = 0; z < dataStructure.z; z++)
+			for (int x = 0; x < dataStructure.x; x++)
 			{
-				auto st = x * y * z*24 ;
 				auto unit = std::make_shared<Unit>();
 				unit->init(dataStructure.buffer,st);
-				units.push_back(unit);
+				units.emplace_back(unit);
+				st += 24;
+				TRACE("st = %d\n", st);
 			}
-	
-	//auto p = dataStructure.buffer.use_count();	// ptr 引用数为3 loader 1 Meshmanager 2 data_struct 3
-
-	cubeShader.CompileShader("Shader/cg3DScene/3d.vert");
-	cubeShader.CompileShader("Shader/cg3DScene/3d.frag");
-	cubeShader.Link();
-
-	cube = std::make_shared<cgCube>();
-	cube->Init();
-	cube->SetPosition(vec3(0.f, 0.f, 0.f));
-	cube->CalculateModelMatrix();
-	//cube->SetTextureID(0);
 
 }
 
+
 void MeshManager::render()
 {
-	if(viewMode==ModeType::mesh)
+	if(renderMode==ModeType::mesh)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	shader.Use();
-	modelMatrix = glm::translate(vec3(0.f,0.f,0.f));
-	shader.SetUniform("ProjectionMatrix",projection);
-	shader.SetUniform("ViewMatrix",viewMatrix);
-	shader.SetUniform("ModelMatrix", modelMatrix);
 	for (auto& x : units) 
 	{
 		x->render();
 	}
-	shader.Unuse();
-
-
-	cubeShader.Use();
-	auto model = cube->GetModelMatrix();
-	cubeShader.SetUniform("ProjectionMatrix",projection);
-	cubeShader.SetUniform("ModelMatrix",model);
-	cubeShader.SetUniform("ViewMatrix", viewMatrix);
-	cubeShader.SetUniform("ObjectColor", vec3(1.f, 1.f, 0.f));
-
-	cube->Render();
-	cubeShader.Unuse();
-
 }
 
 void MeshManager::setProperty(PS property_struct)
@@ -83,7 +51,7 @@ void MeshManager::setProperty(PS property_struct)
 	for (auto& x : units)
 	{
 		//  Todo  计算颜色
-		x->setValue(property_struct.buffer[index]);
+		 x->setValue(property_struct.buffer[index++]);
 	}
 }
 
@@ -102,4 +70,9 @@ void MeshManager::selectViewRange(int x, int y, int z)
 	stX = x;
 	stY = y;
 	stZ = z;
+}
+
+void MeshManager::setRenderMode(ModeType type)
+{
+	renderMode = type;
 }
