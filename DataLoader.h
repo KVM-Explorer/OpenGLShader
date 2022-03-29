@@ -48,10 +48,10 @@ public:
 	DataStructure getDataStructure()const;	// 获得数据的组织形式
 	
 	bool isExistBinary(string property);
-	void getPropertyDataNext();	//仅用于binary
-	void getPropertyDataPre();	//仅用于binary
+	PropertyStructure getPropertyDataNext();	//仅用于binary
+	PropertyStructure getPropertyDataPre();	//仅用于binary
 	PropertyStructure getPropertyDataText(string filename);	// 用于开发测试和转换生成二进制文件
-	void getPropertyDataBinary(string property);	// 更新成员首次打开binary文件
+	PropertyStructure getPropertyDataBinary(string property);	// 更新成员首次打开binary文件
 	void Text2Binary(string name);	// 将文本转化为二进制文件
 
 };
