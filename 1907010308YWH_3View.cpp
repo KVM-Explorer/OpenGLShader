@@ -643,10 +643,13 @@ void CMy1907010308YWH3View::UISelectProperty()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr)
 	{
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
 }
 
-
+/**
+ * @brief 视角模式选择2D XY XZ YZ 3D
+*/
 void CMy1907010308YWH3View::UISelectViewMode()
 {
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
@@ -655,10 +658,15 @@ void CMy1907010308YWH3View::UISelectViewMode()
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
 	if(sceneManager!=nullptr)
-	{ }
+	{
+
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+	}
 }
 
-
+/**
+ * @brief 显示层次
+*/
 void CMy1907010308YWH3View::UISelectRange()
 {
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
@@ -668,6 +676,7 @@ void CMy1907010308YWH3View::UISelectRange()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr)
 	{
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
 }
 
@@ -679,7 +688,10 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 	
 	int index = pComboBox->GetCurSel();
 	string content = CT2A(pComboBox->GetItem(index));
-	if (sceneManager!=nullptr)	sceneManager->setRenderMode(content);
+	if (sceneManager != nullptr) {
+		sceneManager->setRenderMode(content);
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+	}
 	
 }
 
@@ -693,6 +705,7 @@ void CMy1907010308YWH3View::UISelectColorMin()
 	{
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMin(GetRValue(color), GetGValue(color), GetBValue(color));
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
 	
 }
@@ -707,6 +720,7 @@ void CMy1907010308YWH3View::UISelectColorMax()
 	{
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMax(GetRValue(color), GetGValue(color), GetBValue(color));
+		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
 	
 }

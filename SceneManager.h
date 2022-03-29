@@ -17,7 +17,7 @@ class SceneManager
 {
 private:
 	std::map<std::string, ModeType> keyFromString;
-	
+	std::map<ModeType, std::unique_ptr<cgProgram>> shaderFromType;
 protected:
 	mat4 projectMatrix;
 	DataLoader	dataLoader;
@@ -25,7 +25,8 @@ protected:
 	//Indicator3D indicator3D;
 	MeshManager meshManager;
 	Camera		camera;
-	std::vector<std::unique_ptr<cgProgram>> shaders;
+	
+
 public:
 	SceneManager();
 	~SceneManager();

@@ -26,7 +26,7 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 
 
 	 //buffer
-	glGenBuffers(2, vboHandle);
+	glGenBuffers(4, vboHandle);
 	glGenVertexArrays(1, &vaoHandle);
 
 	glBindVertexArray(vaoHandle);
@@ -35,8 +35,6 @@ void Unit::init(std::shared_ptr<float[]> data, int st)
 	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), v.get(), GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
 	glEnableVertexAttribArray(0);	// shader layout = 0
-
-
 
 	glBindVertexArray(0);
 }
@@ -48,9 +46,45 @@ void Unit::setValue(float data)
 	int cindex = 0;
 	genSingleColor(c, data, cindex);
 	glBindVertexArray(vaoHandle);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
-	glBufferData(GL_ARRAY_BUFFER, 3  * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
+	glVertexAttribPointer((GLuint)1, 1, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
+
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+
+
+
+	//glBindBuffer(GL_ARRAY_BUFFER,vboHandle[1]);
+	//float* ptr = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+
+
+	//// if the pointer is valid(mapped), update VBO
+	//if (ptr)
+	//{
+	//	std::memcpy(ptr,c.get(),sizeof(float)*elementNum*3);               // modify buffer data
+	//	glUnmapBufferARB(GL_ARRAY_BUFFER_ARB); // unmap it after use
+	//}
+}
+
+void Unit::setValue(std::vector<float> data)
+{
+	auto c = std::shared_ptr<float[]>(new float[elementNum * 3]);
+	int cindex = 0;
+	auto size = data.size();
+	genSmooth(c, data, cindex, 0, 1, 3, 2);
+	genSmooth(c, data, cindex, 1, 3, 7, 5);
+	genSmooth(c, data, cindex, 0, 2, 6, 4);
+	genSmooth(c, data, cindex, 0, 1, 5, 4);
+	genSmooth(c, data, cindex, 4, 5, 7, 6);
+	genSmooth(c, data, cindex, 3, 2, 6, 7);
+
+	glBindVertexArray(vaoHandle);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
+	glBufferData(GL_ARRAY_BUFFER, 3 * elementNum * sizeof(float), c.get(), GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)1, 1, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));
 	glEnableVertexAttribArray(1);	// shader layout = 0
 
@@ -78,23 +112,12 @@ void Unit::genSingleColor(std::shared_ptr<float[]> dst, float src, int& cindex)
 		dst[cindex++] = src;
 	}
 }
+ 
 
-void Unit::genColor(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)
+void Unit::genSmooth(std::shared_ptr<float[]> dst, std::vector<float> &src, int& cindex, int a, int b, int c, int d)
 {
-	// triangle 1
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-
-	// triangle 2
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-	dst[cindex++] = 0.5, dst[cindex++] = 0.5, dst[cindex++] = 0.5;
-}
-
-void Unit::genSmooth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)
-{
-	//Todo
+	dst[cindex++] = src[a], dst[cindex++] = src[b], dst[cindex++] = src[c];
+	dst[cindex++] = src[c], dst[cindex++] = src[d], dst[cindex++] = src[a];
 }
 
 void Unit::genIsopleth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> src, int st, int& cindex, int a, int b, int c, int d)
@@ -105,6 +128,6 @@ void Unit::genIsopleth(std::shared_ptr<float[]> dst, std::shared_ptr<float[]> sr
 void Unit::render()
 {
 	glBindVertexArray(vaoHandle);
-	glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum);
+	glDrawArrays(GL_TRIANGLES, 0, 3 * elementNum); 
 	glBindVertexArray(0);
 }

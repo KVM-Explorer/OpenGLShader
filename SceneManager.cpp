@@ -12,10 +12,23 @@ SceneManager::SceneManager()
 	projectMatrix = glm::perspective(glm::radians(60.f), 1.f, 1.f, 300.f);
 
 	auto shader_ptr = std::make_unique<cgProgram>();
+	shader_ptr->CompileShader("Shader/project/basic.vert");
+	shader_ptr->CompileShader("Shader/project/basic.frag");
+	shader_ptr->Link();
+	shaderFromType[ModeType::mesh].reset(shader_ptr.release());
+
+	shader_ptr = std::make_unique<cgProgram>();
+	shader_ptr->CompileShader("Shader/project/smooth.vert");
+	shader_ptr->CompileShader("Shader/project/smooth.frag");
+	shader_ptr->Link();
+	shaderFromType[ModeType::smooth].reset(shader_ptr.release());
+
+	shader_ptr = std::make_unique<cgProgram>();
 	shader_ptr->CompileShader("Shader/project/single.vert");
 	shader_ptr->CompileShader("Shader/project/single.frag");
 	shader_ptr->Link();
-	shaders.emplace_back(shader_ptr.release());
+	shaderFromType[ModeType::single].reset(shader_ptr.release());
+
 
 	keyFromString["isopleth"] = ModeType::isopleth;
 	keyFromString["single"] = ModeType::single;
@@ -63,19 +76,24 @@ void SceneManager::render()
 
 	auto min_color = colorPatch.getMinColor();	min_color.x = min_color.x / 360.f;
 	auto max_color = colorPatch.getMaxColor();	max_color.x = max_color.x / 360.f;
-	shaders[0]->Use();
-	auto model_mat = glm::scale(vec3(0.33f,0.33f,1.f));
-	shaders[0]->SetUniform("ProjectionMatrix",projectMatrix);
-	shaders[0]->SetUniform("ViewMatrix",camera.getViewMatrix());
-	shaders[0]->SetUniform("ModelMatrix", model_mat);
-	shaders[0]->SetUniform("minValue", 3000.f);
-	shaders[0]->SetUniform("maxValue", 5000.f);
-	shaders[0]->SetUniform("minColor", vec4(min_color, 1.f));
-	shaders[0]->SetUniform("maxColor", vec4(max_color, 1.f));
-	shaders[0]->SetUniform("blockNum", 10);
+	
+	auto model_mat = glm::scale(vec3(0.33f, 0.33f, 1.f));
+
+	auto mode = meshManager.getRenderMode();
+	shaderFromType[mode]->Use();
+	
+	shaderFromType[mode]->SetUniform("ProjectionMatrix",projectMatrix);
+	shaderFromType[mode]->SetUniform("ViewMatrix",camera.getViewMatrix());
+	shaderFromType[mode]->SetUniform("ModelMatrix", model_mat);
+	shaderFromType[mode]->SetUniform("minValue", 3000.f);
+	shaderFromType[mode]->SetUniform("maxValue", 5000.f);
+	shaderFromType[mode]->SetUniform("minColor", vec4(min_color, 1.f));
+	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
+	
+	if(mode==ModeType::single) shaderFromType[mode]->SetUniform("blockNum", 10);
 
 	meshManager.render();
-	shaders[0]->Unuse();
+	shaderFromType[mode]->Unuse();
 
 }
 
@@ -115,4 +133,6 @@ void SceneManager::setRenderMode(std::string mode)
 {
 	auto render_mode = keyFromString[mode];
 	meshManager.setRenderMode(render_mode);
+	auto data_property = dataLoader.getPropertyDataText("pressure.pro");
+	meshManager.setProperty(data_property);
 }

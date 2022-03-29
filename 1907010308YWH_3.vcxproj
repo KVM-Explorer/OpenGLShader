@@ -102,6 +102,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -129,6 +130,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>glew32d.lib;GLU32.Lib;OpenGL32.Lib;soil.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

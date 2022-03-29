@@ -38,5 +38,6 @@ public:
 	void setViewMatrix(mat4 view_matrix);
 	void selectViewRange(int x, int y, int z); // 展示x-xmax y-ymax z-zmax 区间内的网格
 	void setRenderMode(ModeType type);
+	ModeType getRenderMode() const;
 };
 
