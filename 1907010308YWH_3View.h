@@ -43,6 +43,7 @@ public:
 	BOOL InitializeOpenGL();
 	BOOL SetupPixelFormat();
 	void AddDataSelectorContent(int num);
+	void UIinit();
 // 重写
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
@@ -100,6 +101,7 @@ public:
 	afx_msg void UIPlayNextData();
 	afx_msg void UIPlayPreData();
 	afx_msg void UITimeSelector();
+	afx_msg void UISelectDimension();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

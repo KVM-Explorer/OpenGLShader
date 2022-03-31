@@ -81,13 +81,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	OnApplicationLook(theApp.m_nAppLook);
 
 
-	auto property_selector_ptr = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, m_wndRibbonBar.FindByID(ID_COMBO2));
-	property_selector_ptr->SelectItem(0);
-
-	auto render_mode_ptr = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, m_wndRibbonBar.FindByID(ID_COMBO3));
-	render_mode_ptr->SelectItem(_T("single"));
-
-
 	return 0;
 }
 

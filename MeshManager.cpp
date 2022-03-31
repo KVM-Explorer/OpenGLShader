@@ -121,11 +121,22 @@ void MeshManager::setViewMatrix(mat4 view_matrix)
 	viewMatrix = view_matrix;
 }
 
-void MeshManager::selectViewRange(int x, int y, int z)
+void MeshManager::selectViewRange(int dimension,int st)
 {
-	stX = x;
-	stY = y;
-	stZ = z;
+	switch (dimension)
+	{
+	case 0:
+		stX = st;
+		break;
+	case 1:
+		stY = st;
+		break;
+	case 2:
+		stZ = st;
+		break;
+	default:
+		break;
+	}
 }
 
 void MeshManager::setRenderMode(ModeType type)

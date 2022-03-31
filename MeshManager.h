@@ -36,7 +36,7 @@ public:
 	void setProperty(PS property_struct);
 	void setProjection(mat4 proj);
 	void setViewMatrix(mat4 view_matrix);
-	void selectViewRange(int x, int y, int z); // 展示x-xmax y-ymax z-zmax 区间内的网格
+	void selectViewRange(int dimension,int st);// 展示x-xmax y-ymax z-zmax 区间内的网格
 	void setRenderMode(ModeType type);
 	ModeType getRenderMode() const;
 };

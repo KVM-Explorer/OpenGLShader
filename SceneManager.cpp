@@ -174,3 +174,27 @@ int SceneManager::getFrameNum() const
 {
 	return dataLoader.getPropertyStructure().tot;
 }
+
+void SceneManager::setShowRange(int dimension, int st)
+{
+	meshManager.selectViewRange(dimension, st);
+}
+
+int SceneManager::getStRange(int x) const
+{
+	auto p = dataLoader.getDataStructure();
+	switch (x)
+	{
+	case 0:
+		return p.x;
+		break;
+	case 1:
+		return p.y;
+		break;
+	case 2:
+		return p.z;
+		break;
+	default:
+		break;
+	}
+}

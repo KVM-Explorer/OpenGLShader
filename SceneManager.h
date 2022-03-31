@@ -61,6 +61,7 @@ public:
 	 * @return 
 	*/
 	int getFrameNum() const;
-
+	void setShowRange(int dimension,int st);
+	int getStRange(int dimension) const;
 };
 
