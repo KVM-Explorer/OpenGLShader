@@ -106,11 +106,7 @@ void MeshManager::setProperty(PS property_struct)
 		default:
 			x->setValue(property_struct.buffer[index]);
 			break;
-		}
-		//x->setValue(property_struct.buffer[index]);
-		//x->setValue(getSmoothValue(index));
-
-		
+		}	
 		index++;
 	}
 }

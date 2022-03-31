@@ -148,7 +148,7 @@ void DataLoader::Text2Binary(string name)
             src_file >> value;
             buffer[index++] = stof(value);
         }
-        dst_file.write(reinterpret_cast<const char*>(buffer.get()),sizeof(float)*dataStructure.num);
+        dst_file.write(reinterpret_cast<const char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
         propertyStructure.tot++;    // ¿€º∆–Ú∫≈
         index = 0;
     }
@@ -189,6 +189,7 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataPre()
     propertyStructure.index--;
     dataPtr = file.tellg() ;        
     file.close();
+    return propertyStructure;
 }
 
 DataLoader::PropertyStructure DataLoader::getPropertyDataText(string filename)

@@ -636,6 +636,7 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 
 void CMy1907010308YWH3View::UISelectProperty()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO2));
 
@@ -643,8 +644,10 @@ void CMy1907010308YWH3View::UISelectProperty()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr)
 	{
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
 
 /**
@@ -652,6 +655,7 @@ void CMy1907010308YWH3View::UISelectProperty()
 */
 void CMy1907010308YWH3View::UISelectViewMode()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
 
@@ -660,7 +664,7 @@ void CMy1907010308YWH3View::UISelectViewMode()
 	if(sceneManager!=nullptr)
 	{
 
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+
 	}
 }
 
@@ -669,6 +673,7 @@ void CMy1907010308YWH3View::UISelectViewMode()
 */
 void CMy1907010308YWH3View::UISelectRange()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
 
@@ -676,13 +681,16 @@ void CMy1907010308YWH3View::UISelectRange()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr)
 	{
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
 
 
 void CMy1907010308YWH3View::UISelectRenderMode()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
 	
@@ -690,14 +698,16 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr) {
 		sceneManager->setRenderMode(content);
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	
 }
 
 
 void CMy1907010308YWH3View::UISelectColorMin()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON4));
 
@@ -705,14 +715,16 @@ void CMy1907010308YWH3View::UISelectColorMin()
 	{
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMin(GetRValue(color), GetGValue(color), GetBValue(color));
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	
 }
 
 
 void CMy1907010308YWH3View::UISelectColorMax()
 {
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
 	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON5));
 
@@ -720,7 +732,8 @@ void CMy1907010308YWH3View::UISelectColorMax()
 	{
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMax(GetRValue(color), GetGValue(color), GetBValue(color));
-		Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	
 }
