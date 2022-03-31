@@ -28,6 +28,8 @@ public:
 	{
 		int index;
 		int tot;
+		float maxVal;
+		float minVal;
 		std::shared_ptr<float[]> buffer;
 	};
 protected:
@@ -52,7 +54,9 @@ public:
 	PropertyStructure getPropertyDataPre();	//仅用于binary
 	PropertyStructure getPropertyDataText(string filename);	// 用于开发测试和转换生成二进制文件
 	PropertyStructure getPropertyDataBinary(string property);	// 更新成员首次打开binary文件
+	PropertyStructure getPropertyStructure() const;
 	void Text2Binary(string name);	// 将文本转化为二进制文件
+
 
 };
 

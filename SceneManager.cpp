@@ -50,9 +50,9 @@ void SceneManager::setFileDirectory(string dir)
 
 	// MeshManager
 	meshManager.init(dataLoader.getDataStructure());
-	auto data_property = dataLoader.getPropertyDataText(propertyName+".pro");
+	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
 	meshManager.setProperty(data_property);
-
+	
 	
 	// ColorPatch
 	//colorPatch.setRange();
@@ -81,13 +81,14 @@ void SceneManager::render()
 	auto model_mat = glm::scale(vec3(0.33f, 0.33f, 1.f));
 
 	auto mode = meshManager.getRenderMode();
+	auto ps = dataLoader.getPropertyStructure();	// 属性数据结构
 	shaderFromType[mode]->Use();
 	
 	shaderFromType[mode]->SetUniform("ProjectionMatrix",projectMatrix);
 	shaderFromType[mode]->SetUniform("ViewMatrix",camera.getViewMatrix());
 	shaderFromType[mode]->SetUniform("ModelMatrix", model_mat);
-	shaderFromType[mode]->SetUniform("minValue", 3000.f);
-	shaderFromType[mode]->SetUniform("maxValue", 5000.f);
+	shaderFromType[mode]->SetUniform("minValue", ps.minVal);
+	shaderFromType[mode]->SetUniform("maxValue", ps.maxVal);
 	shaderFromType[mode]->SetUniform("minColor", vec4(min_color, 1.f));
 	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
 	
@@ -134,7 +135,7 @@ void SceneManager::setRenderMode(std::string mode)
 {
 	auto render_mode = keyFromString[mode];
 	meshManager.setRenderMode(render_mode);
-	auto data_property = dataLoader.getPropertyDataText(propertyName+".pro");
+	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
 	meshManager.setProperty(data_property);
 }
 
@@ -142,6 +143,22 @@ void SceneManager::setProperty(string property_name)
 {
 	propertyName = property_name;
 
-	auto data_property = dataLoader.getPropertyDataText(propertyName + ".pro");
+	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
 	meshManager.setProperty(data_property);
+}
+
+bool SceneManager::showNext()
+{
+	auto data_property = dataLoader.getPropertyDataNext();
+	meshManager.setProperty(data_property);
+	if (data_property.index == data_property.tot - 1) return false;
+	return true;
+}
+
+bool SceneManager::showPre()
+{
+	auto data_property = dataLoader.getPropertyDataPre();
+	meshManager.setProperty(data_property);
+	if (data_property.index == 0) return false;
+	return true;
 }

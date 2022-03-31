@@ -93,6 +93,11 @@ public:
 	afx_msg void UISelectRenderMode();
 	afx_msg void UISelectColorMin();
 	afx_msg void UISelectColorMax();
+	afx_msg void UIPlayData();
+	afx_msg void UIPlayReverseData();
+	afx_msg void UIPlayPause();
+	afx_msg void UIPlayNextData();
+	afx_msg void UIPlayPreData();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

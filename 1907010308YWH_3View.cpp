@@ -68,6 +68,11 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_COMBO3, &CMy1907010308YWH3View::UISelectRenderMode)
 	ON_COMMAND(ID_BUTTON4, &CMy1907010308YWH3View::UISelectColorMin)
 	ON_COMMAND(ID_BUTTON5, &CMy1907010308YWH3View::UISelectColorMax)
+	ON_COMMAND(ID_BUTTON11, &CMy1907010308YWH3View::UIPlayData)
+	ON_COMMAND(ID_BUTTON7, &CMy1907010308YWH3View::UIPlayReverseData)
+	ON_COMMAND(ID_BUTTON10, &CMy1907010308YWH3View::UIPlayPause)
+	ON_COMMAND(ID_BUTTON9, &CMy1907010308YWH3View::UIPlayNextData)
+	ON_COMMAND(ID_BUTTON8, &CMy1907010308YWH3View::UIPlayPreData)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -362,19 +367,30 @@ void CMy1907010308YWH3View::OnCollisionPentagram()
 
 void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
 {
-	if (nIDEvent == 1)
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	switch (nIDEvent)
 	{
-		if (scene)
-		{
-			wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-
-			scene->Update();
-
-			wglMakeCurrent(0, 0);
-			Invalidate(FALSE);
+	case 1:
+		if (scene)scene->Update();
+		break;
+	case 2:	// 顺序播放
+		if (sceneManager != nullptr) {
+			auto status = sceneManager->showNext();
+			if (status == false)KillTimer(2);
 		}
-
+		break;	
+	case 3:	// 倒序播放
+		if (sceneManager != nullptr) {
+			auto status = sceneManager->showPre();
+			if (status == false) KillTimer(3);
+		}
+		break;
+	default:
+		break;
 	}
+		
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);
 	CView::OnTimer(nIDEvent);
 }
 
@@ -736,4 +752,48 @@ void CMy1907010308YWH3View::UISelectColorMax()
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 	
+}
+
+
+void CMy1907010308YWH3View::UIPlayData()
+{
+	KillTimer(1);
+	KillTimer(3);
+	SetTimer(2, 500, NULL);
+
+}
+
+
+void CMy1907010308YWH3View::UIPlayReverseData()
+{
+	KillTimer(1);
+	KillTimer(2);
+	SetTimer(3, 500, NULL);
+}
+
+
+void CMy1907010308YWH3View::UIPlayPause()
+{
+	KillTimer(1);
+	KillTimer(2);
+	KillTimer(3);
+
+}
+
+
+void CMy1907010308YWH3View::UIPlayNextData()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	if (sceneManager != nullptr) sceneManager->showNext();
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::UIPlayPreData()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	if (sceneManager != nullptr) sceneManager->showPre();
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }

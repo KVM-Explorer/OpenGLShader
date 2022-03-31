@@ -7,7 +7,7 @@
 MeshManager::MeshManager()
 {
 	stX = stY = stZ = 0;
-	renderMode = ModeType::smooth;
+	renderMode = ModeType::single;
 }
 
 MeshManager::~MeshManager()

@@ -54,7 +54,8 @@ public:
 	void setScaleRatio(float ratio);
 	void setTimeStamp(int time);
 	void setProperty(string property_name);
-
+	bool showNext();
+	bool showPre();
 
 };
 

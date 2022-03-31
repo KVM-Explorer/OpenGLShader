@@ -111,15 +111,25 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataBinary(string property)
     if (!isExistBinary(property))    Text2Binary(property);
     
     currentProperty = property;
-    string path = dirname + "/" + property + ".bin";
-    std::ifstream file;
+    string data_path = dirname + "/" + property + ".bin";
+    string meta_path = dirname + "/" + property + ".meta";
+    std::ifstream data_file;
+    std::ifstream meta_file;
     auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
-    file.open(path, std::ios::in | std::ios::binary);
-    file.read(reinterpret_cast<char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
+    data_file.open(data_path, std::ios::in | std::ios::binary);
+    meta_file.open(meta_path, std::ios::in | std::ios::binary);
+
+    meta_file.read(reinterpret_cast<char*>(&propertyStructure), sizeof(propertyStructure));
+    data_file.read(reinterpret_cast<char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
     propertyStructure.buffer = buffer;
-    propertyStructure.index = 0;
-    dataPtr = file.tellg();
-    file.close();
+    dataPtr = data_file.tellg();
+
+    data_file.close();
+    meta_file.close();
+    return propertyStructure;
+}
+DataLoader::PropertyStructure DataLoader::getPropertyStructure() const
+{
     return propertyStructure;
 }
 /**
@@ -132,13 +142,19 @@ void DataLoader::Text2Binary(string name)
     auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
     
     string tmp, id, time;
-    int index = 0;
+    float min_val, max_val;
+    min_val = 0x7ffff;
+    max_val = 0;
+    int index = 0,tot = 0;
     string src = dirname + "/" + name + ".pro";
     string dst = dirname + "/" + name + ".bin";
+    string meta = dirname + "/" + name + ".meta";
     ifstream src_file;
     ofstream dst_file;
+    ofstream meta_file;
     src_file.open(src,ios::in);
     dst_file.open(dst,ios::out|ios::binary);  
+    meta_file.open(meta, ios::out | ios::binary);
     src_file >> currentProperty;
     while (src_file >> tmp >> id >> tmp >> time)
     {
@@ -147,35 +163,55 @@ void DataLoader::Text2Binary(string name)
             string value;
             src_file >> value;
             buffer[index++] = stof(value);
+            min_val = min(min_val, stof(value));
+            max_val = max(max_val, stof(value));
         }
         dst_file.write(reinterpret_cast<const char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
-        propertyStructure.tot++;    // 累计序号
+        tot++;   // 累计序号
         index = 0;
     }
+    
+    propertyStructure.maxVal = max_val;
+    propertyStructure.minVal = min_val;
+    propertyStructure.index = 0;
+    propertyStructure.tot = tot;
+    propertyStructure.buffer = nullptr;
+    meta_file.write(reinterpret_cast<const char*>(&propertyStructure), sizeof(propertyStructure));
+
+    meta_file.close();
     src_file.close();
     dst_file.close();
 }
 
-
+/**
+ * @brief 获取下一帧的数据
+ * @return 
+*/
 DataLoader::PropertyStructure DataLoader::getPropertyDataNext()
 {
+    if (propertyStructure.index == propertyStructure.tot - 1) return propertyStructure;
     using namespace std;
-    string path = dirname + "/" + currentProperty + ".bin";\
+    string path = dirname + "/" + currentProperty + ".bin";
     std::ifstream file;
     auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
     file.open(path, std::ios::in | std::ios::binary);
     file.seekg(dataPtr, ios::beg);
     file.read(reinterpret_cast<char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
     propertyStructure.buffer = buffer;
-    propertyStructure.index++;
     dataPtr = file.tellg();
+    propertyStructure.index++;
     file.close();
 
     return propertyStructure;
 }
 
+/**
+ * @brief 获取上一帧的数据，其安全性由外部模块保证
+ * @return
+*/
 DataLoader::PropertyStructure DataLoader::getPropertyDataPre()
 {
+    if (propertyStructure.index == 0) return propertyStructure;
     using namespace std;
     string path = dirname + "/" + currentProperty + ".bin";
     std::ifstream file;
@@ -186,8 +222,8 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataPre()
     file.seekg(dataPtr, ios::beg); // - 2* sizeof(data) 并提供检查
     file.read(reinterpret_cast<char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
     propertyStructure.buffer = buffer;
-    propertyStructure.index--;
     dataPtr = file.tellg() ;        
+    propertyStructure.index--;
     file.close();
     return propertyStructure;
 }
