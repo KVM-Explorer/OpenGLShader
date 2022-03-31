@@ -35,6 +35,7 @@ SceneManager::SceneManager()
 	keyFromString["smooth"] = ModeType::smooth;
 	keyFromString["mesh"] = ModeType::mesh;
 
+	propertyName = "pressure";
 }
 
 SceneManager::~SceneManager()
@@ -49,7 +50,7 @@ void SceneManager::setFileDirectory(string dir)
 
 	// MeshManager
 	meshManager.init(dataLoader.getDataStructure());
-	auto data_property = dataLoader.getPropertyDataText("pressure.pro");
+	auto data_property = dataLoader.getPropertyDataText(propertyName+".pro");
 	meshManager.setProperty(data_property);
 
 	
@@ -133,6 +134,14 @@ void SceneManager::setRenderMode(std::string mode)
 {
 	auto render_mode = keyFromString[mode];
 	meshManager.setRenderMode(render_mode);
-	auto data_property = dataLoader.getPropertyDataText("pressure.pro");
+	auto data_property = dataLoader.getPropertyDataText(propertyName+".pro");
+	meshManager.setProperty(data_property);
+}
+
+void SceneManager::setProperty(string property_name)
+{
+	propertyName = property_name;
+
+	auto data_property = dataLoader.getPropertyDataText(propertyName + ".pro");
 	meshManager.setProperty(data_property);
 }

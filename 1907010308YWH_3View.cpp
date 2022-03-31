@@ -644,7 +644,7 @@ void CMy1907010308YWH3View::UISelectProperty()
 	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr)
 	{
-
+		sceneManager->setProperty(content);
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数

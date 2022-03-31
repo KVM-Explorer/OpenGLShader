@@ -18,6 +18,7 @@ class SceneManager
 private:
 	std::map<std::string, ModeType> keyFromString;
 	std::map<ModeType, std::unique_ptr<cgProgram>> shaderFromType;
+	string propertyName;
 protected:
 	mat4 projectMatrix;
 	DataLoader	dataLoader;
@@ -52,7 +53,7 @@ public:
 	void setRenderMode(std::string mode);
 	void setScaleRatio(float ratio);
 	void setTimeStamp(int time);
-	void setProperty(string data_property);
+	void setProperty(string property_name);
 
 
 };
