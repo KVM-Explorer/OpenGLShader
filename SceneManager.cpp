@@ -51,6 +51,7 @@ void SceneManager::setFileDirectory(string dir)
 	// MeshManager
 	meshManager.init(dataLoader.getDataStructure());
 	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
+	colorPatch.setRange(data_property.minVal, data_property.maxVal, vec3(0,1.f,1.f), vec3(240.f,1.f,1.f));
 	meshManager.setProperty(data_property);
 	
 	
@@ -79,16 +80,15 @@ void SceneManager::render()
 	auto max_color = colorPatch.getMaxColor();	max_color.x = max_color.x / 360.f;
 	
 	auto model_mat = glm::scale(vec3(0.33f, 0.33f, 1.f));
-
 	auto mode = meshManager.getRenderMode();
-	auto ps = dataLoader.getPropertyStructure();	// 属性数据结构
+
 	shaderFromType[mode]->Use();
 	
 	shaderFromType[mode]->SetUniform("ProjectionMatrix",projectMatrix);
 	shaderFromType[mode]->SetUniform("ViewMatrix",camera.getViewMatrix());
 	shaderFromType[mode]->SetUniform("ModelMatrix", model_mat);
-	shaderFromType[mode]->SetUniform("minValue", ps.minVal);
-	shaderFromType[mode]->SetUniform("maxValue", ps.maxVal);
+	shaderFromType[mode]->SetUniform("minValue", colorPatch.getRange().minValue);
+	shaderFromType[mode]->SetUniform("maxValue", colorPatch.getRange().maxValue);
 	shaderFromType[mode]->SetUniform("minColor", vec4(min_color, 1.f));
 	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
 	
@@ -139,11 +139,18 @@ void SceneManager::setRenderMode(std::string mode)
 	meshManager.setProperty(data_property);
 }
 
+void SceneManager::selectShowData(int index)
+{
+	auto data_property = dataLoader.getPropertyDataByIndex(index);
+	meshManager.setProperty(data_property);
+}
+
 void SceneManager::setProperty(string property_name)
 {
 	propertyName = property_name;
 
 	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
+	colorPatch.setRange(data_property.minVal, data_property.maxVal);
 	meshManager.setProperty(data_property);
 }
 
@@ -161,4 +168,9 @@ bool SceneManager::showPre()
 	meshManager.setProperty(data_property);
 	if (data_property.index == 0) return false;
 	return true;
+}
+
+int SceneManager::getFrameNum() const
+{
+	return dataLoader.getPropertyStructure().tot;
 }

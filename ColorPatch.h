@@ -13,16 +13,16 @@ public:
     };
     struct Range
     {
-        int minValue, maxValue;
+        float minValue, maxValue;
         vec3 minColor, maxColor;
-        Range(int min_value, int max_value, vec3 min_color, vec3 max_color)
+        Range(float min_value, float max_value, vec3 min_color, vec3 max_color)
             :minValue(min_value), maxValue(max_value),
             minColor(min_color), maxColor(max_color)
         {};
         Range() 
         {
-            minValue = maxValue = 0;
-            minColor = maxColor = vec3(0, 0, 0);
+            minValue = maxValue = 0.f;
+            minColor = maxColor = vec3(0.f, 0.f, 0.f);
         };
     };
 protected:
@@ -44,7 +44,8 @@ public:
     void setProjection(mat4 project);
     void render();
     
-    void setRange(int min_value, int max_value, vec3 min_color, vec3 max_color);
+    void setRange(float min_value, float max_value, vec3 min_color, vec3 max_color);
+    void setRange(float min_val, float max_val);
     /**
      * @brief 
      * @param color hsv 

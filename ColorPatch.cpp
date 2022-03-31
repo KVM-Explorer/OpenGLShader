@@ -21,16 +21,9 @@ ColorPatch::~ColorPatch()
 void ColorPatch::init(int num)
 {
 	blockNum = num;
-
-	//todo
-
-
+	// Todo
 }
 
-//void ColorPatch::calculateModelMatrix()
-//{
-//	//Todo 
-//}
 
 void ColorPatch::setPosition(vec3 position)
 {
@@ -55,10 +48,18 @@ void ColorPatch::render()
 {
 }
 
-void ColorPatch::setRange(int min_value, int max_value, vec3 min_color, vec3 max_color)
+void ColorPatch::setRange(float min_value, float max_value, vec3 min_color, vec3 max_color)
 {
 	range = Range(min_value, max_value, min_color, max_color);
 }
+
+void ColorPatch::setRange(float min_val, float max_val)
+{
+	range.minValue = min_val;
+	range.maxValue = max_val;
+}
+
+
 
 void ColorPatch::setColorMin(vec3 color)
 {

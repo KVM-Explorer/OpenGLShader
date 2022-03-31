@@ -52,10 +52,15 @@ public:
 	void setColorMax(unsigned char r, unsigned char g, unsigned char b);
 	void setRenderMode(std::string mode);
 	void setScaleRatio(float ratio);
-	void setTimeStamp(int time);
+	void selectShowData(int index);
 	void setProperty(string property_name);
 	bool showNext();
 	bool showPre();
+	/**
+	 * @brief 获得当前属性下的帧数目
+	 * @return 
+	*/
+	int getFrameNum() const;
 
 };
 

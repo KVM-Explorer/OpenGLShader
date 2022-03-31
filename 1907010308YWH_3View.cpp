@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_BUTTON10, &CMy1907010308YWH3View::UIPlayPause)
 	ON_COMMAND(ID_BUTTON9, &CMy1907010308YWH3View::UIPlayNextData)
 	ON_COMMAND(ID_BUTTON8, &CMy1907010308YWH3View::UIPlayPreData)
+	ON_COMMAND(ID_COMBO6, &CMy1907010308YWH3View::UITimeSelector)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -151,6 +152,25 @@ BOOL CMy1907010308YWH3View::SetupPixelFormat()
 	if (::SetPixelFormat(m_pDC->GetSafeHdc(), m_nPixelFormat, &pfd) == FALSE)
 		return FALSE;
 	return true;
+}
+
+void CMy1907010308YWH3View::AddDataSelectorContent(int num)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+	auto count = pComboBox->GetCount();
+	CString str;
+	for (int i = 0; i < count; i++)
+	{
+		str.Format(_T("%d"), i);
+		pComboBox->DeleteItem(str);
+	}
+	for (int i = 0; i < num; i++)
+	{
+		str.Format(_T("%d"),i);
+		pComboBox->AddItem(str);
+	}
+	pComboBox->SelectItem(0);
 }
 
 void CMy1907010308YWH3View::OnDraw(CDC* pDC)
@@ -376,12 +396,20 @@ void CMy1907010308YWH3View::OnTimer(UINT_PTR nIDEvent)
 	case 2:	// 顺序播放
 		if (sceneManager != nullptr) {
 			auto status = sceneManager->showNext();
+			CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+			CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+			auto index = pComboBox->GetCurSel();
+			pComboBox->SelectItem(index + 1);
 			if (status == false)KillTimer(2);
 		}
 		break;	
 	case 3:	// 倒序播放
 		if (sceneManager != nullptr) {
 			auto status = sceneManager->showPre();
+			CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+			CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+			auto index = pComboBox->GetCurSel();
+			pComboBox->SelectItem(index - 1);
 			if (status == false) KillTimer(3);
 		}
 		break;
@@ -629,6 +657,8 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 
 			sceneManager->setProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 			sceneManager->setFileDirectory(dir);
+			AddDataSelectorContent(sceneManager->getFrameNum());
+
 
 		}
 
@@ -661,6 +691,7 @@ void CMy1907010308YWH3View::UISelectProperty()
 	if (sceneManager != nullptr)
 	{
 		sceneManager->setProperty(content);
+		AddDataSelectorContent(sceneManager->getFrameNum());
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
@@ -784,7 +815,20 @@ void CMy1907010308YWH3View::UIPlayPause()
 void CMy1907010308YWH3View::UIPlayNextData()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	if (sceneManager != nullptr) sceneManager->showNext();
+	if (sceneManager != nullptr)
+	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+		auto index = pComboBox->GetCurSel();
+		if (index + 1 < pComboBox->GetCount())
+		{
+			pComboBox->SelectItem(index + 1);
+			sceneManager->showNext();
+		}
+			
+			
+
+	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
@@ -793,7 +837,33 @@ void CMy1907010308YWH3View::UIPlayNextData()
 void CMy1907010308YWH3View::UIPlayPreData()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	if (sceneManager != nullptr) sceneManager->showPre();
+	if (sceneManager != nullptr)
+	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+		auto index = pComboBox->GetCurSel();
+		if (index -1 >=0)
+		{
+			pComboBox->SelectItem(index - 1);
+			sceneManager->showPre();
+		}
+	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::UITimeSelector()
+{
+	// TODO: 在此添加命令处理程序代码
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto time_selector_ptr = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+	int index = time_selector_ptr->GetCurSel();
+
+	if (sceneManager != nullptr) sceneManager->selectShowData(index);
+
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }

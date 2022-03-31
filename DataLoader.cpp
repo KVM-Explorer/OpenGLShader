@@ -132,6 +132,25 @@ DataLoader::PropertyStructure DataLoader::getPropertyStructure() const
 {
     return propertyStructure;
 }
+DataLoader::PropertyStructure DataLoader::getPropertyDataByIndex(int index)
+{
+    propertyStructure.index = index;
+    dataPtr = sizeof(float) * (long long)index*(long long)dataStructure.num;
+	using namespace std;
+	string path = dirname + "/" + currentProperty + ".bin";
+	std::ifstream file;
+	auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
+	file.open(path, std::ios::in | std::ios::binary);
+
+	file.seekg(dataPtr, ios::beg);
+	file.read(reinterpret_cast<char*>(buffer.get()), sizeof(float) * (long long)dataStructure.num);
+	propertyStructure.buffer = buffer;
+	dataPtr = file.tellg();
+
+	file.close();
+
+    return propertyStructure;
+}
 /**
  * @brief 文本文件转二进制文件 
  * @param name 属性名称无扩展名
@@ -216,11 +235,12 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataPre()
     string path = dirname + "/" + currentProperty + ".bin";
     std::ifstream file;
     auto buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
+
     file.open(path, std::ios::in | std::ios::binary);
-    // Todo 检查是否越界
     dataPtr = dataPtr - sizeof(float)*2*(long long)dataStructure.num;
     file.seekg(dataPtr, ios::beg); // - 2* sizeof(data) 并提供检查
     file.read(reinterpret_cast<char*>(buffer.get()),sizeof(float)*(long long)dataStructure.num);
+
     propertyStructure.buffer = buffer;
     dataPtr = file.tellg() ;        
     propertyStructure.index--;
