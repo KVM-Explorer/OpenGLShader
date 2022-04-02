@@ -60,13 +60,16 @@
 #define ID_BUTTON4                      32808
 #define ID_BUTTON5                      32809
 #define ID_BUTTON6                      32810
+#define ID_COMBO7                       32811
+#define ID_BUTTON12                     32812
+#define ID_BUTTON13                     32813
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32811
+#define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

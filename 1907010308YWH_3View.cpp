@@ -745,7 +745,26 @@ void CMy1907010308YWH3View::UISelectViewMode()
 
 void CMy1907010308YWH3View::UISelectDimension()
 {
-	// TODO: 在此添加命令处理程序代码
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO7));
+	int dimension = pComboBox->GetCurSel();
+	pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
+	int count = pComboBox->GetCount();
+
+	
+	CString str;
+	for (int i = 0; i < count; i++)
+	{
+		str.Format(_T("%d"), i);
+		pComboBox->DeleteItem(str);
+	}
+	for (int i = 0; i < sceneManager->getStRange(dimension) - 1; i++)
+	{
+		str.Format(_T("%d"), i);
+		pComboBox->AddItem(str);
+	}
+	pComboBox->SelectItem(0);	// Todo Update 
+	if (sceneManager != nullptr) sceneManager->setShowRange(dimension, 0);
 }
 
 /**
