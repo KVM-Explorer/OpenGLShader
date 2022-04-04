@@ -1,6 +1,7 @@
 #pragma once
 #include "ToolBase.h"
 #include<glm/glm.hpp>
+#include<memory>
 using vec3 = glm::vec3;
 using mat4 = glm::mat4;
 class ColorPatch :
@@ -31,16 +32,16 @@ protected:
     mat4 projectionMat;
     mat4 viewMat;
     mat4 modelMat;
+    unsigned int vboHandle[2];
+    unsigned int vaoHandle;
 
 public:
     ColorPatch();
     ~ColorPatch();
 
-    void init(int num);   // 初始化色标 block
+    void init();   // 初始化色标 block
     
-    //void calculateModelMatrix();
-    void setPosition(vec3 position);
-    void setViewMatrix(mat4 view_mat);
+    void setBlockNum(int num);
     void setProjection(mat4 project);
     void render();
     
@@ -59,6 +60,13 @@ public:
     Range getRange() const;
     vec3 getMinColor() const;
     vec3 getMaxColor() const;
+    /**
+     * @brief 更新色块颜色
+    */
+    void updateBlockValue();
+
+    void genBlocks(std::shared_ptr<float[]> dst,int &vindex);
+    void genColor(std::shared_ptr<float[]> dst, int& cindex);
 
 };
 
