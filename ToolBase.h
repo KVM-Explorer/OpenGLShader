@@ -12,8 +12,10 @@ protected:
 
 
 public:
+	ToolBase();
+	~ToolBase();
 	mat4 CalculateModelMaxtrix(vec3 view_pos, vec3 view_head);
-	
+	void setOffset(vec3 offset);
 
 };
 

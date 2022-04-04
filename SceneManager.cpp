@@ -51,30 +51,21 @@ void SceneManager::setFileDirectory(string dir)
 	// MeshManager
 	meshManager.init(dataLoader.getDataStructure());
 	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
-	colorPatch.setRange(data_property.minVal, data_property.maxVal, vec3(0,1.f,1.f), vec3(240.f,1.f,1.f));
 	meshManager.setProperty(data_property);
 	
 	
 	// ColorPatch
-	//colorPatch.setRange();
-	//colorPatch.init();
+	colorPatch.setRange(data_property.minVal, data_property.maxVal, vec3(0, 1.f, 1.f), vec3(240.f, 1.f, 1.f));
+	colorPatch.setBlockNum(10);
+	colorPatch.init();
 }
 
 void SceneManager::render()
 {
 	auto tmp = colorPatch.getRange();
 
-	/// Todo Mesh  Important fix cube
-	//meshManager.setViewMatrix(camera.getViewMatrix());
-	//meshManager.setProjection(projectMatrix);
-	//meshManager.render();
+	
 
-	/// Color Patch
-	// Todo update the content
-	//colorPatch.setPosition(camera.getPosition());
-	colorPatch.setProjection(projectMatrix);
-	colorPatch.setViewMatrix(camera.getViewMatrix());
-	colorPatch.render();
 
 	auto min_color = colorPatch.getMinColor();	min_color.x = min_color.x / 360.f;
 	auto max_color = colorPatch.getMaxColor();	max_color.x = max_color.x / 360.f;
@@ -91,10 +82,16 @@ void SceneManager::render()
 	shaderFromType[mode]->SetUniform("maxValue", colorPatch.getRange().maxValue);
 	shaderFromType[mode]->SetUniform("minColor", vec4(min_color, 1.f));
 	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
-	
 	if(mode==ModeType::single) shaderFromType[mode]->SetUniform("blockNum", 10);
 
 	meshManager.render();
+
+	//  viewPos  viewHead -> Model
+	model_mat = colorPatch.CalculateModelMaxtrix(camera.getPosition(), camera.getDirection());
+	shaderFromType[mode]->SetUniform("ModelMatrix", model_mat);
+	shaderFromType[mode]->SetUniform("ProjectionMatrix", orthoMatrix);
+	colorPatch.render();
+
 	shaderFromType[mode]->Unuse();
 
 }
@@ -102,6 +99,11 @@ void SceneManager::render()
 void SceneManager::setProjection(int width, int height)
 {
 	projectMatrix = glm::perspective(glm::radians(60.f), float(width) / float(height), 1.0f, 3000.f);
+	// Todo ¸üÐÂToolBase ²¹³¥
+	orthoMatrix = glm::ortho(-width/2.f, width/2.f, -height/2.f, height/2.f,1.f,3000.f);
+	colorPatch.setOffset(vec3(width/2.f-100.f,0.f,0.f));
+
+
 }
 
 void SceneManager::setInputSignal(const unsigned char& key, InputType type,int value)

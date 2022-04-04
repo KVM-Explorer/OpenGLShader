@@ -16,7 +16,7 @@ mat4 ToolBase::CalculateModelMaxtrix(vec3 view_pos, vec3 view_head)
 	pos.z = view_pos.z + view_head.z * ratio;
 	model_mat = glm::translate(pos);
 
-
+	model_mat = model_mat * glm::translate(offset);
 	rotate_vector = glm::cross(view_head, vec3(0.f, 1.f, 0.f));
 	auto angle1 = glm::pi<float>() / 2.f - glm::angle(view_head, vec3(0.f, 1.f, 0.f));
 	model_mat = model_mat * glm::rotate(angle1, rotate_vector);
@@ -32,4 +32,18 @@ mat4 ToolBase::CalculateModelMaxtrix(vec3 view_pos, vec3 view_head)
 
 
 	return model_mat;
+}
+
+ToolBase::ToolBase():offset(vec3(400.f,-400.f,0.f))
+{
+
+}
+
+void ToolBase::setOffset(vec3 offset)
+{
+	this->offset = offset;
+}
+
+ToolBase::~ToolBase()
+{
 }

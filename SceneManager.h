@@ -21,6 +21,7 @@ private:
 	string propertyName;
 protected:
 	mat4 projectMatrix;
+	mat4 orthoMatrix;
 	DataLoader	dataLoader;
 	ColorPatch	colorPatch;
 	//Indicator3D indicator3D;
