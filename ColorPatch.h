@@ -2,8 +2,11 @@
 #include "ToolBase.h"
 #include<glm/glm.hpp>
 #include<memory>
+
 using vec3 = glm::vec3;
 using mat4 = glm::mat4;
+using RenderMode = Unit::Mode;
+
 class ColorPatch :
     public ToolBase
 {
@@ -63,10 +66,11 @@ public:
     /**
      * @brief 更新色块颜色
     */
-    void updateBlockValue();
+    void updateBlockValue(RenderMode mode);
 
     void genBlocks(std::shared_ptr<float[]> dst,int &vindex);
-    void genColor(std::shared_ptr<float[]> dst, int& cindex);
+    void genSingleColor(std::shared_ptr<float[]> dst, int& cindex);
+    void genSmoothColor(std::shared_ptr<float[]> dst, int& cindex);
 
 };
 

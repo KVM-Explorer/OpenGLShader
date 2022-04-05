@@ -58,6 +58,7 @@ void SceneManager::setFileDirectory(string dir)
 	colorPatch.setRange(data_property.minVal, data_property.maxVal, vec3(0, 1.f, 1.f), vec3(240.f, 1.f, 1.f));
 	colorPatch.setBlockNum(10);
 	colorPatch.init();
+	colorPatch.updateBlockValue(meshManager.getRenderMode());
 }
 
 void SceneManager::render()
@@ -103,7 +104,6 @@ void SceneManager::setProjection(int width, int height)
 	orthoMatrix = glm::ortho(-width/2.f, width/2.f, -height/2.f, height/2.f,1.f,3000.f);
 	colorPatch.setOffset(vec3(width/2.f-100.f,0.f,0.f));
 
-
 }
 
 void SceneManager::setInputSignal(const unsigned char& key, InputType type,int value)
@@ -139,6 +139,7 @@ void SceneManager::setRenderMode(std::string mode)
 	meshManager.setRenderMode(render_mode);
 	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
 	meshManager.setProperty(data_property);
+	colorPatch.updateBlockValue(render_mode);
 }
 
 void SceneManager::selectShowData(int index)

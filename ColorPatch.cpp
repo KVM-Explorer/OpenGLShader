@@ -6,7 +6,7 @@
 #include <memory>
 #include <gl/glew.h>
 
-using Range =  ColorPatch::Range;
+using Range = ColorPatch::Range;
 
 /**
  * @brief 初始化色标
@@ -32,7 +32,7 @@ void ColorPatch::init()
 	int cindex = 0;
 
 	genBlocks(v, vindex);
-	genColor(c, cindex);
+	//genSingleColor(c, cindex);
 	
 	glGenBuffers(2, vboHandle);
 	glGenVertexArrays(1, &vaoHandle);
@@ -44,7 +44,7 @@ void ColorPatch::init()
 	glEnableVertexAttribArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
-	glBufferData(GL_ARRAY_BUFFER, 2 * 3 * blockNum * sizeof(float), c.get(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 2 * 3 * blockNum * sizeof(float), NULL, GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)1, 1, GL_FLOAT, GL_FALSE, 0, ((GLbyte*)NULL + (0)));
 	glEnableVertexAttribArray(1);
 
@@ -119,19 +119,25 @@ vec3 ColorPatch::getMaxColor() const
 	return range.maxColor;
 }
 
-void ColorPatch::updateBlockValue()
+void ColorPatch::updateBlockValue(RenderMode mode)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);
-	auto ptr = std::shared_ptr<float>(reinterpret_cast<float*>((GL_ARRAY_BUFFER, GL_WRITE_ONLY)));
-	
-	if (ptr != nullptr)
+
+	auto color = std::shared_ptr<float[]>(new float[blockNum * 2 * 3]);
+	int cindex = 0;
+	switch (mode)
 	{
-		auto color = std::shared_ptr<float[]>(new float[blockNum * 2 * 3]);
-		int cindex = 0;
-		genColor(color, cindex);
-		std::memcpy(ptr.get(), color.get(),sizeof(float) * blockNum * 2 * 3);
-		glUnmapBuffer(GL_ARRAY_BUFFER);
+	case RenderMode::single:
+		genSingleColor(color, cindex);
+		break;
+	case RenderMode::smooth:
+		genSmoothColor(color, cindex);
+		break;
+	default:
+		break;
 	}
+	glBufferData(GL_ARRAY_BUFFER, blockNum * 2 * 3 * sizeof(float), color.get(), GL_STATIC_DRAW);
+
 }
 
 /**
@@ -162,18 +168,31 @@ void ColorPatch::genBlocks(std::shared_ptr<float[]> dst,int &vindex)
 	}
 }
 
-void ColorPatch::genColor(std::shared_ptr<float[]> dst, int& cindex)
+void ColorPatch::genSingleColor(std::shared_ptr<float[]> dst, int& cindex)
 {
 	float st = range.minValue;
 	float step = (range.maxValue-range.minValue) / blockNum;
 
 	for (int i = 0; i < blockNum; i++)
 	{
-		float block_color = st;
 
 		dst[cindex++] = st, dst[cindex++] = st, dst[cindex++] = st;
 		dst[cindex++] = st, dst[cindex++] = st, dst[cindex++] = st;
 		
+		st += step;
+	}
+}
+
+void ColorPatch::genSmoothColor(std::shared_ptr<float[]> dst, int& cindex)
+{
+	float st = range.minValue;
+	float step = (range.maxValue - range.minValue) / blockNum;
+
+	for (int i = 0; i < blockNum; i++)
+	{
+		
+		dst[cindex++] = st; dst[cindex++] = st; dst[cindex++] = st+step;
+		dst[cindex++] = st + step; dst[cindex++] = st + step; dst[cindex++] = st;
 		st += step;
 	}
 }
