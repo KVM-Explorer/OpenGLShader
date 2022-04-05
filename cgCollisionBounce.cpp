@@ -46,8 +46,8 @@ void cgCollisionBounce::Update()
     positionX += deltaX;
     positionY += deltaY;
     
-    if(positionX>500||positionX<100)deltaX = -deltaX;
-    if(positionY>500||positionY<100)deltaY = -deltaY;
+    if(positionX>400||positionX<200)deltaX = -deltaX;
+    if(positionY>400||positionY<200)deltaY = -deltaY;
     int length = elementsArray.size();
     /* elementsArray.pop_back();
     TRACE("Angle: %d\n", beta);
