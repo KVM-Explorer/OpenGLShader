@@ -215,15 +215,15 @@ void cgCylinder::Init()
 	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点坐标输入属性（序号0，坐标）对应
 	glEnableVertexAttribArray(0);  // 允许Vertex着色器中输入变量0读取显存数据。
 
-	//glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);//缓冲区数据（颜色）和顶点绑定
-	//glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), normal, GL_STATIC_DRAW);//内存数据复制到显存
-	//glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点颜色输入（序号1，颜色）属性对应
-	//glEnableVertexAttribArray(1);  //  // 允许Vertex着色器中输入变量1读取显存数据。
-
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);//缓冲区数据（颜色）和顶点绑定
 	glBufferData(GL_ARRAY_BUFFER, 3 * 2 * elementNum * sizeof(float), textcol, GL_STATIC_DRAW);//内存数据复制到显存
 	glVertexAttribPointer((GLuint)1, 2, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点颜色输入（序号1，颜色）属性对应
 	glEnableVertexAttribArray(1);  //  // 允许Vertex着色器中输入变量1读取显存数据。
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle[2]);//缓冲区数据（颜色）和顶点绑定
+	glBufferData(GL_ARRAY_BUFFER, 3 * 3 * elementNum * sizeof(float), normal, GL_STATIC_DRAW);//内存数据复制到显存
+	glVertexAttribPointer((GLuint)2, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader的顶点颜色输入（序号1，颜色）属性对应
+	glEnableVertexAttribArray(2);  //  // 允许Vertex着色器中输入变量1读取显存数据。
 
 	glBindVertexArray(0);
 
@@ -254,6 +254,11 @@ void cgCylinder::SetPosition(vec3 position)
 	centerPosition = position;
 }
 
+void cgCylinder::SetRotateInfo(std::vector<float> angle, std::vector<vec3> roller)
+{
+	rotateInfo = std::tuple<std::vector<float>, std::vector<vec3>>(angle, roller);
+}
+
 vec3 cgCylinder::GetPosition()
 {
 	return centerPosition;
@@ -262,6 +267,13 @@ vec3 cgCylinder::GetPosition()
 void cgCylinder::CalcuteModelMatrix()
 {
 	model = glm::translate(centerPosition);
+
+	for (int i = 0; i < std::get<0>(rotateInfo).size(); i++)
+	{
+		float angle = glm::radians(std::get<0>(rotateInfo)[i]);
+		vec3 roller = std::get<1>(rotateInfo)[i];
+		model = model * glm::rotate(angle, roller);
+	}
 }
 
 void cgCylinder::Update()
