@@ -11,10 +11,12 @@ public:
     void Render();
     void CalculateModelMatrix();
     void SetTextureID(unsigned int id);
+    void SetScaleRatio(vec3 ratio);
     unsigned int GetTextureID();
 
 protected:
     unsigned int textureID;
+    vec3 scaleRatio;
 
 };
 

@@ -35,13 +35,12 @@ void cgLightScene::Init()
 	textureProg.CompileShader("Shader/cgLight/texture.frag");
 	textureProg.Link();
 
-	//textureProg.CompileShader("Shader/cgTexture/basic.vs");
-	//textureProg.CompileShader("Shader/cgTexture/basic.frag");
-	//textureProg.Link();
 
 	texture.LoadTexture("texture/40km.bmp");
 
-
+	// Ìí¼ÓÍ¼Ôª
+	
+	
 }
 
 void cgLightScene::Render()
@@ -84,6 +83,7 @@ void cgLightScene::Render()
 			shader->SetUniform("ambientColor", vec3(0.5, 0.5, 0.5));
 			shader->SetUniform("shiness", 10);
 			shader->SetUniform("objectColor", vec3(0, 1, 0));
+		
 		}
 		if ((*iter)->GetName() != "sun" && (*iter)->GetName() != "texture")
 		{
@@ -183,7 +183,7 @@ void cgLightScene::Input(const unsigned int& key)
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 
-	case '[':
+	case ']':
 		alpha -= 1.0f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);
@@ -191,7 +191,7 @@ void cgLightScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
-	case ']':
+	case '[':
 		alpha += 1.f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);

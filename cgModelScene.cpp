@@ -3,6 +3,7 @@
 #include "cgCube.h"
 #include "cgSphere.h"
 #include "cgLightCube.h"
+#include "cgCylinder.h"
 
 cgModelScene::cgModelScene():ourModel("models/Rabbit/Rabbit.obj")
 {
@@ -41,13 +42,41 @@ void cgModelScene::Init()
 	texture.LoadTexture("texture/40km.bmp");
 	earthTexture.LoadTexture("texture/earth.jpg");
 
+	std::vector<float> angles;
+	std::vector<vec3> roller;
+
+	auto cylinder_ptr = std::make_shared<cgCylinder>(4, 1);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0.f, 14.f, 0.f));
+	angles.push_back(180.f);
+	angles.push_back(180.f);
+	roller.push_back(vec3(0.f, 0.f, 1.f));
+	roller.push_back(vec3(0.f, 1.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("texture");
+	cylinder_ptr->SetTextureID(texture.GetID());
+	AddElement(cylinder_ptr);
+
+	angles.clear(); roller.clear();
+	cylinder_ptr = std::make_shared<cgCylinder>(0.5f, 10.f);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0, 5, 0));
+	angles.push_back(90.f);
+	roller.push_back(vec3(1.f, 0.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("pillar");
+	AddElement(cylinder_ptr);
+
 	auto cube_ptr = std::make_shared<cgLightCube>();
 	cube_ptr->Init();
 	cube_ptr->SetPosition(vec3(0.f, 0.f, 0.f));
+	cube_ptr->SetScaleRatio(vec3(10.f, 0.1f, 10.f));
 	cube_ptr->CalculateModelMatrix();
-	cube_ptr->SetName("Ground");
+	cube_ptr->SetName("texture");
 	cube_ptr->SetTextureID(texture.GetID());
-	elementsArray.push_back(cube_ptr);
+	AddElement(cube_ptr);
 
 	auto sphere_ptr = std::make_shared<cgSphere>(1);
 	sphere_ptr->Init();
@@ -112,7 +141,7 @@ void cgModelScene::Render()
 
 	//ƒ£–Õ‰÷»æ
 	glm::mat4 model;
-	model = glm::translate(glm::vec3(0.0f, 0.f, 0.0f)); // translate it down so it's at the center of the scene
+	model = glm::translate(glm::vec3(5.0f, 5.f, 0.0f)); // translate it down so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(2.f, 2.f, 2.f));	// it's a bit too big for our scene, so scale it down
 	ourShader.setUniform("model", model);
 	ourShader.setUniform("lightColor", vec3(1.f, 1.f, 1.f));
@@ -196,7 +225,7 @@ void cgModelScene::Input(const unsigned int& key)
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 
-	case '[':
+	case ']':
 		alpha -= 1.0f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);
@@ -204,7 +233,7 @@ void cgModelScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
-	case ']':
+	case '[':
 		alpha += 1.f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);

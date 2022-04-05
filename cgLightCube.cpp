@@ -7,6 +7,7 @@
 cgLightCube::cgLightCube() 
 {
 	textureID = 0;
+	scaleRatio = vec3(1.f, 1.f, 1.f);
 }
 
 cgLightCube::~cgLightCube()
@@ -28,13 +29,18 @@ void cgLightCube::Render()
 void cgLightCube::CalculateModelMatrix()
 {
 	model = glm::translate(centerPosition);
-	auto m = glm::scale(vec3(10,10, 10));
+	auto m = glm::scale(scaleRatio);
 	model = model * m;
 }
 
 void cgLightCube::SetTextureID(unsigned int id)
 {
 	textureID = id;
+}
+
+void cgLightCube::SetScaleRatio(vec3 ratio)
+{
+	scaleRatio = ratio;
 }
 
 unsigned int cgLightCube::GetTextureID()

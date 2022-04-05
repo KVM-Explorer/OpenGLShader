@@ -507,10 +507,10 @@ void CMy1907010308YWH3View::OnMouseMove(UINT nFlags, CPoint point)
 		int dy = point.y - cursor_position.y;
 
 		// Todo 更新动态的value
-		if (dx > 0)sceneManager->setInputSignal('A', InputType::Mouse, 1);
-		if (dx < 0)sceneManager->setInputSignal('D', InputType::Mouse, 1);
-		if (dy < 0)sceneManager->setInputSignal('W', InputType::Mouse, 1);
-		if (dy > 0)sceneManager->setInputSignal('S', InputType::Mouse, 1);
+		if (dx > 0)sceneManager->setInputSignal('A', InputType::Mouse, 1.f);
+		if (dx < 0)sceneManager->setInputSignal('D', InputType::Mouse, 1.f);
+		if (dy < 0)sceneManager->setInputSignal('W', InputType::Mouse, 1.f);
+		if (dy > 0)sceneManager->setInputSignal('S', InputType::Mouse, 1.f);
 		cursor_position = point;
 		Invalidate(FALSE);
 	}
@@ -565,22 +565,55 @@ void CMy1907010308YWH3View::OnCgPointlight()
 	GetWindowRect(&win_info);
 	lightscene_ptr->SetProjection(win_info.right - win_info.left, win_info.bottom - win_info.top);
 
-	// 添加图元
-	auto sphere_ptr = std::make_shared<cgSphere>(5);
+	auto sphere_ptr = std::make_shared<cgSphere>(1);
 	sphere_ptr->Init();
 	sphere_ptr->SetName("sun");
 	sphere_ptr->SetPosition(vec3(0, 1, 2));
 	sphere_ptr->CalculateModelMatrix();
+	lightscene_ptr->AddElement(sphere_ptr);
+
 	auto sphere_ptr2 = std::make_shared<cgSphere>(5);
 	sphere_ptr2->Init();
 	sphere_ptr2->SetName("object1");
 	sphere_ptr2->SetPosition(vec3(10, 10, -5));
 	sphere_ptr2->CalculateModelMatrix();
-
-
-
 	lightscene_ptr->AddElement(sphere_ptr2);
-	lightscene_ptr->AddElement(sphere_ptr);
+
+	std::vector<float> angles;
+	std::vector<vec3> roller;
+
+	auto cylinder_ptr = std::make_shared<cgCylinder>(4, 1);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0.f, 14.f, 0.f));
+	angles.push_back(180.f);
+	angles.push_back(180.f);
+	roller.push_back(vec3(0.f, 0.f, 1.f));
+	roller.push_back(vec3(0.f, 1.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("texture");
+	lightscene_ptr->AddElement(cylinder_ptr);
+
+	angles.clear(); roller.clear();
+	cylinder_ptr = std::make_shared<cgCylinder>(0.5f, 10.f);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0, 5, 0));
+	angles.push_back(90.f);
+	roller.push_back(vec3(1.f, 0.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("pillar");
+	lightscene_ptr->AddElement(cylinder_ptr);
+
+	auto cube_ptr = std::make_shared<cgLightCube>();
+	cube_ptr->Init();
+	cube_ptr->SetPosition(vec3(0.f, 0.f, 0.f));
+	cube_ptr->SetScaleRatio(vec3(10.f, 0.1f, 10.f));
+	cube_ptr->CalculateModelMatrix();
+	cube_ptr->SetName("texture");
+	cube_ptr->SetTextureID(lightscene_ptr->texture.GetID());
+	lightscene_ptr->AddElement(cube_ptr);
+
 	scene = lightscene_ptr;
 
 
@@ -610,12 +643,12 @@ void CMy1907010308YWH3View::OnCgLight2Texture()
 	light_cube_ptr->SetTextureID(lightscene_ptr->texture.GetID());
 
 	// 添加图元
-	auto sphere_ptr = std::make_shared<cgSphere>(5);
+	auto sphere_ptr = std::make_shared<cgSphere>(1);
 	sphere_ptr->Init();
 	sphere_ptr->SetName("sun");
 	sphere_ptr->SetPosition(vec3(0, 1, 2));
 	sphere_ptr->CalculateModelMatrix();
-	auto sphere_ptr2 = std::make_shared<cgSphere>(5);
+	auto sphere_ptr2 = std::make_shared<cgSphere>(1);
 	sphere_ptr2->Init();
 	sphere_ptr2->SetName("object1");
 	sphere_ptr2->SetPosition(vec3(10, 10, -5));
@@ -624,6 +657,43 @@ void CMy1907010308YWH3View::OnCgLight2Texture()
 	lightscene_ptr->AddElement(sphere_ptr2);
 	lightscene_ptr->AddElement(sphere_ptr);
 	lightscene_ptr->AddElement(light_cube_ptr);
+
+	std::vector<float> angles;
+	std::vector<vec3> roller;
+
+	auto cylinder_ptr = std::make_shared<cgCylinder>(4, 1);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0.f, 14.f, 0.f));
+	angles.push_back(180.f);
+	angles.push_back(180.f);
+	roller.push_back(vec3(0.f, 0.f, 1.f));
+	roller.push_back(vec3(0.f, 1.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("texture");
+	cylinder_ptr->SetTextureID(lightscene_ptr->texture.GetID());
+	lightscene_ptr->AddElement(cylinder_ptr);
+
+	angles.clear(); roller.clear();
+	cylinder_ptr = std::make_shared<cgCylinder>(0.5f, 10.f);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0, 5, 0));
+	angles.push_back(90.f);
+	roller.push_back(vec3(1.f, 0.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("pillar");
+	lightscene_ptr->AddElement(cylinder_ptr);
+
+	auto cube_ptr = std::make_shared<cgLightCube>();
+	cube_ptr->Init();
+	cube_ptr->SetPosition(vec3(0.f, 0.f, 0.f));
+	cube_ptr->SetScaleRatio(vec3(10.f, 0.1f, 10.f));
+	cube_ptr->CalculateModelMatrix();
+	cube_ptr->SetName("texture");
+	cube_ptr->SetTextureID(lightscene_ptr->texture.GetID());
+	lightscene_ptr->AddElement(cube_ptr);
+
 
 	scene = lightscene_ptr;
 

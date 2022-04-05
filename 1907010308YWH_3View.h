@@ -14,6 +14,7 @@
 
 #pragma once
 #include <GL/glew.h>
+#include "cgCylinder.h"
 #include "cgBasicSceneBase.h"
 #include "cgCollisionBounce.h"
 #include "cg3DScene.h"

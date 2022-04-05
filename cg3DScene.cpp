@@ -53,25 +53,40 @@ void cg3DScene::Init()
 	elementsArray.push_back(cube_ptr);
 
 
-	//auto triangle_ptr = std::make_shared<cgTriangle>();
-	//triangle_ptr->Init();
-	//triangle_ptr->SetPosition(vec3(300, 300, 0));
-	//triangle_ptr->CalculateModelMatrix();
-	//elementsArray.push_back(triangle_ptr);
+	auto sphere_ptr = std::make_shared<cgSphere>(5);
+	sphere_ptr->Init();
+	sphere_ptr->SetPosition(vec3(30, 10, 0));
+	sphere_ptr->CalculateModelMatrix();
+	elementsArray.push_back(sphere_ptr);
 
-	//auto sphere_ptr = std::make_shared<cgSphere>(30);
-	//sphere_ptr->Init();
-	//sphere_ptr->SetPosition(vec3(0, 0, 0));
-	//sphere_ptr->CalculateModelMatrix();
-	//elementsArray.push_back(sphere_ptr);
+	std::vector<float> angles;
+	std::vector<vec3> roller;
 
-	//auto cylinder_ptr = std::make_shared<cgCylinder>(20, 40);
-	//cylinder_ptr->Init();
-	//cylinder_ptr->SetPosition(vec3(0, 0, 0));
-	//cylinder_ptr->CalcuteModelMatrix();
-	//cylinder_ptr->SetName("cylinder");
-	//cylinder_ptr->SetTextureID(texture.GetID());
-	//elementsArray.push_back(cylinder_ptr);
+	auto cylinder_ptr = std::make_shared<cgCylinder>(4, 1);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0.f, 14.f, 0.f));
+	angles.push_back(180.f);
+	angles.push_back(180.f);
+	roller.push_back(vec3(0.f, 0.f, 1.f));
+	roller.push_back(vec3(0.f,1.f,0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("cylinder");
+	cylinder_ptr->SetTextureID(texture.GetID());
+	elementsArray.push_back(cylinder_ptr);
+
+	angles.clear(); roller.clear();
+	cylinder_ptr = std::make_shared<cgCylinder>(0.5f, 10.f);
+	cylinder_ptr->Init();
+	cylinder_ptr->SetPosition(vec3(0,5, 0));
+	angles.push_back(90.f);
+	roller.push_back(vec3(1.f, 0.f, 0.f));
+	cylinder_ptr->SetRotateInfo(angles, roller);
+	cylinder_ptr->CalcuteModelMatrix();
+	cylinder_ptr->SetName("pillar");
+	cylinder_ptr->SetTextureID(texture.GetID());
+	elementsArray.push_back(cylinder_ptr);
+
 
 }
 
@@ -209,7 +224,7 @@ void cg3DScene::Input(const unsigned int& key)
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
 
-	case '[':
+	case ']':
 		alpha -= 1.0f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);
@@ -217,7 +232,7 @@ void cg3DScene::Input(const unsigned int& key)
 		viewHead.z = r * cos(alpha / 180.0f * PI);
 		viewMat = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 		break;
-	case ']':
+	case '[':
 		alpha += 1.f;
 		viewHead.y = sin(beta / 180.f * PI);
 		r = cos(beta / 180.f * PI);
