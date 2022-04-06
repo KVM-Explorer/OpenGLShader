@@ -63,13 +63,14 @@ void SceneManager::setFileDirectory(string dir)
 
 void SceneManager::render()
 {
+	using ColorType = ColorPatch::ColorType;
 	auto tmp = colorPatch.getRange();
 
 	
 
 
-	auto min_color = colorPatch.getMinColor();	min_color.x = min_color.x / 360.f;
-	auto max_color = colorPatch.getMaxColor();	max_color.x = max_color.x / 360.f;
+	auto min_color = colorPatch.getMinColor();	
+	auto max_color = colorPatch.getMaxColor();	
 	
 	auto model_mat = glm::scale(vec3(0.33f, 0.33f, 1.f));
 	auto mode = meshManager.getRenderMode();
@@ -83,6 +84,8 @@ void SceneManager::render()
 	shaderFromType[mode]->SetUniform("maxValue", colorPatch.getRange().maxValue);
 	shaderFromType[mode]->SetUniform("minColor", vec4(min_color, 1.f));
 	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
+	if (colorPatch.getColorType() == ColorType::hsv)shaderFromType[mode]->SetUniform("colorType", 0);
+	if (colorPatch.getColorType() == ColorType::rgb)shaderFromType[mode]->SetUniform("colorType", 1);
 	if(mode==ModeType::single) shaderFromType[mode]->SetUniform("blockNum", 10);
 
 	meshManager.render();
@@ -111,6 +114,23 @@ void SceneManager::setInputSignal(const unsigned char& key, InputType type,int v
 	if (type == InputType::Keyboard) camera.inputKeyboard(key);
 	if (type == InputType::Mouse) camera.inputMouse(key, value);
 
+}
+
+void SceneManager::setColorType(int type)
+{
+	using ColorType = ColorPatch::ColorType;
+	switch (type)
+	{
+	case 0:
+		colorPatch.setColorType(ColorType::hsv);
+		break;
+	case 1:
+		colorPatch.setColorType(ColorType::rgb);
+		break;
+	default:
+
+		break;
+	}
 }
 
 void SceneManager::setColorMin(unsigned char r, unsigned char g, unsigned char b)
@@ -144,17 +164,21 @@ void SceneManager::setRenderMode(std::string mode)
 
 void SceneManager::selectShowData(int index)
 {
+	auto render_mode = meshManager.getRenderMode();
 	auto data_property = dataLoader.getPropertyDataByIndex(index);
 	meshManager.setProperty(data_property);
+
+
 }
 
 void SceneManager::setProperty(string property_name)
 {
 	propertyName = property_name;
-
+	auto render_mode = meshManager.getRenderMode();
 	auto data_property = dataLoader.getPropertyDataBinary(propertyName);
 	colorPatch.setRange(data_property.minVal, data_property.maxVal);
 	meshManager.setProperty(data_property);
+	colorPatch.updateBlockValue(render_mode);
 }
 
 bool SceneManager::showNext()

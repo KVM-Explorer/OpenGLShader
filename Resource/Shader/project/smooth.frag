@@ -9,6 +9,7 @@ uniform float minValue;
 
 uniform vec4 minColor;
 uniform vec4 maxColor;
+uniform int colorType;  // 0 hsv 1 rgb
 
 vec3 hsv2rgb(vec3 c)
 {
@@ -22,6 +23,7 @@ void main()
     vec4 color= mix( minColor,maxColor,smoothstep(minValue, maxValue, value)); 
     
     vec3 hsvtorgb = hsv2rgb(vec3(color.xyz));
-
-    FragColor = vec4(hsvtorgb,1);
+    
+    if(colorType==0) FragColor = vec4(hsvtorgb,1);
+    if(colorType==1) FragColor = vec4(color.xyz,1);
 }

@@ -14,7 +14,7 @@ uniform float minValue;
 
 uniform vec4 minColor;
 uniform vec4 maxColor;
-
+uniform int colorType;  // 0 hsv 1 rgb
 uniform int blockNum;
 
 
@@ -29,12 +29,13 @@ float value2level(float min_val,float max_val,float value)
     float ans = 0.f;
     if(value>max_val) return 1.f;
     if(value<min_val) return 0.f;
-    int step = int(max_val-min_val)/blockNum;
-    return (int(value-min_val)/step)/10.f;
+    float step = float(max_val-min_val)/float(blockNum);
+    return float(value-min_val)/float(step*blockNum);
 }
 void main()
 {
-    vec4  color= mix(minColor,maxColor,value2level(minValue,maxValue,VertexValue));  
-    Color = hsv2rgb(vec3(color.xyz));
+     vec4  color = mix(minColor,maxColor,value2level(minValue,maxValue,VertexValue));;
+    if(colorType==0)    Color = hsv2rgb(vec3(color.xyz));
+    if(colorType==1)    Color = vec3(color.xyz);
     gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix* vec4(VertexPosition, 1.0);
 }

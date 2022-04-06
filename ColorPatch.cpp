@@ -5,6 +5,7 @@
 #include <glm/gtc/constants.hpp>
 #include <memory>
 #include <gl/glew.h>
+#include <glm/gtx/color_space.hpp>
 
 using Range = ColorPatch::Range;
 
@@ -15,7 +16,8 @@ using Range = ColorPatch::Range;
 */
 ColorPatch::ColorPatch()
 {
-
+	colorType = ColorType::hsv;
+	blockNum = 10;
 }
 ColorPatch::~ColorPatch()
 {
@@ -91,6 +93,11 @@ void ColorPatch::setRange(float min_val, float max_val)
 	range.maxValue = max_val;
 }
 
+void ColorPatch::setColorType(ColorType type)
+{
+	colorType = type;
+}
+
 
 
 void ColorPatch::setColorMin(vec3 color)
@@ -111,12 +118,19 @@ Range ColorPatch::getRange() const
 
 vec3 ColorPatch::getMinColor() const
 {
-	return range.minColor;
+	if (colorType == ColorType::hsv) return vec3(range.minColor.r / 360.f, range.minColor.g, range.minColor.b);
+	if (colorType == ColorType::rgb) return rgbColor(range.minColor);
 }
 
 vec3 ColorPatch::getMaxColor() const
 {
-	return range.maxColor;
+	if (colorType == ColorType::hsv) return vec3(range.maxColor.x / 360.f, range.maxColor.y, range.maxColor.z);
+	if (colorType == ColorType::rgb) return rgbColor(range.maxColor);
+}
+
+ColorPatch::ColorType ColorPatch::getColorType() const
+{	
+	return colorType;
 }
 
 void ColorPatch::updateBlockValue(RenderMode mode)

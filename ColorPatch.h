@@ -31,6 +31,7 @@ public:
     };
 protected:
     int blockNum;   // 色标块个数
+    ColorType colorType;
     Range range;
     mat4 projectionMat;
     mat4 viewMat;
@@ -50,6 +51,7 @@ public:
     
     void setRange(float min_value, float max_value, vec3 min_color, vec3 max_color);
     void setRange(float min_val, float max_val);
+    void setColorType(ColorType type);
     /**
      * @brief 
      * @param color hsv 
@@ -63,8 +65,9 @@ public:
     Range getRange() const;
     vec3 getMinColor() const;
     vec3 getMaxColor() const;
+    ColorType getColorType() const;
     /**
-     * @brief 更新色块颜色
+     * @brief 更新色块
     */
     void updateBlockValue(RenderMode mode);
 

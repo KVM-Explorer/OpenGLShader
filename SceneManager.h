@@ -37,6 +37,7 @@ public:
 	void render();
 	void setProjection(int width,int height);
 	void setInputSignal(const unsigned char& key, InputType type,int value = 0);
+	void setColorType(int type);
 	/**
 	 * @brief 设置颜色下界
 	 * @param r 0-255

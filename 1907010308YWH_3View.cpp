@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_BUTTON8, &CMy1907010308YWH3View::UIPlayPreData)
 	ON_COMMAND(ID_COMBO6, &CMy1907010308YWH3View::UITimeSelector)
 	ON_COMMAND(ID_COMBO7, &CMy1907010308YWH3View::UISelectDimension)
+	ON_COMMAND(ID_COMBO8, &CMy1907010308YWH3View::UISelectColorType)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -197,6 +198,9 @@ void CMy1907010308YWH3View::UIinit()
 		st_ptr->AddItem(str);
 	}
 	st_ptr->SelectItem(0);
+
+	auto color_type_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO8));
+	color_type_selector->SelectItem(0);
 
 
 }
@@ -975,7 +979,6 @@ void CMy1907010308YWH3View::UIPlayPreData()
 
 void CMy1907010308YWH3View::UITimeSelector()
 {
-	// TODO: 在此添加命令处理程序代码
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
 	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
@@ -990,3 +993,19 @@ void CMy1907010308YWH3View::UITimeSelector()
 
 
 
+
+
+void CMy1907010308YWH3View::UISelectColorType()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto color_type_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO8));
+	int index = color_type_selector->GetCurSel();
+
+	if (sceneManager != nullptr)	sceneManager->setColorType(index);
+	
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
