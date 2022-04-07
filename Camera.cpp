@@ -76,7 +76,7 @@ void Camera::inputMouse(const unsigned char& key, float value)
 			break;
 	}
 	
-	TRACE("A: %.2f B %.2f\n", alpha, beta);
+	//TRACE("A: %.2f B %.2f\n", alpha, beta);
 }
 
 void Camera::inputKeyboard(const unsigned char& key)
@@ -121,7 +121,7 @@ void Camera::inputKeyboard(const unsigned char& key)
 			viewMatrix = glm::lookAt(viewPos, viewPos + viewHead, glm::vec3(0.0f, 1.0f, 0.0f));
 			break;
 	}
-	//TRACE("Pos %.2f %.2f %.2f \n", viewPos.x,viewPos.y,viewPos.z);
+	TRACE("Pos %.2f %.2f %.2f \n", viewPos.x,viewPos.y,viewPos.z);
 	//TRACE("Direct %.2f %.2f %.2f\n", viewHead.x, viewHead.y, viewHead.z);
 }
 

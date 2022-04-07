@@ -16,6 +16,7 @@ private:
 	mat4 modelMatrix;	// Todo update position
 	DS dataStructure;
 	int stX, stY, stZ;
+	vec3 centerPos;
 
 protected:
 	cgProgram shader;
@@ -29,7 +30,7 @@ public:
 	~MeshManager();
 
 	void init(DS data_struct);
-	void loadValue(PS property_data);
+
 
 	void render();
 	//void setScaleRatio(float ratio);	// 模型变换缩放
@@ -39,5 +40,6 @@ public:
 	void selectViewRange(int dimension,int st);// 展示x-xmax y-ymax z-zmax 区间内的网格
 	void setRenderMode(ModeType type);
 	ModeType getRenderMode() const;
+	mat4 getModelMat();
 };
 

@@ -8,6 +8,7 @@ MeshManager::MeshManager()
 {
 	stX = stY = stZ = 0;
 	renderMode = ModeType::single;
+	centerPos = vec3(-3600.f, -3750.f, -804.5f);
 }
 
 MeshManager::~MeshManager()
@@ -18,6 +19,14 @@ void MeshManager::init(DS data_struct)
 {
 	dataStructure = data_struct;
 	int st = 0;
+	float max_x(0), max_y(0), max_z(0);
+
+	auto max = [](float a, float b)
+	{
+		if (a < b)return b;
+		return a;
+	};
+
 	for(int z=0;z<dataStructure.z;z++)
 		for(int y=0;y<dataStructure.y;y++)
 			for (int x = 0; x < dataStructure.x; x++)
@@ -26,8 +35,15 @@ void MeshManager::init(DS data_struct)
 				unit->init(dataStructure.buffer,st);
 				units.emplace_back(unit);
 				st += 24;
-			}
+				for (int k = 0; k < 24; k+=3)
+				{
+					max_x = max(max_x, dataStructure.buffer[st + k]);
+					max_y = max(max_y, dataStructure.buffer[st + k + 1]);
+					max_z = max(max_z, dataStructure.buffer[st + k + 2]);
 
+				}
+			}
+	TRACE("MAX %.2f %.2f %.2f", max_x, max_y, max_z);
 }
 
 
@@ -147,4 +163,12 @@ void MeshManager::setRenderMode(ModeType type)
 ModeType MeshManager::getRenderMode() const
 {
 	return renderMode;
+}
+
+mat4 MeshManager::getModelMat()
+{
+	mat4 model;
+	model = glm::scale(vec3(0.3f, 0.3f,1.f));
+	model = model * glm::translate(centerPos);
+	return model;
 }

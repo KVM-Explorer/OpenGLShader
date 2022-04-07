@@ -72,7 +72,7 @@ void SceneManager::render()
 	auto min_color = colorPatch.getMinColor();	
 	auto max_color = colorPatch.getMaxColor();	
 	
-	auto model_mat = glm::scale(vec3(0.33f, 0.33f, 1.f));
+	auto model_mat = meshManager.getModelMat();
 	auto mode = meshManager.getRenderMode();
 
 	shaderFromType[mode]->Use();
