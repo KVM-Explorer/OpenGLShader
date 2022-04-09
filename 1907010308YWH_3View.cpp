@@ -797,6 +797,7 @@ void CMy1907010308YWH3View::UISelectProperty()
 	{
 		sceneManager->setProperty(content);
 		AddDataSelectorContent(sceneManager->getFrameNum());
+		pComboBox->SelectItem(0);
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
