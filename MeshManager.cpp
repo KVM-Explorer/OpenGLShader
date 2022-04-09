@@ -8,7 +8,7 @@ MeshManager::MeshManager()
 {
 	stX = stY = stZ = 0;
 	renderMode = ModeType::single;
-	centerPos = vec3(-3600.f, -3750.f, -804.5f);
+	centerPos = vec3(-3600.f, -3750.f, -804.f);
 }
 
 MeshManager::~MeshManager()
@@ -168,7 +168,8 @@ ModeType MeshManager::getRenderMode() const
 mat4 MeshManager::getModelMat()
 {
 	mat4 model;
-	model = glm::scale(vec3(0.3f, 0.3f,1.f));
+	model = glm::scale(vec3(0.1f, 0.1f,0.1f));
 	model = model * glm::translate(centerPos);
 	return model;
 }
+   

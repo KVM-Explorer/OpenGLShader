@@ -202,6 +202,9 @@ void CMy1907010308YWH3View::UIinit()
 	auto color_type_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO8));
 	color_type_selector->SelectItem(0);
 
+	auto view_mode_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
+	view_mode_selector->SelectItem(0);
+
 
 }
 
@@ -812,9 +815,14 @@ void CMy1907010308YWH3View::UISelectViewMode()
 	string content = CT2A(pComboBox->GetItem(index));
 	if(sceneManager!=nullptr)
 	{
-
+		if (content == "XY") sceneManager->setViewMode(0);
+		if (content == "XZ") sceneManager->setViewMode(1);
+		if (content == "YZ") sceneManager->setViewMode(2);
+		if(content == "3D")sceneManager->setViewMode(3);
 
 	}
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
 
 void CMy1907010308YWH3View::UISelectDimension()

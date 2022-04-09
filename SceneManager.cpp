@@ -102,18 +102,20 @@ void SceneManager::render()
 
 void SceneManager::setProjection(int width, int height)
 {
-	projectMatrix = glm::perspective(glm::radians(60.f), float(width) / float(height), 1.0f, 3000.f);
+	projectMatrix = glm::perspective(glm::radians(60.f), float(width) / float(height), 1.0f, 6000.f);
 	// Todo ¸üÐÂToolBase ²¹³¥
-	orthoMatrix = glm::ortho(-width/2.f, width/2.f, -height/2.f, height/2.f,1.f,3000.f);
+	orthoMatrix = glm::ortho(-width/2.f, width/2.f, -height/2.f, height/2.f,1.f,6000.f);
 	colorPatch.setOffset(vec3(width/2.f-100.f,0.f,0.f));
 
 }
 
 void SceneManager::setInputSignal(const unsigned char& key, InputType type,int value)
 {
-	if (type == InputType::Keyboard) camera.inputKeyboard(key);
-	if (type == InputType::Mouse) camera.inputMouse(key, value);
-
+	if (camera.getViewMode() == ViewMode::XYZ)
+	{
+		if (type == InputType::Keyboard) camera.inputKeyboard(key);
+		if (type == InputType::Mouse) camera.inputMouse(key, value);
+	}
 }
 
 void SceneManager::setColorType(int type)
@@ -220,6 +222,27 @@ int SceneManager::getStRange(int x) const
 		break;
 	case 2:
 		return p.z;
+		break;
+	default:
+		break;
+	}
+}
+
+void SceneManager::setViewMode(int type)
+{
+	switch (type)
+	{
+	case 0:	
+		camera.setViewMode(ViewMode::XY);
+		break;
+	case 1:
+		camera.setViewMode(ViewMode::XZ);
+		break;
+	case 2:
+		camera.setViewMode(ViewMode::YZ);
+		break;
+	case 3:
+		camera.setViewMode(ViewMode::XYZ);
 		break;
 	default:
 		break;

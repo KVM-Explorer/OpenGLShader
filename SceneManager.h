@@ -5,7 +5,7 @@
 #include "Indicator3D.h"
 #include "DataLoader.h"
 using std::string;
-
+using ViewMode = Camera::ViewMode;
 
 enum class InputType
 {
@@ -53,7 +53,7 @@ public:
 	*/
 	void setColorMax(unsigned char r, unsigned char g, unsigned char b);
 	void setRenderMode(std::string mode);
-	void setScaleRatio(float ratio);
+	//void setScaleRatio(float ratio);
 	void selectShowData(int index);
 	void setProperty(string property_name);
 	bool showNext();
@@ -65,5 +65,10 @@ public:
 	int getFrameNum() const;
 	void setShowRange(int dimension,int st);
 	int getStRange(int dimension) const;
+	/**
+	 * @brief 设置视角模式
+	 * @param type 0-XY 1-XZ 2-YZ 3-3D
+	*/
+	void setViewMode(int type);
 };
 

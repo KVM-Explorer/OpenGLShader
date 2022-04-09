@@ -6,6 +6,14 @@ using glm::vec3;
 
 class Camera
 {
+public:
+	enum class ViewMode
+	{
+		XY,
+		XZ,
+		YZ,
+		XYZ
+	};
 protected:
 	vec3 viewHead;
 	vec3 viewPos;
@@ -13,6 +21,8 @@ protected:
 
 	float alpha;
 	float beta;
+
+	ViewMode viewMode;
 
 public:
 	Camera();
@@ -24,5 +34,7 @@ public:
 	mat4 getViewMatrix() const;
 	vec3 getDirection() const;
 	vec3 getPosition() const;
+	void setViewMode(ViewMode mode);
+	ViewMode getViewMode() const;
 };
 
