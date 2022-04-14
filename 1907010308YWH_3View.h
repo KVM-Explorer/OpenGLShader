@@ -104,6 +104,7 @@ public:
 	afx_msg void UITimeSelector();
 	afx_msg void UISelectDimension();
 	afx_msg void UISelectColorType();
+	afx_msg void UISelectBlockNum();
 };
 
 #ifndef _DEBUG  // 1907010308YWH_3View.cpp 中的调试版本

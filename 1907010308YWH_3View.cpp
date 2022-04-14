@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CMy1907010308YWH3View, CView)
 	ON_COMMAND(ID_COMBO6, &CMy1907010308YWH3View::UITimeSelector)
 	ON_COMMAND(ID_COMBO7, &CMy1907010308YWH3View::UISelectDimension)
 	ON_COMMAND(ID_COMBO8, &CMy1907010308YWH3View::UISelectColorType)
+	ON_COMMAND(ID_SPIN1, &CMy1907010308YWH3View::UISelectBlockNum)
 END_MESSAGE_MAP()
 
 // CMy1907010308YWH3View 构造/析构
@@ -205,7 +206,8 @@ void CMy1907010308YWH3View::UIinit()
 	auto view_mode_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
 	view_mode_selector->SelectItem(0);
 
-
+	auto block_num_selector = DYNAMIC_DOWNCAST(CMFCRibbonEdit, pRibbon->FindByID(ID_SPIN1));
+	block_num_selector->SetEditText(_T("10"));
 }
 
 void CMy1907010308YWH3View::OnDraw(CDC* pDC)
@@ -407,6 +409,7 @@ void CMy1907010308YWH3View::OnGePentagram()
 void CMy1907010308YWH3View::OnCollisionPentagram()
 {
 	// TODO: 在此添加命令处理程序代码
+	sceneManager = nullptr;
 	SetTimer(1, 100, NULL);
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	sceneManager = nullptr;
@@ -730,7 +733,7 @@ void CMy1907010308YWH3View::OnModelRabbit()
 
 void CMy1907010308YWH3View::OnProjectOpenDir()
 {
-	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+	
 
 	// TODO: 在此添加控件通知处理程序代码
 	CString file_path;
@@ -751,6 +754,8 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 	{
 		if (SHGetPathFromIDList(pItemIDList, szPath))
 		{
+			auto status = wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+			
 			file_path = szPath;
 			std::string dir =  CT2A(file_path.GetString());
 
@@ -780,7 +785,7 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 		UpdateData(FALSE);	//是否刷新控件的可变内容
 	}
 	wglMakeCurrent(0, 0);
-	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+	Invalidate(TRUE);//发送重绘消息，触发执行 OnDraws 函数
 
 }
 
@@ -1014,6 +1019,21 @@ void CMy1907010308YWH3View::UISelectColorType()
 
 	if (sceneManager != nullptr)	sceneManager->setColorType(index);
 	
+
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+}
+
+
+void CMy1907010308YWH3View::UISelectBlockNum()
+{
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
+
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto block_num_selector = DYNAMIC_DOWNCAST(CMFCRibbonEdit, pRibbon->FindByID(ID_SPIN1));
+	std::string num_string = CStringA(block_num_selector->GetEditText());
+	int num = std::stoi(num_string);
+	if (sceneManager != nullptr) sceneManager->setBlockNum(num);
 
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数

@@ -11,7 +11,12 @@ SceneManager::SceneManager()
 
 	projectMatrix = glm::perspective(glm::radians(60.f), 1.f, 1.f, 300.f);
 
+	unsigned int testVBO[2];
+	glGenBuffers(2, testVBO);
+	auto status = glGetError();
+
 	auto shader_ptr = std::make_unique<cgProgram>();
+	status = glGetError();
 	shader_ptr->CompileShader("Shader/project/basic.vert");
 	shader_ptr->CompileShader("Shader/project/basic.frag");
 	shader_ptr->Link();
@@ -66,9 +71,6 @@ void SceneManager::render()
 	using ColorType = ColorPatch::ColorType;
 	auto tmp = colorPatch.getRange();
 
-	
-
-
 	auto min_color = colorPatch.getMinColor();	
 	auto max_color = colorPatch.getMaxColor();	
 	
@@ -86,7 +88,7 @@ void SceneManager::render()
 	shaderFromType[mode]->SetUniform("maxColor", vec4(max_color, 1.f));
 	if (colorPatch.getColorType() == ColorType::hsv)shaderFromType[mode]->SetUniform("colorType", 0);
 	if (colorPatch.getColorType() == ColorType::rgb)shaderFromType[mode]->SetUniform("colorType", 1);
-	if(mode==ModeType::single) shaderFromType[mode]->SetUniform("blockNum", 10);
+	if(mode==ModeType::single) shaderFromType[mode]->SetUniform("blockNum", colorPatch.getBlockNum());
 
 	meshManager.render();
 
@@ -247,4 +249,11 @@ void SceneManager::setViewMode(int type)
 	default:
 		break;
 	}
+}
+
+void SceneManager::setBlockNum(int num)
+{
+	colorPatch.setBlockNum(num);
+	colorPatch.init();
+	colorPatch.updateBlockValue(meshManager.getRenderMode());
 }

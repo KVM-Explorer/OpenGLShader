@@ -46,7 +46,7 @@ public:
     void init();   // 初始化色标 block
     
     void setBlockNum(int num);
-    void setProjection(mat4 project);
+    int getBlockNum() const;
     void render();
     
     void setRange(float min_value, float max_value, vec3 min_color, vec3 max_color);

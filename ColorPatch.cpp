@@ -61,14 +61,15 @@ void ColorPatch::setBlockNum(int num)
 	blockNum = num;
 }
 
-
-
-
-
-void ColorPatch::setProjection(glm::mat4 project)
+int ColorPatch::getBlockNum() const
 {
-	projectionMat = project;
+	return blockNum;
 }
+
+
+
+
+
 
 /**
  * @brief äÖÈ¾É«±ê

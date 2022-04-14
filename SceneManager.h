@@ -70,5 +70,6 @@ public:
 	 * @param type 0-XY 1-XZ 2-YZ 3-3D
 	*/
 	void setViewMode(int type);
+	void setBlockNum(int num);
 };
 
