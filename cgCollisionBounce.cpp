@@ -9,8 +9,8 @@
 cgCollisionBounce::cgCollisionBounce()
 {
     beta = 0;
-    positionX = 200;
-    positionY = 300;
+    positionX = 100;
+    positionY = 100;
     deltaX = 10;
     deltaY = 10;
 }
@@ -43,11 +43,12 @@ void cgCollisionBounce::Render()
 
 void cgCollisionBounce::Update()
 {
-    positionX += deltaX;
-    positionY += deltaY;
     
-    if(positionX>400||positionX<200)deltaX = -deltaX;
-    if(positionY>400||positionY<200)deltaY = -deltaY;
+    
+    if (positionX <= 500 && positionY == 500) positionX += deltaX;
+    if (positionX == 500 && positionY >= 100) positionY -= deltaY;
+    if (positionX > 100 && positionY == 100) positionX -= deltaX;
+    if (positionX == 100 && positionY <= 500) positionY += deltaY;
     int length = elementsArray.size();
     /* elementsArray.pop_back();
     TRACE("Angle: %d\n", beta);
