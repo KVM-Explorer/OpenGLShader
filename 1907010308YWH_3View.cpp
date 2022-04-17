@@ -27,6 +27,7 @@
 #define new DEBUG_NEW
 #endif
 #include <glm/ext/matrix_clip_space.hpp>
+#include <chrono>
 #include "cgTriangle.h"
 #include "cgPentagram.h"
 #include "cgSphere.h"
@@ -221,7 +222,14 @@ void CMy1907010308YWH3View::OnDraw(CDC* pDC)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if(scene!=nullptr)scene->Render();
-	if (sceneManager != nullptr) sceneManager->render();
+	if (sceneManager != nullptr) {
+		using namespace std;
+		auto time_point = chrono::steady_clock::now();
+
+		sceneManager->render();
+		auto duration_ms = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - time_point).count();
+		TRACE("Time:%d\n", int(duration_ms));
+	}
 
 	SwapBuffers(m_pDC->GetSafeHdc());
 	wglMakeCurrent(0, 0);
@@ -793,13 +801,14 @@ void CMy1907010308YWH3View::OnProjectOpenDir()
 void CMy1907010308YWH3View::UISelectProperty()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO2));
-
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
+	
 	if (sceneManager != nullptr)
 	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO2));
+
+		int index = pComboBox->GetCurSel();
+		string content = CT2A(pComboBox->GetItem(index));
 		sceneManager->setProperty(content);
 		AddDataSelectorContent(sceneManager->getFrameNum());
 		pComboBox->SelectItem(0);
@@ -814,13 +823,14 @@ void CMy1907010308YWH3View::UISelectProperty()
 void CMy1907010308YWH3View::UISelectViewMode()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
-
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
+	
 	if(sceneManager!=nullptr)
 	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO5));
+
+		int index = pComboBox->GetCurSel();
+		string content = CT2A(pComboBox->GetItem(index));
 		if (content == "XY") sceneManager->setViewMode(0);
 		if (content == "XZ") sceneManager->setViewMode(1);
 		if (content == "YZ") sceneManager->setViewMode(2);
@@ -833,26 +843,32 @@ void CMy1907010308YWH3View::UISelectViewMode()
 
 void CMy1907010308YWH3View::UISelectDimension()
 {
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO7));
-	int dimension = pComboBox->GetCurSel();
-	pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
-	int count = pComboBox->GetCount();
-
+	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 	
-	CString str;
-	for (int i = 0; i < count; i++)
-	{
-		str.Format(_T("%d"), i);
-		pComboBox->DeleteItem(str);
+	if (sceneManager != nullptr) {
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO7));
+		int dimension = pComboBox->GetCurSel();
+		pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
+		int count = pComboBox->GetCount();
+
+
+		CString str;
+		for (int i = 0; i < count; i++)
+		{
+			str.Format(_T("%d"), i);
+			pComboBox->DeleteItem(str);
+		}
+		for (int i = 0; i < sceneManager->getStRange(dimension) - 1; i++)
+		{
+			str.Format(_T("%d"), i);
+			pComboBox->AddItem(str);
+		}
+		pComboBox->SelectItem(0);
+		sceneManager->setShowRange(dimension, 0);
 	}
-	for (int i = 0; i < sceneManager->getStRange(dimension) - 1; i++)
-	{
-		str.Format(_T("%d"), i);
-		pComboBox->AddItem(str);
-	}
-	pComboBox->SelectItem(0);	// Todo Update 
-	if (sceneManager != nullptr) sceneManager->setShowRange(dimension, 0);
+	wglMakeCurrent(0, 0);
+	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
 
 /**
@@ -861,13 +877,16 @@ void CMy1907010308YWH3View::UISelectDimension()
 void CMy1907010308YWH3View::UISelectRange()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
-	int index = pComboBox->GetCurSel(); 
+	
+	if (sceneManager != nullptr) {
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO4));
+		int index = pComboBox->GetCurSel();
 
-	pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO7));
-	int id = pComboBox->GetCurSel();
-	if (sceneManager != nullptr)	sceneManager->setShowRange(id,index);
+		pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO7));
+		int id = pComboBox->GetCurSel();
+		sceneManager->setShowRange(id, index);
+	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
@@ -876,12 +895,13 @@ void CMy1907010308YWH3View::UISelectRange()
 void CMy1907010308YWH3View::UISelectRenderMode()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
 	
-	int index = pComboBox->GetCurSel();
-	string content = CT2A(pComboBox->GetItem(index));
 	if (sceneManager != nullptr) {
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO3));
+
+		int index = pComboBox->GetCurSel();
+		string content = CT2A(pComboBox->GetItem(index));
 		sceneManager->setRenderMode(content);
 	}
 	wglMakeCurrent(0, 0);
@@ -893,11 +913,11 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 void CMy1907010308YWH3View::UISelectColorMin()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON4));
 
 	if (sceneManager != nullptr)
 	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON4));
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMin(GetRValue(color), GetGValue(color), GetBValue(color));
 	}
@@ -910,11 +930,11 @@ void CMy1907010308YWH3View::UISelectColorMin()
 void CMy1907010308YWH3View::UISelectColorMax()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON5));
 
 	if (sceneManager != nullptr)
 	{
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+	auto color_button_ptr = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, pRibbon->FindByID(ID_BUTTON5));
 		auto color = color_button_ptr->GetColor();
 		sceneManager->setColorMax(GetRValue(color), GetGValue(color), GetBValue(color));
 	}
@@ -963,9 +983,6 @@ void CMy1907010308YWH3View::UIPlayNextData()
 			pComboBox->SelectItem(index + 1);
 			sceneManager->showNext();
 		}
-			
-			
-
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
@@ -995,11 +1012,12 @@ void CMy1907010308YWH3View::UITimeSelector()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	auto time_selector_ptr = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
-	int index = time_selector_ptr->GetCurSel();
-
-	if (sceneManager != nullptr) sceneManager->selectShowData(index);
+	if (sceneManager != nullptr) {
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		auto time_selector_ptr = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO6));
+		int index = time_selector_ptr->GetCurSel();
+		sceneManager->selectShowData(index);
+	}
 
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
@@ -1013,11 +1031,13 @@ void CMy1907010308YWH3View::UISelectColorType()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	auto color_type_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO8));
-	int index = color_type_selector->GetCurSel();
+	if (sceneManager != nullptr) {
 
-	if (sceneManager != nullptr)	sceneManager->setColorType(index);
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		auto color_type_selector = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_COMBO8));
+		int index = color_type_selector->GetCurSel();
+		sceneManager->setColorType(index);
+	}
 	
 
 	wglMakeCurrent(0, 0);
@@ -1028,13 +1048,14 @@ void CMy1907010308YWH3View::UISelectColorType()
 void CMy1907010308YWH3View::UISelectBlockNum()
 {
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
-
-	CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
-	auto block_num_selector = DYNAMIC_DOWNCAST(CMFCRibbonEdit, pRibbon->FindByID(ID_SPIN1));
-	std::string num_string = CStringA(block_num_selector->GetEditText());
-	int num = std::stoi(num_string);
-	if (sceneManager != nullptr) sceneManager->setBlockNum(num);
-
+	
+	if (sceneManager != nullptr) {
+		CMFCRibbonBar* pRibbon = ((CMainFrame*)AfxGetMainWnd())->GetRibbonBar();
+		auto block_num_selector = DYNAMIC_DOWNCAST(CMFCRibbonEdit, pRibbon->FindByID(ID_SPIN1));
+		std::string num_string = CStringA(block_num_selector->GetEditText());
+		int num = std::stoi(num_string);
+		sceneManager->setBlockNum(num);
+	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
 }
