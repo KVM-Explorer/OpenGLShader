@@ -76,13 +76,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\lib;C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\include;C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\lib;C:\Users\Geek\vcpkg\packages\soil_x86-windows\lib;C:\Users\Geek\vcpkg\packages\opengl_x86-windows\debug\lib;C:\Users\Geek\vcpkg\packages\glew_x86-windows\debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Geek\vcpkg\packages\assimp_x86-windows\include;C:\Users\Geek\vcpkg\packages\soil_x86-windows\include;C:\Users\Geek\vcpkg\packages\glm_x86-windows\include;C:\Users\Geek\vcpkg\packages\glew_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
