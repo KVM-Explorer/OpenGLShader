@@ -105,7 +105,6 @@ void SceneManager::render()
 void SceneManager::setProjection(int width, int height)
 {
 	projectMatrix = glm::perspective(glm::radians(60.f), float(width) / float(height), 1.0f, 6000.f);
-	// Todo ¸üÐÂToolBase ²¹³¥
 	orthoMatrix = glm::ortho(-width/2.f, width/2.f, -height/2.f, height/2.f,1.f,6000.f);
 	colorPatch.setOffset(vec3(width/2.f-100.f,0.f,0.f));
 

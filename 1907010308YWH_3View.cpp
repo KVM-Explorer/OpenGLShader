@@ -810,11 +810,12 @@ void CMy1907010308YWH3View::UISelectProperty()
 		int index = pComboBox->GetCurSel();
 		string content = CT2A(pComboBox->GetItem(index));
 		sceneManager->setProperty(content);
-		AddDataSelectorContent(sceneManager->getFrameNum());
-		pComboBox->SelectItem(0);
+		/*AddDataSelectorContent(sceneManager->getFrameNum());
+		pComboBox->SelectItem(0);*/
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
+	UITimeSelector();
 }
 
 /**
@@ -902,11 +903,14 @@ void CMy1907010308YWH3View::UISelectRenderMode()
 
 		int index = pComboBox->GetCurSel();
 		string content = CT2A(pComboBox->GetItem(index));
-		sceneManager->setRenderMode(content);
+		auto time_point = chrono::steady_clock::now();
+		if(content!="isopleth")	sceneManager->setRenderMode(content);
+		auto duration_ms = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - time_point).count();
+		TRACE("Init Data Time:%d\n", (int)duration_ms);
 	}
 	wglMakeCurrent(0, 0);
 	Invalidate(FALSE);//发送重绘消息，触发执行 OnDraws 函数
-	
+	UITimeSelector();
 }
 
 

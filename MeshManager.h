@@ -11,17 +11,13 @@ using PS = DataLoader::PropertyStructure;
 class MeshManager
 {
 private:
-	mat4 viewMatrix;
-	mat4 projection;
-	mat4 modelMatrix;	// Todo update position
 	DS dataStructure;
-	int stX, stY, stZ;
+	int stX;
+	int stY;
+	int stZ;
 	vec3 centerPos;
-
+	[[maybe_unused]]bool refineFlag;
 protected:
-	cgProgram shader;
-	cgProgram cubeShader;
-	std::shared_ptr<cgCube> cube;
 	std::vector<std::shared_ptr<Unit>> units;
 	ModeType renderMode;
 
@@ -30,13 +26,22 @@ public:
 	~MeshManager();
 
 	void init(DS data_struct);
+	/**
+	 * @brief 网格细化
+	 * @param data_struct 
+	 * @param multiple 但各维度扩充为2^multiple
+	*/
+	void initRefineMesh(DS data_struct, int multiple);
 
 
 	void render();
-	//void setScaleRatio(float ratio);	// 模型变换缩放
 	void setProperty(PS property_struct);
-	void setProjection(mat4 proj);
-	void setViewMatrix(mat4 view_matrix);
+	/**
+	 * @brief 网格属性值细化
+	 * @param property_struct 
+	*/
+	void setRefineProperty(PS property_struct);
+
 	void selectViewRange(int dimension,int st);// 展示x-xmax y-ymax z-zmax 区间内的网格
 	void setRenderMode(ModeType type);
 	ModeType getRenderMode() const;

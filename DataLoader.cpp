@@ -250,7 +250,6 @@ DataLoader::PropertyStructure DataLoader::getPropertyDataPre()
 
 DataLoader::PropertyStructure DataLoader::getPropertyDataText(string filename)
 {
-    //Todo
     using namespace std;
     propertyStructure.buffer = std::shared_ptr<float[]>(new float[dataStructure.num]);
     
