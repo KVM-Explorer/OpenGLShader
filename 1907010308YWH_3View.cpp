@@ -368,6 +368,7 @@ void CMy1907010308YWH3View::OnGeTriangle()
 	auto obj = std::make_shared<RayTrace>();
 	obj->Init();
 	obj->CalculateModelMatrix();
+	obj->SetTexture(basic_scene->GetTextureID());
 	
 	basic_scene->AddElement(obj);
 	scene = basic_scene;

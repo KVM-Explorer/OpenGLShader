@@ -38,7 +38,6 @@ void RayTrace::Init()
 	vertc[countv++] = -1.f, vertc[countv++] = 1.f;
 	vertc[countv++] = 1.f, vertc[countv++] = -1.f;
 	vertc[countv++] = 1.f, vertc[countv++] = 1.f;
-	//color[countc++] = 1.f, color[countc++] = 0.f, color[countc++] = 0.f;
 
 	glGenBuffers(2, vboHandle);
 
@@ -51,10 +50,6 @@ void RayTrace::Init()
 	glVertexAttribPointer((GLuint)0, 2, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader 的顶点坐标输入属性（序号 0，坐标）对应
 	glEnableVertexAttribArray(0); // 允许 Vertex 着色器中输入变量 0 读取显存数据。
 
-	//glBindBuffer(GL_ARRAY_BUFFER, vboHandle[1]);//缓冲区数据（颜色）和顶点绑
-	//glBufferData(GL_ARRAY_BUFFER, 4*3* sizeof(float), color, GL_STATIC_DRAW);//内存数据复制到显存
-	//glVertexAttribPointer((GLuint)1, 4*2, GL_FLOAT, GL_FALSE, 0, ((GLubyte*)NULL + (0)));//Vertex Shader 的顶点颜色输入（序号 1，颜色）属性对应
-	//glEnableVertexAttribArray(1); // // 允许 Vertex 着色器中输入变量 1 读取显存数据。
 	glBindVertexArray(0);
 
 }
@@ -63,12 +58,15 @@ void RayTrace::Render(mat4 projection)
 {
 	//启用需要的 shader，可以动态切换不同的 shader
 	prog.Use();
-	//prog.SetUniform("ProjectionMatrix", projection);
-	//prog.SetUniform("ModelMatrix", model);
+
+	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(vaoHandle);
+	glBindTexture(GL_TEXTURE_2D,textureID);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);//GL_LINES 线段
 	glBindVertexArray(0);
-	////关闭所用的 shader
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//关闭所用的 shader
 	prog.Unuse();
 }
 
@@ -76,10 +74,10 @@ void RayTrace::CalculateModelMatrix()
 {
 	//计算矩阵，先执行的矩阵后计算
 
-	model = glm::translate(vec3(300.0f, 400.0f, 0.0f));
-	model *= glm::rotate(alpha, vec3(0.0f, 0.0f, 1.0f));
-	model *= glm::scale(vec3(0.4f, 0.4f, 1.0f));
-	model *= glm::translate(vec3(-300.0f, -400.0f, -0.0f));
+	//model = glm::translate(vec3(300.0f, 400.0f, 0.0f));
+	//model *= glm::rotate(alpha, vec3(0.0f, 0.0f, 1.0f));
+	//model *= glm::scale(vec3(0.4f, 0.4f, 1.0f));
+	//model *= glm::translate(vec3(-300.0f, -400.0f, -0.0f));
 
 }
 

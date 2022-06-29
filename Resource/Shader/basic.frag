@@ -1,4 +1,4 @@
-#version 430
+#version 450
 in vec3 Color;
 out vec4 FragColor;
 void main() 

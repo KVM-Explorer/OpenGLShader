@@ -14,6 +14,7 @@ public:
 	void SetProjection(int width, int height);
 	void AddElement(std::shared_ptr<cgElement> element);
 	void SetSize(int w, int h) { W = w, H = h; }
+	inline GLuint GetTextureID() { return tex; };
 
 private:
 	cgProgram computerShader;

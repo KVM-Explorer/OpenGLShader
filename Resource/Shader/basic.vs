@@ -1,4 +1,4 @@
-#version 430 //版本号
+#version 450 //版本号
 //输入
 layout (location = 0) in vec2 VertexPosition; //顶点坐标
 layout (location = 1) in vec3 VertexColor; //顶点颜色
