@@ -214,6 +214,7 @@
     <ClInclude Include="cgModelScene.h" />
     <ClInclude Include="cgPentagram.h" />
     <ClInclude Include="cgProgram.h" />
+    <ClInclude Include="cgRayTraceScene.h" />
     <ClInclude Include="cgRectangle.h" />
     <ClInclude Include="cgSceneBase.h" />
     <ClInclude Include="cgSphere.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RayTrace.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="targetver.h" />
@@ -251,6 +253,7 @@
     <ClCompile Include="cgModelScene.cpp" />
     <ClCompile Include="cgPentagram.cpp" />
     <ClCompile Include="cgProgram.cpp" />
+    <ClCompile Include="cgRayTraceScene.cpp" />
     <ClCompile Include="cgRectangle.cpp" />
     <ClCompile Include="cgSceneBase.cpp" />
     <ClCompile Include="cgSphere.cpp" />
@@ -268,6 +271,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RayTrace.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ToolBase.cpp" />
     <ClCompile Include="Unit.cpp" />

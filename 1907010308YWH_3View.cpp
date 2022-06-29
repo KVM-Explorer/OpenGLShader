@@ -32,6 +32,7 @@
 #include "cgPentagram.h"
 #include "cgSphere.h"
 #include "cgLightCube.h"
+#include "RayTrace.h"
 
 
 // CMy1907010308YWH3View
@@ -358,17 +359,17 @@ void CMy1907010308YWH3View::OnGeTriangle()
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);//调用 OpenGL 函数前必须调用
 
 	sceneManager = nullptr;
-	auto basic_scene = std::make_shared<cgBasicSceneBase>();
+	auto basic_scene = std::make_shared<cgRayTraceScene>();
 	auto projection = glm::ortho(0.0f, (float)600, 0.0f, (float)600);//用户坐标范围（三维裁剪空间）
 	glClearColor(0.5, 0.5, 0.5, 1);
 	basic_scene->Init();
 	basic_scene->SetProjection(projection);
 
-	auto pTriagnle = std::make_shared<cgTriangle>();
-	pTriagnle->Init();
-	pTriagnle->CalculateModelMatrix();
+	auto obj = std::make_shared<RayTrace>();
+	obj->Init();
+	obj->CalculateModelMatrix();
 	
-	basic_scene->AddElement(pTriagnle);
+	basic_scene->AddElement(obj);
 	scene = basic_scene;
 
 	wglMakeCurrent(0, 0);

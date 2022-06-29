@@ -9,7 +9,6 @@ cgBasicSceneBase::cgBasicSceneBase()
 cgBasicSceneBase::~cgBasicSceneBase()
 {
 }
-
 void cgBasicSceneBase::Init()
 {
 

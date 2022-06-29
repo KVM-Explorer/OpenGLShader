@@ -150,6 +150,12 @@
     <ClInclude Include="Camera.h">
       <Filter>头文件\Project</Filter>
     </ClInclude>
+    <ClInclude Include="RayTrace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cgRayTraceScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1907010308YWH_3.cpp">
@@ -241,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>源文件\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="RayTrace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="cgRayTraceScene.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

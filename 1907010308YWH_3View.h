@@ -22,6 +22,7 @@
 #include "cgModelScene.h"
 #include "SceneManager.h"
 #include "MainFrm.h"
+#include "cgRayTraceScene.h"
 class CMy1907010308YWH3View : public CView
 {
 protected: // 仅从序列化创建
