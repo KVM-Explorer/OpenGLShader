@@ -26,7 +26,8 @@ namespace cgShaderInfo
 		{ ".tes", cgShader::TESS_EVALUATION },
 		{ ".fs", cgShader::FRAGMENT },
 		{ ".frag", cgShader::FRAGMENT },
-		{ ".cs", cgShader::COMPUTE }
+		{ ".cs", cgShader::COMPUTE },
+		{".comp",cgShader::COMPUTE},
 	};
 }
 

@@ -306,6 +306,9 @@ void CMy1907010308YWH3View::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
 
+	cx = 512;
+	cy = 256;
+
 	wglMakeCurrent(m_pDC->GetSafeHdc(), m_hRC);// 设定 OpenGL 当前线程的渲染环境
 	glViewport(0, 0, cx, cy);
 	m_screenWidth = cx;
@@ -314,6 +317,8 @@ void CMy1907010308YWH3View::OnSize(UINT nType, int cx, int cy)
 	if (scene != nullptr)
 	{
 		scene->SetProjection(cx, cy);
+		/*	auto tmp_scene = std::dynamic_pointer_cast<cgRayTraceScene>(scene);
+			tmp_scene->SetSize(cx, cy);*/
 	}
 	if (sceneManager!= nullptr)
 	{

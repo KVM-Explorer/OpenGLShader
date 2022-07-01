@@ -19,7 +19,7 @@ public:
 private:
 	cgProgram computerShader;
 	GLuint tex;
-	int W;
-	int H;
+	int W{512};
+	int H{256};
 };
 
