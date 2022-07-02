@@ -97,7 +97,7 @@ void main()
     
 }
 
-// range:0-1
+// range: 0-1
 float rand(float x)
 {
     float y = fract(sin(x)*100000.0);
@@ -209,7 +209,7 @@ vec3 rayColor(Ray ray,int depth)
     // define var
     HitRecord hit_record;
     vec3 color[maxDepth];
-    vec3 result = vec3(0,0,0);
+    vec3 result = vec3(1,1,1);
     int range = 0 ;
         
     while(range<depth){    
