@@ -7,8 +7,8 @@ const int imageWidth = 512;
 const int imageHeight = 256;
 const float INF = 0x7fffffff ;
 const float focalLength = 1.0f;
-const int maxDepth = 50;
-const int maxObjectNum = 2;
+const int maxDepth = 30;
+const int maxObjectNum = 4;
 const int samplesNum = 100;
 
 struct Ray
@@ -21,6 +21,7 @@ struct Sphere
 {
     vec3 center;
     float radius;
+    vec3 matrial;
 };
 
 struct HitRecord
@@ -29,6 +30,7 @@ struct HitRecord
     vec3 p;
     vec3 norm;
     float t;
+    vec3 matrial;
 };
 
 Sphere objects[maxObjectNum];
@@ -45,6 +47,8 @@ vec3 rayAt(Ray ray,float t);
 HitRecord hitSphere(Sphere sphere,float min_t,float max_t,Ray r);
 HitRecord hitObjects(Ray ray,float min_t,float max_t);
 vec3 rayColor(Ray ray,int depth);
+vec3 rayReflect(vec3 v,vec3 n);
+
 vec3 gamma2(vec3 color);
 vec3 multiSmaples(vec3 color,int num);
 
@@ -130,9 +134,20 @@ void initObjects()
 {
     objects[0].center=vec3(0,0,-1.f);
     objects[0].radius = 0.5f;
+    objects[0].matrial = vec3(0.8,0.8,0.8);
 
     objects[1].center = vec3(0,-100.5,-1);
     objects[1].radius = 100.f;
+    objects[1].matrial = vec3(0.7,0.7,0.3);
+
+    // objects[2].center = vec3(-1,0,-1);
+    // objects[2].radius = 0.5f;
+    // objects[2].matrial = vec3(0.8,0.8,0.8);
+
+
+    // objects[3].center = vec3(1,0,-1);
+    // objects[3].radius = 0.5f;
+    // objects[3].matrial = vec3(0.8,0.6,0.2);
 }
 
 Ray rayInit(vec3 pos,vec3 d)
@@ -184,7 +199,7 @@ HitRecord hitSphere(Sphere sphere,float min_t,float max_t,Ray r)
     hit_record.p = rayAt(r,root);
     vec3 normal = (hit_record.p-sphere.center)/sphere.radius;
     hit_record.norm = rayFaceNormal(r,normal);
-
+    hit_record.matrial = sphere.matrial;
     return hit_record;
     
 }
@@ -210,7 +225,7 @@ vec3 rayColor(Ray ray,int depth)
 {
     // define var
     HitRecord hit_record;
-    // vec3 color[maxDepth];
+    vec3 matrial[maxDepth];
     vec3 result = vec3(0,0,0);
     int range = 0 ;
         
@@ -220,10 +235,12 @@ vec3 rayColor(Ray ray,int depth)
         hit_record = hitObjects(ray,0.001,INF);
         float t = hit_record.t;
         if(hit_record.ishit && t > 0 ){
-            vec3 target = hit_record.p+hit_record.norm+randomInUint(hit_record.p);
-            // vec3 target = hit_record.p+hit_record.norm;
+            vec3 target = hit_record.p+hit_record.norm+randomInUint(hit_record.p);  // right
+            // vec3 target = hit_record.p+hit_record.norm+randomInUint(ray.pos);    // error
+            // vec3 target = hit_record.p+hit_record.norm;                          // refference
             ray.pos = hit_record.p;
             ray.direction =target - hit_record.p;
+            matrial[range] = hit_record.matrial;
             range++;
             continue;
         }
@@ -234,7 +251,9 @@ vec3 rayColor(Ray ray,int depth)
         result = (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
         break;
     }
-    for(int i=0;i<range;i++) result = result*0.5f;
+    for(int i=0;i<range;i++) {
+        result = result*matrial[i];
+    }
     return result;
 }
 
@@ -248,4 +267,9 @@ vec3 multiSmaples(vec3 color,int num)
     float scale = 1.f/float(num);
     color = color*scale;
     return clamp(color,vec3(0,0,0),vec3(0.999,0.999,0.999));
+}
+
+vec3 rayReflect(vec3 v,vec3 n)
+{
+    return v-2.f*dot(v,n)*n;
 }
